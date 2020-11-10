@@ -169,7 +169,24 @@ a {
 .editor-btn {
     margin-top: 20px;
 }
-
+.el-progress .el-progress-bar {
+    padding-right: 70px;
+    width: 100%;
+    margin-right: -65px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.el-progress .el-progress__text {
+    font-size: 14px;
+    color: #606266;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 12px;
+    line-height: 1;
+}
+.el-table__body-wrapper::-webkit-scrollbar {
+    display: none;
+}
 /*markdown*/
 
 .v-note-wrapper .v-note-panel {

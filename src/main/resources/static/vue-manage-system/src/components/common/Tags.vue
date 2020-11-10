@@ -37,17 +37,30 @@
             // 关闭单个标签
             closeTags(index) {
                 const delItem = this.tagsList.splice(index, 1)[0];
+                console.log(delItem)
                 const item = this.tagsList[index] ? this.tagsList[index] : this.tagsList[index - 1];
                 if (item) {
                     delItem.path === this.$route.fullPath && this.$router.push(item.path);
                 }else{
-                    this.$router.push('/');
+                    this.$router.push('/').catch(err => {
+                        this.tagsList.push({
+                            title: '系统首页',
+                            path: '/dashboard',
+                            name: 'dashboard'
+                        })
+                    });
                 }
             },
             // 关闭全部标签
             closeAll(){
                 this.tagsList = [];
-                this.$router.push('/');
+                this.$router.push('/').catch(err => {
+                    this.tagsList.push({
+                        title: '系统首页',
+                        path: '/dashboard',
+                        name: 'dashboard'
+                    })
+                });;
             },
             // 关闭其他标签
             closeOther(){
