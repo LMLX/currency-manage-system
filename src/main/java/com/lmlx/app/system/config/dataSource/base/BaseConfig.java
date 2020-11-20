@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
@@ -35,6 +36,7 @@ public class BaseConfig {
 
         //添加插件
         factoryBean.setPlugins(new Interceptor[]{pageHelper});
+        factoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
         factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:mapper/base/*.xml"));
         return factoryBean.getObject();
 

@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lmlx.app.dao.base.ManageUserInfoDao" >
-    <cache/>
+<mapper namespace="com.lmlx.app.dao.base.ManageUserInfoMapper" >
+
+    <resultMap id="baseResultMap" type="com.lmlx.app.model.po.ManageUserInfo">
+        <result column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="account" property="account" jdbcType="VARCHAR" />
+        <result column="p_id" property="pId" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="DATE" />
+        <result column="update_time" property="updateTime" jdbcType="DATE" />
+    </resultMap>
+
+    <sql id="baseSelectStr">
+        ID, NAME, ACCOUNT, P_ID, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <select id="qryAll">
+        SELECT
+        <include refid="baseSelectStr"/>
+        from MANAGE_USER_INFO WHERE P
+    </select>
 </mapper>
