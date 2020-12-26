@@ -36,8 +36,7 @@ public class BaseConfig {
 
         //添加插件
         factoryBean.setPlugins(new Interceptor[]{pageHelper});
-        factoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
-        factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:mapper/base/*.xml"));
+        factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/base/*.xml"));
         return factoryBean.getObject();
 
     }

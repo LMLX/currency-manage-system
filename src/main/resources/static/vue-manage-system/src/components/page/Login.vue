@@ -44,10 +44,17 @@ export default {
     methods: {
         submitForm() {
             this.$refs.login.validate(valid => {
+                console.log(valid)
                 if (valid) {
                     this.$message.success('登录成功');
+                    self.$http.post('/dataEntries/upload', formData, {
+                    }).then(function (success) {
+
+                    }).catch(function (error) {
+                        self.$message({type: 'error', message: error.response.data, duration: 0, showClose: true});
+                    });
                     localStorage.setItem('ms_username', this.param.username);
-                    this.$router.push('/');
+                    // this.$router.push('/');
                 } else {
                     this.$message.error('请输入账号和密码');
                     console.log('error submit!!');
