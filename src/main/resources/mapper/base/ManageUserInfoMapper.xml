@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.lmlx.app.dao.base.ManageUserInfoMapper" >
 
-    <resultMap id="baseResultMap" type="com.lmlx.app.model.po.ManageUserInfo">
+    <resultMap id="baseResultMap" type="com.lmlx.app.model.po.ManageUserInfoPo">
         <result column="user_id" property="userId" jdbcType="BIGINT" />
         <result column="user_name" property="userName" jdbcType="VARCHAR" />
         <result column="account" property="account" jdbcType="VARCHAR" />
@@ -15,7 +15,7 @@
     </resultMap>
 
     <sql id="baseSelectStr">
-        USER_ID, USER_NAME, ACCOUNT, HEAD_SCULPTURE, ADDRESS, PHONE, E_MAIL, ROLE_ID
+        USER_ID, USER_NAME, ACCOUNT, PASSWORD, HEAD_SCULPTURE, ADDRESS, PHONE, E_MAIL, ROLE_ID
     </sql>
 
     <select id="qryByAccount" parameterType="com.lmlx.app.model.so.ManageUserInfoSo" resultMap="baseResultMap">
