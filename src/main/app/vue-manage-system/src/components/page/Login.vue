@@ -29,11 +29,13 @@
 
 <script>
 export default {
+
+    name: 'login',
     data: function() {
         return {
             param: {
                 username: 'admin',
-                password: '123123',
+                password: 'admin',
             },
             rules: {
                 username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -43,20 +45,28 @@ export default {
     },
     methods: {
         submitForm() {
+            let self = this;
             this.$refs.login.validate(valid => {
-                console.log(valid)
                 if (valid) {
-                    this.$message.success('登录成功');
-                    self.$http.post('/dataEntries/upload', formData, {
-                    }).then(function (success) {
+                    let data = {
+                        "account": self.param.username,
+                        "password": self.$md5(self.param.password),
+                    }
+                    self.$http.post('/user/checkLogin', data, {
+                    }).then(function (response) {
+                      console.log(response.data)
+                      if (0 === response.data.status) {
+                        localStorage.setItem('ms_username', self.param.username);
+                        self.$router.push('/');
+                      } else {
+                        self.$message({type: 'error', message: response.data.msg, duration: 0, showClose: true});
+                      }
 
-                    }).catch(function (error) {
-                        self.$message({type: 'error', message: error.response.data, duration: 0, showClose: true});
-                    });
-                    localStorage.setItem('ms_username', this.param.username);
+                    })
+
                     // this.$router.push('/');
                 } else {
-                    this.$message.error('请输入账号和密码');
+                  self.$message.error('请输入账号和密码');
                     console.log('error submit!!');
                     return false;
                 }
