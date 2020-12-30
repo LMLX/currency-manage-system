@@ -29,6 +29,7 @@ public class Constant {
     public interface ERROR {
         public final static String ERROR_00100001 = "无该人员";
         public final static String ERROR_00100002 = "密码错误";
+        public final static String ERROR_00100003 = "token过期";
     }
 
 }

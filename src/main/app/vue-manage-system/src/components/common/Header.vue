@@ -61,7 +61,7 @@ export default {
     },
     computed: {
         username() {
-            let username = localStorage.getItem('ms_username');
+            let username = this.common.getLocalStorage('ms_username');
             return username ? username : this.name;
         }
     },

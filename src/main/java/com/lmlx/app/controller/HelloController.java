@@ -1,6 +1,7 @@
 package com.lmlx.app.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.lmlx.app.dao.base.ManageUserInfoMapper;
+import com.lmlx.app.model.AjaxResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,7 @@ public class HelloController {
     @RequestMapping(value = "/hello")
     public Object hello(){
 //        return JSONObject.toJSON(manageUserInfoMapper.qryById(1L));
-        return null;
+        System.out.println(1/0);
+        return AjaxResult.markSuccess();
     }
 }

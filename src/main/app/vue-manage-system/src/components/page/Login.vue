@@ -28,94 +28,125 @@
 </template>
 
 <script>
-export default {
+    export default {
 
-    name: 'login',
-    data: function() {
-        return {
-            param: {
-                username: 'admin',
-                password: 'admin',
-            },
-            rules: {
-                username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-                password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-            },
-        };
-    },
-    methods: {
-        submitForm() {
-            let self = this;
-            this.$refs.login.validate(valid => {
-                if (valid) {
-                    let data = {
-                        "account": self.param.username,
-                        "password": self.$md5(self.param.password),
-                    }
-                    self.$http.post('/user/checkLogin', data, {
-                    }).then(function (response) {
-                      console.log(response.data)
-                      if (0 === response.data.status) {
-                        localStorage.setItem('ms_username', self.param.username);
-                        self.$router.push('/');
-                      } else {
-                        self.$message({type: 'error', message: response.data.msg, duration: 0, showClose: true});
-                      }
-
-                    })
-
-                    // this.$router.push('/');
-                } else {
-                  self.$message.error('请输入账号和密码');
-                    console.log('error submit!!');
-                    return false;
-                }
-            });
+        name: 'login',
+        data: function () {
+            return {
+                param: {
+                    username: 'admin',
+                    password: 'admin',
+                },
+                rules: {
+                    username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
+                    password: [{required: true, message: '请输入密码', trigger: 'blur'}],
+                },
+            };
         },
-    },
-};
+        methods: {
+            submitForm() {
+                let self = this;
+                this.$refs.login.validate(valid => {
+                    if (valid) {
+                        const data = {
+                            'account': self.param.username,
+                            'password': self.$md5(self.param.password)
+                        }
+                        // self.$post('/user/checkLogin', data, {}).then(function (response) {
+                        //     console.log(response.data)
+                        //     if (0 === response.data.status) {
+                        //         self.common.setLocalStorage("userInfo", response.data.obj)
+                        //         self.common.setLocalStorage('ms_username', response.data.obj.userName);
+                        //         self.common.setLocalStorage('token', response.data.obj.token);
+                        //
+                        //         self.$router.push('/');
+                        //     } else {
+                        //         self.$message({
+                        //             type: 'error',
+                        //             message: response.data.msg,
+                        //             duration: 0,
+                        //             showClose: true
+                        //         });
+                        //     }
+                        //
+                        // })
+                        console.log(self.request)
+                        self.$post('/user/checkLogin', data).then(function (response) {
+                            console.log(response)
+                            if (0 === response.status) {
+                                self.common.setLocalStorage("userInfo", response.obj)
+                                self.common.setLocalStorage('ms_username', response.obj.userName);
+                                self.common.setLocalStorage('token', response.obj.token);
+                                self.$router.push('/');
+                            } else {
+                                self.$message({
+                                    type: 'error',
+                                    message: response.msg,
+                                    duration: 3000,
+                                    showClose: true
+                                });
+                            }
+
+                        })
+
+                        // this.$router.push('/');
+                    } else {
+                        self.$message.error('请输入账号和密码');
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+        },
+    };
 </script>
 
 <style scoped>
-.login-wrap {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-image: url(../../assets/img/login-bg.jpg);
-    background-size: 100%;
-}
-.ms-title {
-    width: 100%;
-    line-height: 50px;
-    text-align: center;
-    font-size: 20px;
-    color: #fff;
-    border-bottom: 1px solid #ddd;
-}
-.ms-login {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 350px;
-    margin: -190px 0 0 -175px;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.3);
-    overflow: hidden;
-}
-.ms-content {
-    padding: 30px 30px;
-}
-.login-btn {
-    text-align: center;
-}
-.login-btn button {
-    width: 100%;
-    height: 36px;
-    margin-bottom: 10px;
-}
-.login-tips {
-    font-size: 12px;
-    line-height: 30px;
-    color: #fff;
-}
+    .login-wrap {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background-image: url(../../assets/img/login-bg.jpg);
+        background-size: 100% 100%;
+    }
+
+    .ms-title {
+        width: 100%;
+        line-height: 50px;
+        text-align: center;
+        font-size: 20px;
+        color: #fff;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .ms-login {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 350px;
+        margin: -190px 0 0 -175px;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.3);
+        overflow: hidden;
+    }
+
+    .ms-content {
+        padding: 30px 30px;
+    }
+
+    .login-btn {
+        text-align: center;
+    }
+
+    .login-btn button {
+        width: 100%;
+        height: 36px;
+        margin-bottom: 10px;
+    }
+
+    .login-tips {
+        font-size: 12px;
+        line-height: 30px;
+        color: #fff;
+    }
 </style>

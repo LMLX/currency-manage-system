@@ -12,4 +12,6 @@ public class ManageUserInfoVo {
     private String account;
     private String userName;
     private String role;
+    private Long roleId;
+    private String token;
 }

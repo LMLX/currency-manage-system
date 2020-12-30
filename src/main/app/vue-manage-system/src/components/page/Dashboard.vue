@@ -137,7 +137,8 @@
         name: 'dashboard',
         data() {
             return {
-                name: localStorage.getItem('ms_username'),
+                name: this.common.getLocalStorage('ms_username'),
+                role: this.common.getLocalStorage("userInfo").role,
                 todoMessage: '',
                 todoMessageVisible: {
                     addShow: false,
@@ -233,9 +234,6 @@
             Schart,updateTodo
         },
         computed: {
-            role() {
-                return this.name === 'admin' ? '超级管理员' : '普通用户';
-            }
         },
         // created() {
         //     this.handleListener();

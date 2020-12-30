@@ -8,6 +8,7 @@ import com.lmlx.app.model.po.ManageUserInfoPo;
 import com.lmlx.app.model.so.ManageUserInfoSo;
 import com.lmlx.app.model.vo.ManageUserInfoVo;
 import com.lmlx.app.service.ManageUserService;
+import com.lmlx.app.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,8 @@ public class ManageUserServiceImpl implements ManageUserService {
             return AjaxResult.markError(Constant.ERROR.ERROR_00100002);
         }
         ManageUserInfoVo vo = manageUserInfoPoToVo(po);
+        String token = JwtUtil.sign(po.getUserId());
+        vo.setToken(token);
         return AjaxResult.markSuccess(vo);
     }
 
@@ -55,7 +58,9 @@ public class ManageUserServiceImpl implements ManageUserService {
             vo.setUserId(po.getUserId());
             vo.setAccount(po.getAccount());
             vo.setUserName(po.getUserName());
-            vo.setRole(Constant.USER_ROLE.INFO.get(po.getRoleId()));
+            Long roleId = po.getRoleId();
+            vo.setRoleId(roleId);
+            vo.setRole(Constant.USER_ROLE.INFO.get(roleId));
         }
         return vo;
     }

@@ -7,7 +7,7 @@ import com.lmlx.app.system.config.tableInfo.Column;
 import java.util.Date;
 
 /**
- * @author  jiahao 
+ * @author jiahao jin
  * @create 2020-11-13 14:51 
  */
 

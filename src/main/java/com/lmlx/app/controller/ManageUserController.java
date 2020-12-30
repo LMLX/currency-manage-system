@@ -23,7 +23,6 @@ public class ManageUserController {
 
     @RequestMapping(value = "/checkLogin")
     public Object checkLogin(@RequestBody ManageUserInfoSo so) {
-        System.out.println("调用了");
         Object result = manageUserService.checkLogin(so);
         return result;
     }

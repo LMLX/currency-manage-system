@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 public class ManageUserInfoSo {
-
     private String account;
     private String password;
+    private Long roleId;
 }
