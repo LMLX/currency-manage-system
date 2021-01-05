@@ -6,7 +6,7 @@ const service = axios.create({
     // process.env.NODE_ENV === 'development' 来判断是否开发环境
     // easy-mock服务挂了，暂时不使用了
     // baseURL: 'https://www.easy-mock.com/mock/592501a391470c0ac1fab128',
-    timeout: 5000
+    // timeout: 5000
 });
 
 // service.interceptors.request.use(
@@ -67,7 +67,9 @@ service.interceptors.response.use(
         if (response && response.status === 200) {
             if(response.data.status === 1 && response.data.msg === 'token过期'){
                 console.log('login')
+                common.delAllLocalStorage()
                 router.push({path:'/login'});
+
             }
             return response.data
         } else {

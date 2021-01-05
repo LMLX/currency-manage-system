@@ -7,14 +7,14 @@ import com.lmlx.app.system.config.tableInfo.Column;
 
 /**
  * @author jiahao jin
- * @create 2020-12-29 09:57:39 
+ * @create 2021-01-04 10:43:27 
  */
 
 @Data
 @Table ( value ="manage_menu_info" )
 public class ManageMenuInfoPo  implements Serializable {
 
-	private static final long serialVersionUID =  1600563089763056508L;
+	private static final long serialVersionUID =  4607987198586642186L;
 
 	/**
 	 * ID主键
@@ -45,6 +45,9 @@ public class ManageMenuInfoPo  implements Serializable {
 	 */
    	@Column(value = "url" )
 	private String url;
+
+   	@Column(value = "component" )
+	private String component;
 
 	/**
 	 * 父级ID

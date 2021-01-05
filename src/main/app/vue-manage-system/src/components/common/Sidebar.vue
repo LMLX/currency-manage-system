@@ -11,31 +11,31 @@
             router
         >
             <template v-for="item in items">
-                <template v-if="item.subs">
+                <template v-if="item.children">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
                             <i :class="item.icon"></i>
-                            <span slot="title">{{ item.title }}</span>
+                            <span slot="title">{{ item.meta.title }}</span>
                         </template>
-                        <template v-for="subItem in item.subs">
+                        <template v-for="subItem in item.children">
                             <el-submenu
-                                v-if="subItem.subs"
+                                v-if="subItem.children"
                                 :index="subItem.index"
                                 :key="subItem.index"
                             >
-                                <template slot="title">{{ subItem.title }}</template>
+                                <template slot="title">{{ subItem.meta.title }}</template>
                                 <el-menu-item
-                                    v-for="(threeItem,i) in subItem.subs"
+                                    v-for="(threeItem,i) in subItem.children"
                                     :key="i"
                                     :index="threeItem.index"
-                                >{{ threeItem.title }}
+                                >{{ threeItem.meta.title }}
                                 </el-menu-item>
                             </el-submenu>
                             <el-menu-item
                                 v-else
                                 :index="subItem.index"
                                 :key="subItem.index"
-                            >{{ subItem.title }}
+                            >{{ subItem.meta.title }}
                             </el-menu-item>
                         </template>
                     </el-submenu>
@@ -43,7 +43,7 @@
                 <template v-else>
                     <el-menu-item :index="item.index" :key="item.index">
                         <i :class="item.icon"></i>
-                        <span slot="title">{{ item.title }}</span>
+                        <span slot="title">{{ item.meta.title }}</span>
                     </el-menu-item>
                 </template>
             </template>
@@ -69,6 +69,7 @@
         },
         created() {
             let self = this
+            self.items = self.common.getLocalStorage('router')
             // 通过 Event Bus 进行组件间通信，来折叠侧边栏
             bus.$on('collapse', msg => {
                 this.collapse = msg
@@ -76,13 +77,14 @@
             });
 
             //渲染菜单
-            self.$post('/menu/queMenuByUserId', {
-                "roleId": self.common.getLocalStorage("userInfo").roleId
-            }).then(response => {
-                if (0 == response.status) {
-                    self.items = response.obj
-                }
-            })
+            // self.$post('/base/menu/queMenuByUserId', {
+            //     "roleId": self.common.getLocalStorage("userInfo").roleId
+            // }).then(response => {
+            //     if (0 == response.status) {
+
+
+            //     }
+            // })
         }
     };
 </script>

@@ -12,10 +12,12 @@
         <result column="phone" property="phone" jdbcType="VARCHAR" />
         <result column="e_mail" property="eMail" jdbcType="VARCHAR" />
         <result column="role_id" property="roleId" jdbcType="BIGINT" />
+        <result column="last_login_position" property="lastLoginPosition" jdbcType="VARCHAR" />
+        <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <sql id="baseSelectStr">
-        USER_ID, USER_NAME, ACCOUNT, PASSWORD, HEAD_SCULPTURE, ADDRESS, PHONE, E_MAIL, ROLE_ID
+        USER_ID, USER_NAME, ACCOUNT, PASSWORD, HEAD_SCULPTURE, ADDRESS, PHONE, E_MAIL, ROLE_ID, LAST_LOGIN_POSITION, LAST_LOGIN_TIME
     </sql>
 
     <select id="qryByAccount" parameterType="com.lmlx.app.model.so.ManageUserInfoSo" resultMap="baseResultMap">

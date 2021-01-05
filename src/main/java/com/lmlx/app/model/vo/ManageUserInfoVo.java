@@ -14,4 +14,6 @@ public class ManageUserInfoVo {
     private String role;
     private Long roleId;
     private String token;
+    private String lastLoginPosition;
+    private String lastLoginTime;
 }

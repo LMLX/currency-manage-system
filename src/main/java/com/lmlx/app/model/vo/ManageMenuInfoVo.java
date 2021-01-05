@@ -1,5 +1,6 @@
 package com.lmlx.app.model.vo;
 
+import com.lmlx.app.model.Meta;
 import lombok.Data;
 
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.List;
 public class ManageMenuInfoVo {
     private String icon;
     private String index;
-    private String title;
-    private List<ManageMenuInfoVo> subs;
+    private String path;
+    private String component;
+    private Meta meta;
+    private List<ManageMenuInfoVo> children;
 }

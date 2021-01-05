@@ -28,6 +28,7 @@
 </template>
 
 <script>
+    import {init} from '../../promission'
     export default {
 
         name: 'login',
@@ -36,6 +37,7 @@
                 param: {
                     username: 'admin',
                     password: 'admin',
+                    position: '未知'
                 },
                 rules: {
                     username: [{required: true, message: '请输入用户名', trigger: 'blur'}],
@@ -46,37 +48,23 @@
         methods: {
             submitForm() {
                 let self = this;
-                this.$refs.login.validate(valid => {
+                this.$refs.login.validate(async valid => {
                     if (valid) {
+                        self.common.delAllLocalStorage()
+                        self.param.position = await self.getLocation();
                         const data = {
                             'account': self.param.username,
-                            'password': self.$md5(self.param.password)
+                            'password': self.$md5(self.param.password),
+                            'position': self.param.position
                         }
-                        // self.$post('/user/checkLogin', data, {}).then(function (response) {
-                        //     console.log(response.data)
-                        //     if (0 === response.data.status) {
-                        //         self.common.setLocalStorage("userInfo", response.data.obj)
-                        //         self.common.setLocalStorage('ms_username', response.data.obj.userName);
-                        //         self.common.setLocalStorage('token', response.data.obj.token);
-                        //
-                        //         self.$router.push('/');
-                        //     } else {
-                        //         self.$message({
-                        //             type: 'error',
-                        //             message: response.data.msg,
-                        //             duration: 0,
-                        //             showClose: true
-                        //         });
-                        //     }
-                        //
-                        // })
-                        console.log(self.request)
-                        self.$post('/user/checkLogin', data).then(function (response) {
+                        console.log(data)
+                        self.$post('/base/user/checkLogin', data).then(async function (response) {
                             console.log(response)
                             if (0 === response.status) {
                                 self.common.setLocalStorage("userInfo", response.obj)
                                 self.common.setLocalStorage('ms_username', response.obj.userName);
                                 self.common.setLocalStorage('token', response.obj.token);
+                                await init()
                                 self.$router.push('/');
                             } else {
                                 self.$message({
@@ -88,8 +76,6 @@
                             }
 
                         })
-
-                        // this.$router.push('/');
                     } else {
                         self.$message.error('请输入账号和密码');
                         console.log('error submit!!');
@@ -97,6 +83,22 @@
                     }
                 });
             },
+            async getLocation() {
+                let self = this
+                let position = '未知'
+                //调用百度api  ak可以自己去申请
+                await self.$get('/baidu/location/ip?ak=k45Mt9SLKbrShWpcRSYPv1ldrXO5TqMn').then(function (response) {
+                    console.log(response)
+                    if (0 == response.status) {
+                        console.log(response.content.address)
+                        position = response.content.address
+                    }
+                    // self.p
+                }).catch(err => {
+
+                })
+                return position;
+            }
         },
     };
 </script>

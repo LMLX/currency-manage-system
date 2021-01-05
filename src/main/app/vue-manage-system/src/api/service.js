@@ -1,7 +1,7 @@
 import service from '../utils/request.js'
 
 // post请求
-export function post(url, data, configure) {
+export async function post(url, data, configure) {
   return new Promise((resolve, reject) => {
     service.post(url, data, configure)
     .then(response => {
@@ -13,6 +13,21 @@ export function post(url, data, configure) {
         reject(error)
     })
   })
+}
+
+// post请求
+export async function get(url) {
+    return new Promise((resolve, reject) => {
+        service.get(url)
+            .then(response => {
+                resolve(response)
+            }, err => {
+                reject(err)
+            })
+            .catch((error) => {
+                reject(error)
+            })
+    })
 }
 
 // post请求

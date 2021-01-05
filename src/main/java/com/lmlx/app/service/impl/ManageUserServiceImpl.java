@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.text.SimpleDateFormat;
 
 /**
  * @author jiahao jin
@@ -41,6 +41,10 @@ public class ManageUserServiceImpl implements ManageUserService {
         ManageUserInfoVo vo = manageUserInfoPoToVo(po);
         String token = JwtUtil.sign(po.getUserId());
         vo.setToken(token);
+        //更新用户的地理位置
+        po.setLastLoginPosition(so.getPosition());
+
+        manageUserInfoMapper.updatePosi(po);
         return AjaxResult.markSuccess(vo);
     }
 
@@ -61,6 +65,13 @@ public class ManageUserServiceImpl implements ManageUserService {
             Long roleId = po.getRoleId();
             vo.setRoleId(roleId);
             vo.setRole(Constant.USER_ROLE.INFO.get(roleId));
+            vo.setLastLoginPosition(po.getLastLoginPosition());
+            SimpleDateFormat sdf = new SimpleDateFormat(Constant.TIME_FORMAT.DATE);
+            if (null != po.getLastLoginTime()) {
+                vo.setLastLoginTime(sdf.format(po.getLastLoginTime()));
+            } else {
+                vo.setLastLoginTime("未知");
+            }
         }
         return vo;
     }

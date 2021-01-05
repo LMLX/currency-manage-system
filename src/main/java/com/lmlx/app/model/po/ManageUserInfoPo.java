@@ -8,14 +8,14 @@ import java.util.Date;
 
 /**
  * @author jiahao jin
- * @create 2020-12-26 14:14 
+ * @create 2020-12-31 23:37:29 
  */
 
 @Data
 @Table ( value ="manage_user_info" )
 public class ManageUserInfoPo  implements Serializable {
 
-	private static final long serialVersionUID =  6645767942778133519L;
+	private static final long serialVersionUID =  1407263884545010021L;
 
 	/**
 	 * ID主键
@@ -70,6 +70,18 @@ public class ManageUserInfoPo  implements Serializable {
 	 */
    	@Column(value = "role_id" )
 	private Long roleId;
+
+	/**
+	 * 最后登录的地址
+	 */
+   	@Column(value = "last_login_position" )
+	private String lastLoginPosition;
+
+	/**
+	 * 最后登录的时间
+	 */
+   	@Column(value = "last_login_time" )
+	private Date lastLoginTime;
 
 	/**
 	 * 创建人

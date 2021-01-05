@@ -12,11 +12,11 @@
                     </div>
                     <div class="user-info-list">
                         上次登录时间：
-                        <span>2020-01-01</span>
+                        <span>{{lastLoginTime}}</span>
                     </div>
                     <div class="user-info-list">
                         上次登录地点：
-                        <span>浙江省杭州市</span>
+                        <span>{{lastLoginPosition}}</span>
                     </div>
                 </el-card>
                 <el-card shadow="hover" style="height:252px;">
@@ -139,6 +139,8 @@
             return {
                 name: this.common.getLocalStorage('ms_username'),
                 role: this.common.getLocalStorage("userInfo").role,
+                lastLoginPosition: this.common.getLocalStorage("userInfo").lastLoginPosition,
+                lastLoginTime: this.common.getLocalStorage("userInfo").lastLoginTime,
                 todoMessage: '',
                 todoMessageVisible: {
                     addShow: false,
@@ -235,10 +237,10 @@
         },
         computed: {
         },
-        // created() {
-        //     this.handleListener();
-        //     this.changeDate();
-        // },
+        created() {
+            // this.handleListener();
+            // this.changeDate();
+        },
         // activated() {
         //     this.handleListener();
         // },
@@ -306,6 +308,7 @@
             //     this.$refs.bar.renderChart();
             //     this.$refs.line.renderChart();
             // }
+
         },
     };
 </script>

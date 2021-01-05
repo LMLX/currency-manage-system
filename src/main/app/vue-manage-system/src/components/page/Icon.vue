@@ -42,6 +42,7 @@
 
 <script>
     export default {
+        name: 'icon',
         data: function(){
             return {
                 keyword: '',

@@ -75,7 +75,7 @@
 
 <script>
 export default {
-    name: 'baseform',
+    name: 'baseForm',
     data() {
         return {
             options: [

@@ -2,6 +2,7 @@ package com.lmlx.app.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lmlx.app.dao.base.ManageMenuInfoMapper;
+import com.lmlx.app.model.Meta;
 import com.lmlx.app.model.po.ManageMenuInfoPo;
 import com.lmlx.app.model.so.ManageUserInfoSo;
 import com.lmlx.app.model.vo.ManageMenuInfoVo;
@@ -27,6 +28,7 @@ public class ManageMenuServiceImpl implements ManageMenuService {
     public List<ManageMenuInfoVo> queMenuByUserId(ManageUserInfoSo so) {
 
         List<ManageMenuInfoPo> list = manageMenuInfoMapper.queMenuByUserId(so);
+        System.out.println(JSONObject.toJSONString(list));
         return menuPoListToVo(list);
     }
 
@@ -44,10 +46,10 @@ public class ManageMenuServiceImpl implements ManageMenuService {
                     headList.add(vo);
                 } else {
                     ManageMenuInfoVo pVo = indexMap.get(pId);
-                    if (CollectionUtils.isEmpty(pVo.getSubs())) {
-                        pVo.setSubs(new ArrayList<>());
+                    if (CollectionUtils.isEmpty(pVo.getChildren())) {
+                        pVo.setChildren(new ArrayList<>());
                     }
-                    List<ManageMenuInfoVo>  subs = pVo.getSubs();
+                    List<ManageMenuInfoVo>  subs = pVo.getChildren();
                     subs.add(vo);
                 }
             }
@@ -60,7 +62,11 @@ public class ManageMenuServiceImpl implements ManageMenuService {
         if (null != po) {
             vo.setIcon(po.getIcon());
             vo.setIndex(po.getIdent());
-            vo.setTitle(po.getTitle());
+            Meta meta = new Meta();
+            meta.setTitle(po.getTitle());
+            vo.setPath(po.getUrl());
+            vo.setComponent(po.getComponent());
+            vo.setMeta(meta);
         }
         return vo;
     }

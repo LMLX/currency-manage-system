@@ -32,4 +32,8 @@ public class Constant {
         public final static String ERROR_00100003 = "token过期";
     }
 
+    public interface TIME_FORMAT {
+        public final static String DATE = "yyyy-MM-dd";
+    }
+
 }

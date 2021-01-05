@@ -4,6 +4,7 @@ import com.lmlx.app.model.AjaxResult;
 import com.lmlx.app.model.so.ManageUserInfoSo;
 import com.lmlx.app.model.vo.ManageUserInfoVo;
 import com.lmlx.app.service.ManageUserService;
+import com.lmlx.app.system.CheckLoginOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,5 +26,11 @@ public class ManageUserController {
     public Object checkLogin(@RequestBody ManageUserInfoSo so) {
         Object result = manageUserService.checkLogin(so);
         return result;
+    }
+
+    @CheckLoginOut
+    @RequestMapping(value = "/checkLoginOut")
+    public Object checkLoginOut() {
+        return true;
     }
 }

@@ -5,6 +5,7 @@ package com.lmlx.app.dao.base;
 import com.lmlx.app.model.po.ManageUserInfoPo;
 import com.lmlx.app.model.so.ManageUserInfoSo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,8 +18,10 @@ import java.util.List;
 @Repository
 public interface ManageUserInfoMapper {
 
-//    @Select("select id, account, p_id, role_id from manage_user_info where id=#{id}")
     ManageUserInfoPo qryByAccount(ManageUserInfoSo so);
+
+    @Update("UPDATE MANAGE_USER_INFO SET LAST_LOGIN_POSITION = #{lastLoginPosition}, LAST_LOGIN_TIME = SYSDATE() WHERE USER_ID=#{userId}")
+    void updatePosi(ManageUserInfoPo po);
 
     List<ManageUserInfoPo> qryAll();
 }

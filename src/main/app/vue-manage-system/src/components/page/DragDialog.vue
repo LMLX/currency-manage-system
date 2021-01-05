@@ -23,6 +23,7 @@
 
 <script>
 export default {
+    name: 'dragDialog',
     data(){
         return {
             visible: false

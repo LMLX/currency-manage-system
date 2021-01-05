@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ManageMenuInfoMapper {
 
-    @Select("select id, icon, ident, title, url, p_id as pId from manage_menu_info t1, manage_role_menu_info t2 where t1.id = t2.menu_id and t2.role_id = #{roleId} order by rank_id")
+    @Select("select id, icon, ident, title, url, component, p_id as pId from manage_menu_info t1, manage_role_menu_info t2 where t1.id = t2.menu_id and t2.role_id = #{roleId} order by rank_id")
     List<ManageMenuInfoPo> queMenuByUserId(ManageUserInfoSo so);
 }
