@@ -64,7 +64,19 @@
                                 self.common.setLocalStorage("userInfo", response.obj)
                                 self.common.setLocalStorage('ms_username', response.obj.userName);
                                 self.common.setLocalStorage('token', response.obj.token);
-                                await init()
+                                // await init()
+                                // await init()
+                                // await init()
+
+                                await self.$post('/base/menu/queMenuByUserId', {
+                                    "roleId": self.common.getLocalStorage("userInfo").roleId
+                                }).then(response => {
+                                    if (0 == response.status) {
+                                        // 渲染菜单
+                                        self.common.setLocalStorage('router', response.obj)
+                                    }
+                                })
+
                                 self.$router.push('/');
                             } else {
                                 self.$message({

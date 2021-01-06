@@ -1,1 +1,1 @@
-module.exports = () => import(/* webpackChunkName: "editor" */ '../components/page/VueEditor'  + '.vue')
+module.exports = file => require('@/components/page/' + file  + '.vue').default

@@ -1,86 +1,47 @@
 import router from './router'
+import store from './store'
 // import { Message } from 'element-ui'
 const _import = require('./router/_import_dev') //获取组件的方法
 import common from "./api/common"
 import {post} from './api/service.js'
+import user from "./store/modules/user";
 
+let isOnce = true
 // 使用钩子函数对路由进行权限跳转
 router.beforeEach(async (to, from, next) => {
 
-    console.log(router)
+
     document.title = `${to.meta.title} | vue-manage-system`;
     const userName = common.getLocalStorage('ms_username');
-    if (to.path != '/login' && !userName) {
+    if (to.path != '/login' && !userName) {  // !login !userName    next('/login')
+        console.log(1)
         next('/login')
     } else {
-        if (to.path == 'login' && userName) {
+        if (to.path == '/login' && userName) {  // login userName    next('/dashboard')
+            console.log("login")
+            if(isOnce) {
+                await init()
+                isOnce = false
+            }
+            console.log(2)
             next('/dashboard')
         } else {
-            next();
+            if (userName) { // !login userName     next();
+                if(isOnce) {
+                    await init()
+                    isOnce = false
+                    console.log(3)
+                    next(to.path);
+                }else {
+                    console.log(4)
+                    next();
+                }
+            } else { // login !userName   next();
+                console.log(5)
+                next();
+            }
         }
     }
-
-    // let b = new Date().getTime();
-    // console.log('话费 '+ (b - a))
-
-    // if (to.path === '/login') {
-    //
-    //     console.log(1)
-    //     next();
-    //     // getRouter=[]
-    // } else {
-    //     //判断是否有用户
-    //     console.log(common.getLocalStorage("userInfo"))
-    //     if (common.getLocalStorage("userInfo")) {
-    //
-    //         await post('/base/menu/queMenuByUserId', {
-    //             "roleId": common.getLocalStorage("userInfo").roleId
-    //         }).then(response => {
-    //             if (0 == response.status) {
-    //                 // 渲染菜单
-    //                 common.setLocalStorage('router', response.obj)
-    //
-    //                 // init(response.obj)
-    //                 let a = [
-    //                     {
-    //                         path: '/',
-    //                         redirect: '/dashboard'
-    //                     },
-    //                     {
-    //                     path: '/',
-    //                     component: () => import(/* webpackChunkName: "home" */ './components/common/Home.vue'),
-    //                     meta: {title: '自述文件'},
-    //                     children: [
-    //
-    //                         {
-    //                             path: '/dashboard',
-    //                             component: () => import(/* webpackChunkName: "dashboard" */ './components/page/Dashboard.vue'),
-    //                             meta: {title: '系统首页'}
-    //                         },
-    //
-    //                     ]
-    //                 }]
-    //                 router.options.routes = a;
-    //                 router.addRoutes(
-    //                     a
-    //                 )
-    //                 console.log(router)
-    //
-    //                 console.log(2)
-    //                 next({...to, replace: true})
-    //             } else {
-    //
-    //                 console.log(3)
-    //                 next("login");
-    //             }
-    //         })
-    //     } else {
-    //
-    //         console.log(4)
-    //         next("login");
-    //     }
-    // }
-
 });
 
 
@@ -138,61 +99,148 @@ router.beforeEach(async (to, from, next) => {
 // })
 
 export async function init() {
-    await post('/base/menu/queMenuByUserId', {
-        "roleId": common.getLocalStorage("userInfo").roleId
-    }).then(response => {
-        if (0 == response.status) {
-            // 渲染菜单
-            common.setLocalStorage('router', response.obj)
-        }
-    })
-    //
-    let a = [
-        {
-            path: '/',
-            redirect: '/dashboard'
-        },
-        {
-            path: '/',
-            component: () => import(/* webpackChunkName: "home" */ './components/common/Home.vue'),
-            meta: {title: '自述文件'},
-            children: [
+   try {
+       console.log('init')
+       // await post('/base/menu/queMenuByUserId', {
+       //     "roleId": common.getLocalStorage("userInfo").roleId
+       // }).then(response => {
+       //     if (0 == response.status) {
+       //         // 渲染菜单
+       //         common.setLocalStorage('router', response.obj)
+       //     }
+       // })
+       let menusMap = common.getLocalStorage('router')
 
-                {
-                    path: '/dashboard',
-                    component: () => import(/* webpackChunkName: "dashboard" */ './components/page/Dashboard.vue'),
-                    meta: {title: '系统首页'}
-                },
+       menusMap = filterAsyncRouter(menusMap)
+       let b = [{
+           path: '/',
+           component: () => import(/* webpackChunkName: "home" */ './components/common/Home.vue'),
+           meta: {title: '自述文件'},
+           children:
+               menusMap
 
-            ]
-        }]
-    router.options.routes = a;
-    router.addRoutes(
-        a
-    )
-    // let self = this
-    // console.log("11");
-    //
-    //
-    //
-    //
-    // console.log(global.antRouter);
-    // let a = filterAsyncRouter(routes);
-    // console.log(a)
 
+       }]
+       console.log(b)
+       let a = [
+
+           {
+               path: '/',
+               component: () => import(/* webpackChunkName: "home" */ './components/common/Home.vue'),
+               meta: {title: '自述文件'},
+               children: [
+                   {
+                       path: '/dashboard',
+                       component: () => import(/* webpackChunkName: "dashboard" */ './components/page/Dashboard.vue'),
+                       meta: { title: '系统首页' }
+                   },
+                   {
+                       path: '/icon',
+                       component: () => import(/* webpackChunkName: "icon" */ './components/page/Icon.vue'),
+                       meta: { title: '自定义图标' }
+                   },
+                   {
+                       path: '/table',
+                       component: () => import(/* webpackChunkName: "table" */ './components/page/BaseTable.vue'),
+                       meta: { title: '基础表格' }
+                   },
+                   {
+                       path: '/tabs',
+                       component: () => import(/* webpackChunkName: "tabs" */ './components/page/Tabs.vue'),
+                       meta: { title: 'tab选项卡' }
+                   },
+                   {
+                       path: '/form',
+                       component: () => import(/* webpackChunkName: "form" */ './components/page/BaseForm.vue'),
+                       meta: { title: '基本表单' }
+                   },
+                   {
+                       // 富文本编辑器组件
+                       path: '/editor',
+                       component: () => import(/* webpackChunkName: "editor" */ './components/page/VueEditor.vue'),
+                       meta: { title: '富文本编辑器' }
+                   },
+                   {
+                       // markdown组件
+                       path: '/markdown',
+                       component: () => import(/* webpackChunkName: "markdown" */ './components/page/Markdown.vue'),
+                       meta: { title: 'markdown编辑器' }
+                   },
+                   {
+                       // 图片上传组件
+                       path: '/upload',
+                       component: () => import(/* webpackChunkName: "upload" */ './components/page/Upload.vue'),
+                       meta: { title: '文件上传' }
+                   },
+                   {
+                       // vue-schart组件
+                       path: '/charts',
+                       component: () => import(/* webpackChunkName: "chart" */ './components/page/BaseCharts.vue'),
+                       meta: { title: 'schart图表' }
+                   },
+                   {
+                       // 拖拽列表组件
+                       path: '/drag',
+                       component: () => import(/* webpackChunkName: "drag" */ './components/page/DragList.vue'),
+                       meta: { title: '拖拽列表' }
+                   },
+                   {
+                       // 拖拽Dialog组件
+                       path: '/dialog',
+                       component: () => import(/* webpackChunkName: "dragdialog" */ './components/page/DragDialog.vue'),
+                       meta: { title: '拖拽弹框' }
+                   },
+                   {
+                       // 国际化组件
+                       path: '/i18n',
+                       component: () => import(/* webpackChunkName: "i18n" */ './components/page/I18n.vue'),
+                       meta: { title: '国际化' }
+                   },
+                   {
+                       // 权限页面
+                       path: '/permission',
+                       component: () => import(/* webpackChunkName: "permission" */ './components/page/Permission.vue'),
+                       meta: { title: '权限测试'}
+                   },
+                   {
+                       path: '/404',
+                       component: () => import(/* webpackChunkName: "404" */ './components/page/404.vue'),
+                       meta: { title: '404' }
+                   },
+                   {
+                       path: '/403',
+                       component: () => import(/* webpackChunkName: "403" */ './components/page/403.vue'),
+                       meta: { title: '403' }
+                   }
+
+               ]
+           }
+       ]
+       console.log(a)
+       router.options.routes = b;
+       router.addRoutes(
+           b
+       )
+   }catch (e) {
+       console.log(e)
+   }
 
 }
 
+
 function filterAsyncRouter(asyncRouterMap) { //遍历后台传来的路由字符串，转换为组件对象
+    let arr = []
     const accessedRouters = asyncRouterMap.filter(route => {
         if (route.component) {
+            console.log(route.component)
             route.component = _import(route.component)
+            arr.push(route)
         }
         if (route.children && route.children.length) {
-            route.children = filterAsyncRouter(route.children)
+            arr = arr.concat(filterAsyncRouter(route.children))
         }
         return true
     })
 
-    return accessedRouters
+    return arr
 }
