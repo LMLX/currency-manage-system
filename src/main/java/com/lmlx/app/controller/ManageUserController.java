@@ -1,15 +1,15 @@
 package com.lmlx.app.controller;
 
-import com.lmlx.app.model.AjaxResult;
+import com.lmlx.app.model.Page;
 import com.lmlx.app.model.so.ManageUserInfoSo;
-import com.lmlx.app.model.vo.ManageUserInfoVo;
 import com.lmlx.app.service.ManageUserService;
 import com.lmlx.app.system.CheckLoginOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 /**
  * @author jiahao jin
@@ -28,9 +28,16 @@ public class ManageUserController {
         return result;
     }
 
-    @CheckLoginOut
-    @RequestMapping(value = "/checkLoginOut")
-    public Object checkLoginOut() {
-        return true;
+//    @CheckLoginOut
+//    @RequestMapping(value = "/checkLoginOut")
+//    public Object checkLoginOut() {
+//        return true;
+//    }
+
+//    @CheckLoginOut
+    @RequestMapping(value = "/qryAll")
+    public Object qryAll(@Valid @RequestBody Page page) {
+        Object result = manageUserService.qryAll(page);
+        return result;
     }
 }

@@ -13,6 +13,7 @@ public class ManageUserInfoVo {
     private String userName;
     private String role;
     private Long roleId;
+    private String address;
     private String token;
     private String lastLoginPosition;
     private String lastLoginTime;

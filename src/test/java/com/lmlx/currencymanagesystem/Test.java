@@ -9,5 +9,6 @@ import java.time.LocalDateTime;
 public class Test {
     public static void main(String[] args) {
 //        LocalDateTime localDateTime = new LocalDateTime()
+        System.out.println( Math.round(3*Math.random()));
     }
 }

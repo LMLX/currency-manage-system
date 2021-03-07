@@ -20,7 +20,7 @@ public class ManageMenuController {
     @Autowired
     private ManageMenuService manageMenuService;
 
-//    @CheckLoginOut
+    @CheckLoginOut
     @RequestMapping(value = "/queMenuByUserId")
     public Object queMenuByUserId(@RequestBody ManageUserInfoSo so) {
         return AjaxResult.markSuccess(manageMenuService.queMenuByUserId(so));

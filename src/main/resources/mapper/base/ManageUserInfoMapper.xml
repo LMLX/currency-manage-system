@@ -25,4 +25,9 @@
         FROM MANAGE_USER_INFO
         WHERE ACCOUNT = #{account}
     </select>
+
+    <select id="qryAll" resultMap="baseResultMap">
+        SELECT <include refid="baseSelectStr"/>
+        FROM MANAGE_USER_INFO ORDER BY USER_ID, ROLE_ID
+    </select>
 </mapper>

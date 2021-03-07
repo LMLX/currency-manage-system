@@ -1,7 +1,8 @@
 package com.lmlx.app.service;
 
+import com.lmlx.app.model.Page;
+import com.lmlx.app.model.PageResultInfo;
 import com.lmlx.app.model.so.ManageUserInfoSo;
-import com.lmlx.app.model.vo.ManageUserInfoVo;
 
 /**
  * @author jiahao jin
@@ -11,5 +12,6 @@ public interface ManageUserService {
 
     Object checkLogin(ManageUserInfoSo so);
 
-    ManageUserInfoVo qryByAccount(ManageUserInfoSo so);
+    PageResultInfo qryAll(Page page);
+
 }

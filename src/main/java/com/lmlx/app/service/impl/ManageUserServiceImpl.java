@@ -1,9 +1,13 @@
 package com.lmlx.app.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lmlx.app.constant.Constant;
 import com.lmlx.app.dao.base.ManageUserInfoMapper;
 import com.lmlx.app.model.AjaxResult;
+import com.lmlx.app.model.Page;
+import com.lmlx.app.model.PageResultInfo;
 import com.lmlx.app.model.po.ManageUserInfoPo;
 import com.lmlx.app.model.so.ManageUserInfoSo;
 import com.lmlx.app.model.vo.ManageUserInfoVo;
@@ -11,9 +15,12 @@ import com.lmlx.app.service.ManageUserService;
 import com.lmlx.app.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author jiahao jin
@@ -49,10 +56,20 @@ public class ManageUserServiceImpl implements ManageUserService {
     }
 
     @Override
-    public ManageUserInfoVo qryByAccount(ManageUserInfoSo so) {
-        ManageUserInfoPo po = manageUserInfoMapper.qryByAccount(so);
-        ManageUserInfoVo vo = manageUserInfoPoToVo(po);
-        return vo;
+    public PageResultInfo qryAll(Page page) {
+        PageResultInfo pageResultInfo = new PageResultInfo();
+        List<ManageUserInfoVo> list = new ArrayList<>();
+        PageHelper.startPage(page.getPageNum(), page.getPageSize());
+        List<ManageUserInfoPo> poList = manageUserInfoMapper.qryAll();
+        PageInfo pageInfo = new PageInfo(poList);
+        if (!CollectionUtils.isEmpty(poList)) {
+            for (ManageUserInfoPo po : poList) {
+                list.add(manageUserInfoPoToVo(po));
+            }
+        }
+        pageResultInfo.setList(list);
+        pageResultInfo.setTotal(pageInfo.getTotal());
+        return pageResultInfo;
     }
 
     private ManageUserInfoVo manageUserInfoPoToVo(ManageUserInfoPo po) {
@@ -64,6 +81,7 @@ public class ManageUserServiceImpl implements ManageUserService {
             vo.setUserName(po.getUserName());
             Long roleId = po.getRoleId();
             vo.setRoleId(roleId);
+            vo.setAddress(po.getAddress());
             vo.setRole(Constant.USER_ROLE.INFO.get(roleId));
             vo.setLastLoginPosition(po.getLastLoginPosition());
             SimpleDateFormat sdf = new SimpleDateFormat(Constant.TIME_FORMAT.DATE);
