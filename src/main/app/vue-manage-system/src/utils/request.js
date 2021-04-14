@@ -55,6 +55,9 @@ service.interceptors.request.use(
         if(!common.getLocalStorage('token')){
             common.setLocalStorage('token','')
         }
+        if(common.getLocalStorage("userInfo")) {
+            config.headers.userId = common.getLocalStorage("userInfo").userId;
+        }
         config.headers.Authorization = common.getLocalStorage("token");
         return config;
     },

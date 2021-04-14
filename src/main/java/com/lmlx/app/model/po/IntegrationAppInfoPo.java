@@ -12,34 +12,40 @@ import java.util.Date;
  */
 
 @Data
-@Table ( value ="manage_department_info" )
-public class ManageDepartmentInfoPo  implements Serializable {
+@Table ( value ="integration_app_info" )
+public class IntegrationAppInfoPo  implements Serializable {
 
-	private static final long serialVersionUID =  5034973169181228832L;
-
-	/**
-	 * ID主键
-	 */
-   	@Column(value = "depart_id" )
-	private Long departId;
+	private static final long serialVersionUID =  4398829823330688543L;
 
 	/**
-	 * 部门名称
+	 * 应该ID
 	 */
-   	@Column(value = "depart_name" )
-	private String departName;
+   	@Column(value = "app_id" )
+	private Long appId;
 
 	/**
-	 * 部门名称
+	 * 应用名称
 	 */
-   	@Column(value = "p_depart_id" )
-	private Long pDepartId;
+   	@Column(value = "app_name" )
+	private String appName;
 
 	/**
-	 * 部门负责人ID
+	 * 应用描述
 	 */
-   	@Column(value = "leader" )
-	private Long leader;
+   	@Column(value = "app_desc" )
+	private String appDesc;
+
+	/**
+	 * 应用测试端口
+	 */
+   	@Column(value = "app_dev_host" )
+	private String appDevHost;
+
+	/**
+	 * 应用生产端口
+	 */
+   	@Column(value = "app_pro_host" )
+	private String appProHost;
 
 	/**
 	 * 创建人

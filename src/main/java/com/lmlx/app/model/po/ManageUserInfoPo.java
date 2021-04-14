@@ -8,14 +8,14 @@ import java.util.Date;
 
 /**
  * @author jiahao jin
- * @create 2020-12-31 23:37:29 
+ * @Date 2021-03-09 15:04 
  */
 
 @Data
 @Table ( value ="manage_user_info" )
 public class ManageUserInfoPo  implements Serializable {
 
-	private static final long serialVersionUID =  1407263884545010021L;
+	private static final long serialVersionUID =  1286952874912485248L;
 
 	/**
 	 * ID主键

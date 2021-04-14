@@ -1,5 +1,6 @@
 package com.lmlx.app.controller;
 
+import com.lmlx.app.model.AjaxResult;
 import com.lmlx.app.model.Page;
 import com.lmlx.app.model.so.ManageUserInfoSo;
 import com.lmlx.app.service.ManageUserService;
@@ -34,10 +35,10 @@ public class ManageUserController {
 //        return true;
 //    }
 
-//    @CheckLoginOut
+    @CheckLoginOut
     @RequestMapping(value = "/qryAll")
     public Object qryAll(@Valid @RequestBody Page page) {
         Object result = manageUserService.qryAll(page);
-        return result;
+        return AjaxResult.markSuccess(result);
     }
 }

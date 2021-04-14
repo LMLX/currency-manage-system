@@ -47,14 +47,6 @@ public class CheckLoginOutInterceptor implements HandlerInterceptor {
 
 	private boolean validCheck(HttpServletRequest request, Object handler) throws Exception {
 		if (needCheck(handler)) {
-//			RequestWrapper requestWrapper = new RequestWrapper(request);
-//            String jsonBody = requestWrapper.getBody();
-//            if(StringUtils.isBlank(jsonBody)){
-//            	throw new RuntimeException("缺少签名对象信息");
-//            }
-//            JSONObject jo = JSON.parseObject(jsonBody);
-//            System.out.println(jo.toJSONString());
-
             String token = request.getHeader("Authorization");
             System.out.println(JwtUtil.isOverdue(token));
             if(JwtUtil.isOverdue(token)) {

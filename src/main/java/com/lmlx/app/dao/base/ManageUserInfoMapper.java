@@ -14,8 +14,6 @@ import java.util.List;
  * @author jiahao jin
  * @create 2020-11-10 18:31
  */
-@Mapper
-@Repository
 public interface ManageUserInfoMapper {
 
     ManageUserInfoPo qryByAccount(ManageUserInfoSo so);
