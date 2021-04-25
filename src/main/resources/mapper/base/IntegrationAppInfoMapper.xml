@@ -23,16 +23,16 @@
         FROM INTEGRATION_APP_INFO
         <where>
             <if test="null != appId and '' != appId">
-                and APP_ID = #{appId}
+                AND APP_ID = #{appId}
             </if>
             <if test="null != appName and '' != appName">
-                and APP_NAME like concat('%', #{appName}, '%')
+                AND APP_NAME LIKE CONCAT('%', #{appName}, '%')
             </if>
             <if test="null != appDesc and '' != appDesc">
-                and APP_DESC like concat('%', #{appDesc}, '%')
+                AND APP_DESC LIKE CONCAT('%', #{appDesc}, '%')
             </if>
             <if test="null != creator and '' != creator">
-                and CREATOR like concat('%', #{creator}, '%')
+                AND CREATOR LIKE CONCAT('%', #{creator}, '%')
             </if>
         </where>
     </select>

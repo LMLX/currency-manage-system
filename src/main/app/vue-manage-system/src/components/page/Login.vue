@@ -29,6 +29,7 @@
 
 <script>
     import {init} from '../../promission'
+    import axios from 'axios'
     export default {
 
         name: 'login',
@@ -48,6 +49,7 @@
         methods: {
             submitForm() {
                 let self = this;
+                // axios.get("http://localhost:8101/park/model/camera-info/qryLRUCameraInfoTop")
                 this.$refs.login.validate(async valid => {
                     if (valid) {
                         self.common.delAllLocalStorage()
@@ -64,18 +66,14 @@
                                 self.common.setLocalStorage("userInfo", response.obj)
                                 self.common.setLocalStorage('ms_username', response.obj.userName);
                                 self.common.setLocalStorage('token', response.obj.token);
-                                // await init()
-                                // await init()
-                                // await init()
-
-                                await self.$post('/base/menu/queMenuByUserId', {
+                                await self.$post('/base/menu/qryMenuByUserId', {
                                     "roleId": self.common.getLocalStorage("userInfo").roleId
                                 }).then(response => {
-                                    if (0 == response.status) {
+                                    if (0 === response.status) {
                                         // 渲染菜单
                                         self.common.setLocalStorage('router', response.obj)
                                     }
-                                })
+                                });
 
                                 self.$router.push('/');
                             } else {

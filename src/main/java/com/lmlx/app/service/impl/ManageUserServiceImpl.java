@@ -63,9 +63,9 @@ public class ManageUserServiceImpl implements ManageUserService {
         List<ManageUserInfoPo> poList = manageUserInfoMapper.qryAll();
         PageInfo pageInfo = new PageInfo(poList);
         if (!CollectionUtils.isEmpty(poList)) {
-            for (ManageUserInfoPo po : poList) {
+            poList.forEach(po -> {
                 list.add(manageUserInfoPoToVo(po));
-            }
+            });
         }
         pageResultInfo.setList(list);
         pageResultInfo.setTotal(pageInfo.getTotal());

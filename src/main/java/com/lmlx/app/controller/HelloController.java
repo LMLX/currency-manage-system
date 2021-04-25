@@ -2,8 +2,10 @@ package com.lmlx.app.controller;
 import com.lmlx.app.dao.base.ManageUserInfoMapper;
 import com.lmlx.app.model.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 
@@ -33,6 +35,8 @@ public class HelloController {
 //                }
 //            }
 //        }).start();
-        return AjaxResult.markSuccess();
+        RestTemplate restTemplate = new RestTemplate();
+        String s= restTemplate.getForObject("http://localhost:8101/park/model/camera-info/qryLRUCameraInfoTop", String.class);
+        return AjaxResult.markSuccess(s);
     }
 }

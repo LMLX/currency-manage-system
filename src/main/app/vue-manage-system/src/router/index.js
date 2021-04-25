@@ -13,27 +13,15 @@ Router.prototype.push = function push (location) {
 export const constantRoutes = [
     {
         path: '/',
+        name:'',
         redirect: '/dashboard'
     },
     {
         path: '/login',
+        name:'login',
         component: () => import(/* webpackChunkName: "login" */ '../components/page/Login.vue'),
         meta: {title: '登录'}
     },
-    // {
-    //     path: '/',
-    //     component: () => import(/* webpackChunkName: "home" */ '../components/common/Home.vue'),
-    //     redirect: '/dashboard',
-    //     meta: {title: '自述文件'},
-    //     children: [
-    //         {
-    //             path: 'dashboard',
-    //             component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/Dashboard.vue'),
-    //             meta: {title: '系统首页'}
-    //         },
-    //
-    //     ]
-    // }
 ]
 const createRouter = () => new Router({
     routes: constantRoutes

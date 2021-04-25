@@ -29,19 +29,45 @@
                 @selection-change="handleSelectionChange"
             >
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
-<!--                <el-table-column prop="appId" label="ID" width="55" align="center"></el-table-column>-->
-                <el-table-column prop="appName" label="应用名称" align="center"></el-table-column>
-                <el-table-column prop="appDesc" label="应用描述" align="center"></el-table-column>
-
-                <el-table-column prop="appDevHost" label="测试端口"></el-table-column>
-                <el-table-column prop="appProHost" label="生产端口"></el-table-column>
+                <el-table-column type="expand">
+                    <template slot-scope="props">
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="商品名称">
+                                <span>{{ props.row.name }}</span>
+                            </el-form-item>
+                            <el-form-item label="所属店铺">
+                                <span>{{ props.row.shop }}</span>
+                            </el-form-item>
+                            <el-form-item label="商品 ID">
+                                <span>{{ props.row.id }}</span>
+                            </el-form-item>
+                            <el-form-item label="店铺 ID">
+                                <span>{{ props.row.shopId }}</span>
+                            </el-form-item>
+                            <el-form-item label="商品分类">
+                                <span>{{ props.row.category }}</span>
+                            </el-form-item>
+                            <el-form-item label="店铺地址">
+                                <span>{{ props.row.address }}</span>
+                            </el-form-item>
+                            <el-form-item label="商品描述">
+                                <span>{{ props.row.desc }}</span>
+                            </el-form-item>
+                        </el-form>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="modelName" label="模板名称" align="center"></el-table-column>
+                <el-table-column prop="interfaceName" label="接口名称" align="center"></el-table-column>
+                <el-table-column prop="interfaceUrl" label="接口路径"></el-table-column>
+                <el-table-column prop="interfaceDesc" label="接口描述"></el-table-column>
+                <el-table-column prop="type" label="接口类型"></el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
                         <el-button
                             type="text"
                             icon="el-icon-edit"
                             @click="showDetail(scope.row.appId, scope.row)"
-                        >查看
+                        >编辑
                         </el-button>
                         <el-button
                             type="text"
@@ -77,17 +103,17 @@
         <!-- 编辑弹出框 -->
         <el-dialog :title="dialogTitle" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="70px">
-                <el-form-item label="应用名称">
-                    <el-input v-model="form.appName"></el-input>
+                <el-form-item label="模板名称">
+                    <el-input v-model="form.modelId"></el-input>
                 </el-form-item>
-                <el-form-item label="应用描述">
-                    <el-input v-model="form.appDesc"></el-input>
+                <el-form-item label="接口名称">
+                    <el-input v-model="form.interfaceName"></el-input>
                 </el-form-item>
-                <el-form-item label="测试端口">
-                    <el-input v-model="form.appDevHost"></el-input>
+                <el-form-item label="接口路径">
+                    <el-input v-model="form.interfaceUrl"></el-input>
                 </el-form-item>
-                <el-form-item label="生产端口">
-                    <el-input v-model="form.appProHost"></el-input>
+                <el-form-item label="接口类型">
+                    <el-input v-model="form.type"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -100,13 +126,16 @@
 
 <script>
     export default {
-        name: 'app',
+        name: 'interfaceDetail',
         data() {
             return {
                 query: {
+                    appId:'',
                     pageIndex: 1,
                     pageSize: 2
                 },
+                pageIndex: 1,
+                pageSize: 2,
                 tableData: [],
                 multipleSelection: [],
                 delList: [],
@@ -119,17 +148,21 @@
             };
         },
         created() {
+            let appId = this.$route.params.appId
+            this.query.appId = appId
             this.getData();
         },
         methods: {
             // 获取 easy-mock 的模拟数据
             getData() {
                 let self = this;
+                console.log("dd: " + self.query.appId)
                 let data = {
+                    appId: this.$route.params.appId,
                     pageNum: self.query.pageIndex,
                     pageSize: self.query.pageSize,
                 }
-                self.$post("/base/app/qryAll", data).then(function (response) {
+                self.$post("/base/interface/qryDetailList", data).then(function (response) {
                     if (response.status == 0) {
                         self.tableData = response.obj.list;
                         self.pageTotal = response.obj.total;
@@ -141,7 +174,6 @@
             },
             // 触发搜索按钮
             handleSearch() {
-                this.$set(this.query, 'pageIndex', 1);
                 this.getData();
             },
             // 删除操作
@@ -174,12 +206,6 @@
             //展示详情
             showDetail(id, row) {
                 console.log(id)
-                this.$router.push({
-                    name: 'interfaceDetail',
-                    params: {
-                        appId:id
-                    }
-                });
                 // let self = this;
                 // this.dialogTitle = '修改';
                 // this.form = JSON.parse(JSON.stringify(row))
@@ -207,6 +233,8 @@
             // 保存编辑
             saveEdit() {
                 let self = this;
+                // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
+                // this.$set(this.tableData, this.idx, this.form);
                 console.log(self.form)
                 let datas = []
                 datas.push(self.form)

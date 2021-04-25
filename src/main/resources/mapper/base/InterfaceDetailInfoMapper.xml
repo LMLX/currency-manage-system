@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lmlx.app.dao.base.InterfaceDetailInfoMapper" >
+
+    <resultMap id="baseResultMap" type="com.lmlx.app.model.po.InterfaceModelDetailInfoPo">
+        <result column="app_id" property="appId" jdbcType="BIGINT" />
+        <result column="model_id" property="modelId" jdbcType="BIGINT" />
+        <result column="model_name" property="modelName" jdbcType="VARCHAR" />
+        <result column="interface_id" property="interfaceId" jdbcType="BIGINT" />
+        <result column="interface_name" property="interfaceName" jdbcType="VARCHAR" />
+        <result column="interface_url" property="interfaceUrl" jdbcType="VARCHAR" />
+        <result column="interface_desc" property="interfaceDesc" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="qryDetailSql">
+        SELECT T1.APP_ID, T1.ID MODEL_ID, T1.NAME MODEL_NAME, T2.ID INTERFACE_ID, T2.NAME INTERFACE_NAME,
+            T2.URL INTERFACE_URL, T2.INTERFACE_DESC, T2.TYPE
+        FROM INTERFACE_MODEL_INFO T1 LEFT JOIN INTERFACE_DETAIL_INFO T2 ON T1.ID = T2.MODEL_ID
+    </sql>
+
+    <select id="qryDetailList" parameterType="com.lmlx.app.model.so.InterfaceInfoSo" resultMap="baseResultMap">
+        <include refid="qryDetailSql"></include>
+        <where>
+            <if test="null != appId and '' != appId">
+                AND T1.APP_ID = #{appId}
+            </if>
+            <if test="null != modelId and '' != modelId">
+                AND T1.ID = #{modelId}
+            </if>
+            <if test="null != interfaceId and '' != interfaceId">
+                AND T2.ID = #{interfaceId}
+            </if>
+            <if test="null != modelName and '' != modelName">
+                AND T2.NAME LIKE CONCAT('%', #{modelName}, '%')
+            </if>
+            <if test="null != interfaceName and '' != interfaceName">
+                AND T2.NAME LIKE CONCAT('%', #{interfaceName}, '%')
+            </if>
+
+        </where>
+    </select>
+
+    <select id="qryDetailById" parameterType="com.lmlx.app.model.so.InterfaceInfoSo" resultMap="baseResultMap">
+        <include refid="qryDetailSql"></include>
+        WHERE T2.ID = #{interfaceId}
+    </select>
+</mapper>

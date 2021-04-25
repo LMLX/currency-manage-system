@@ -30,6 +30,7 @@ public class Constant {
         public final static String ERROR_00100001 = "无该人员";
         public final static String ERROR_00100002 = "密码错误";
         public final static String ERROR_00100003 = "token过期";
+        public final static String ERROR_00100004 = "查询条件不能为空";
     }
 
     public interface TIME_FORMAT {

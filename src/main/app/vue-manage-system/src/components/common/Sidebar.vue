@@ -75,16 +75,6 @@
                 this.collapse = msg
                 bus.$emit('collapse-content', msg)
             });
-
-            //渲染菜单
-            // self.$post('/base/menu/queMenuByUserId', {
-            //     "roleId": self.common.getLocalStorage("userInfo").roleId
-            // }).then(response => {
-            //     if (0 == response.status) {
-
-
-            //     }
-            // })
         }
     };
 </script>

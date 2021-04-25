@@ -37,7 +37,7 @@ public class ManageDepartmentServiceImpl implements ManageDepartmentService {
         List<ManageDepartmentInfoPo> list = qryAll();
         HashMap<Long, ManageDepartmentInfoVo> mapVo = new HashMap<>();
         List<ManageDepartmentInfoVo> headList = new ArrayList<>();
-        for(ManageDepartmentInfoPo po : list) {
+        list.forEach(po -> {
             Long departId = po.getDepartId();
             Long pDepartId = po.getPDepartId();
             ManageDepartmentInfoVo vo = poToVo(po);
@@ -53,8 +53,7 @@ public class ManageDepartmentServiceImpl implements ManageDepartmentService {
                 }
                 chileList.add(vo);
             }
-
-        }
+        });
         return null;
     }
 

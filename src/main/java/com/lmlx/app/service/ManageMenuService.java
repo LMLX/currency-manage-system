@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ManageMenuService {
 
-    List<ManageMenuInfoVo> queMenuByUserId(ManageUserInfoSo so);
+    List<ManageMenuInfoVo> qryMenuByUserId(ManageUserInfoSo so);
 }

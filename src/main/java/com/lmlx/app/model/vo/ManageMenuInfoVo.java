@@ -11,6 +11,7 @@ public class ManageMenuInfoVo {
     private String index;
     private String path;
     private String component;
+    private String name;
     private Meta meta;
     private List<ManageMenuInfoVo> children;
 }

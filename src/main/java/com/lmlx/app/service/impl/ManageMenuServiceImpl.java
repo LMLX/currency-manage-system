@@ -25,9 +25,9 @@ public class ManageMenuServiceImpl implements ManageMenuService {
     private ManageMenuInfoMapper manageMenuInfoMapper;
 
     @Override
-    public List<ManageMenuInfoVo> queMenuByUserId(ManageUserInfoSo so) {
+    public List<ManageMenuInfoVo> qryMenuByUserId(ManageUserInfoSo so) {
 
-        List<ManageMenuInfoPo> list = manageMenuInfoMapper.queMenuByUserId(so);
+        List<ManageMenuInfoPo> list = manageMenuInfoMapper.qryMenuByUserId(so);
         System.out.println(JSONObject.toJSONString(list));
         return menuPoListToVo(list);
     }
@@ -36,7 +36,7 @@ public class ManageMenuServiceImpl implements ManageMenuService {
         List<ManageMenuInfoVo> headList = new ArrayList<>();
         Map<Long, ManageMenuInfoVo> indexMap = new HashMap<>();
         if (!CollectionUtils.isEmpty(pos)) {
-            for (ManageMenuInfoPo po : pos) {
+            pos.forEach(po -> {
                 ManageMenuInfoVo vo = menuPoToVo(po);
                 indexMap.put(po.getId(), vo);
 
@@ -52,7 +52,7 @@ public class ManageMenuServiceImpl implements ManageMenuService {
                     List<ManageMenuInfoVo>  subs = pVo.getChildren();
                     subs.add(vo);
                 }
-            }
+            });
         }
         return headList;
     }
@@ -67,6 +67,7 @@ public class ManageMenuServiceImpl implements ManageMenuService {
             vo.setPath(po.getUrl());
             vo.setComponent(po.getComponent());
             vo.setMeta(meta);
+            vo.setName(po.getName());
         }
         return vo;
     }
