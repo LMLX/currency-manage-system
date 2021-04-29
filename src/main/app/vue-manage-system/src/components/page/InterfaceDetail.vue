@@ -9,16 +9,37 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button
-                    type="primary"
-                    icon="el-icon-delete"
-                    class="handle-del mr10"
-                    @click="delAllSelection"
-                >批量删除
-                </el-button>
-
-                <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
-                <el-button style="float: right" type="primary" icon="el-icon-search" @click="handleAdd">添加</el-button>
+                <el-form ref="selectForm" :model="form" label-width="80px">
+                    <el-form-item label="模板名称">
+                        <el-select v-model="value" placeholder="请选择">
+                            <el-option
+                                v-for="item in modelSelect"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="接口名称">
+                        <el-input v-model="selectForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="接口描述">
+                        <el-input v-model="selectForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="接口类型">
+                        <el-input v-model="selectForm.name"></el-input>
+                    </el-form-item>
+                </el-form>
+<!--                <el-button-->
+<!--                    type="primary"-->
+<!--                    icon="el-icon-delete"-->
+<!--                    class="handle-del mr10"-->
+<!--                    @click="delAllSelection"-->
+<!--                >批量删除-->
+<!--                </el-button>-->
+<!--                <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>-->
+<!--                <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>-->
+<!--                <el-button style="float: right" type="primary" icon="el-icon-search" @click="handleAdd">添加</el-button>-->
             </div>
             <el-table
                 :data="tableData"
@@ -112,6 +133,9 @@
                 <el-form-item label="接口路径">
                     <el-input v-model="form.interfaceUrl"></el-input>
                 </el-form-item>
+                <el-form-item label="接口描述">
+                    <el-input v-model="form.interfaceDesc"></el-input>
+                </el-form-item>
                 <el-form-item label="接口类型">
                     <el-input v-model="form.type"></el-input>
                 </el-form-item>
@@ -144,7 +168,15 @@
                 pageTotal: 0,
                 form: {},
                 data: {
-                }
+                },
+                selectForm:{name:'333'},
+                modelSelect:[{
+                  value: '选项1',
+                  label: '黄金糕'
+                }, {
+                  value: '选项2',
+                  label: '双皮奶'
+                }]
             };
         },
         created() {

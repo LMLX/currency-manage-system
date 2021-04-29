@@ -4,21 +4,16 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lmlx.app.constant.Constant;
 import com.lmlx.app.dao.base.InterfaceDetailInfoMapper;
-import com.lmlx.app.model.AjaxResult;
 import com.lmlx.app.model.PageResultInfo;
-import com.lmlx.app.model.po.IntegrationAppInfoPo;
 import com.lmlx.app.model.po.InterfaceModelDetailInfoPo;
 import com.lmlx.app.model.so.InterfaceInfoSo;
-import com.lmlx.app.model.vo.IntegrationAppInfoVo;
 import com.lmlx.app.model.vo.InterfaceDetailInfoVo;
-import com.lmlx.app.service.InterfaceDetailInfoService;
+import com.lmlx.app.service.InterfaceDetailService;
 import com.lmlx.app.util.PageUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +23,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-public class InterfaceDetailInfoServiceImpl implements InterfaceDetailInfoService {
+public class InterfaceDetailServiceImpl implements InterfaceDetailService {
 
     @Resource
     private InterfaceDetailInfoMapper interfaceDetailInfoMapper;

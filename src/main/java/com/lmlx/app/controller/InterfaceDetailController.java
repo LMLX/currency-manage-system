@@ -2,8 +2,7 @@ package com.lmlx.app.controller;
 
 import com.lmlx.app.model.AjaxResult;
 import com.lmlx.app.model.so.InterfaceInfoSo;
-import com.lmlx.app.service.InterfaceDetailInfoService;
-import com.lmlx.app.system.CheckLoginOut;
+import com.lmlx.app.service.InterfaceDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "/interface")
-public class InterfaceDetailInfoController {
+public class InterfaceDetailController {
 
     @Autowired
-    private InterfaceDetailInfoService interfaceDetailInfoService;
+    private InterfaceDetailService interfaceDetailInfoService;
 
 //    @CheckLoginOut
     @RequestMapping(value = "/qryDetailList")

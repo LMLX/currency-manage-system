@@ -10,7 +10,7 @@ import java.util.List;
  * @AUTHOR jiahao jin
  * @created 2021-04-24 11:15
  */
-public interface InterfaceDetailInfoService {
+public interface InterfaceDetailService {
 
     PageResultInfo qryDetailList(InterfaceInfoSo so);
 

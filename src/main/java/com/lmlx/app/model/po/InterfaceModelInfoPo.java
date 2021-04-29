@@ -25,8 +25,8 @@ public class InterfaceModelInfoPo  implements Serializable {
 	/**
 	 * 父级ID
 	 */
-   	@Column(value = "pid" )
-	private Long pid;
+   	@Column(value = "p_id" )
+	private Long pId;
 
 	/**
 	 * 接口模块名称
@@ -37,7 +37,7 @@ public class InterfaceModelInfoPo  implements Serializable {
 	/**
 	 * 对应的appId
 	 */
-   	@Column(value = "appid" )
-	private Long appid;
+   	@Column(value = "app_id" )
+	private Long appId;
 
 }
