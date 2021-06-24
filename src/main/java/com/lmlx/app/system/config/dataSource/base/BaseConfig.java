@@ -37,6 +37,9 @@ public class BaseConfig {
         //添加插件
         factoryBean.setPlugins(new Interceptor[]{pageHelper});
         factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/base/*.xml"));
+        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        configuration.setMapUnderscoreToCamelCase(true);
+        factoryBean.setConfiguration(configuration);
         return factoryBean.getObject();
 
     }
