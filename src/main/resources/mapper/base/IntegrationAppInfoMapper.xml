@@ -63,6 +63,13 @@
     <insert id="save" parameterType="com.lmlx.app.model.so.IntegrationAppInfoSo" useGeneratedKeys="true" keyProperty="appId">
         insert INTEGRATION_APP_INFO (APP_NAME, APP_DESC, APP_DEV_HOST, APP_PRO_HOST, CREATOR) VALUES
         (#{appName}, #{appDesc}, #{appDevHost}, #{appProHost}, #{creator})
-
     </insert>
+
+    <delete id="delete" parameterType="com.lmlx.app.model.so.IntegrationAppInfoSo">
+        DELETE FROM INTEGRATION_APP_INFO WHERE 
+        APP_ID IN 
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.appId}
+        </foreach>
+    </delete>
 </mapper>

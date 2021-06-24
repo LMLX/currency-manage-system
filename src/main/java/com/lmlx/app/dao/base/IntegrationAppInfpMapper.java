@@ -16,4 +16,6 @@ public interface IntegrationAppInfpMapper {
     void update(IntegrationAppInfoSo so);
 
     Long save(IntegrationAppInfoSo so);
+
+    void delete(List<IntegrationAppInfoSo> list);
 }

@@ -24,4 +24,6 @@ public interface IntegrationAppService {
     void save(List<IntegrationAppInfoSo> list);
 
     Long save(IntegrationAppInfoSo so);
+
+    void delete(List<IntegrationAppInfoSo> list);
 }

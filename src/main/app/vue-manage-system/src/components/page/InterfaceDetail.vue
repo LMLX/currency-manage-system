@@ -48,6 +48,9 @@
                 ref="multipleTable"
                 header-cell-class-name="table-header"
                 @selection-change="handleSelectionChange"
+                row-key="interfaceId"
+                :expand-row-keys="expandRowKeys"
+                @row-click="showDetail"
             >
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column type="expand">
@@ -84,12 +87,7 @@
                 <el-table-column prop="type" label="接口类型"></el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                        <el-button
-                            type="text"
-                            icon="el-icon-edit"
-                            @click="showDetail(scope.row.appId, scope.row)"
-                        >编辑
-                        </el-button>
+
                         <el-button
                             type="text"
                             icon="el-icon-edit"
@@ -169,6 +167,7 @@
                 form: {},
                 data: {
                 },
+                expandRowKeys:[],
                 selectForm:{name:'333'},
                 modelSelect:[{
                   value: '选项1',
@@ -204,6 +203,10 @@
                 })
 
             },
+            getInterfaceId(row) {
+                console.log(row.interfaceId)
+                return row.interfaceId // 每条数据的唯一识别值
+            },
             // 触发搜索按钮
             handleSearch() {
                 this.getData();
@@ -236,8 +239,16 @@
                 this.multipleSelection = [];
             },
             //展示详情
-            showDetail(id, row) {
-                console.log(id)
+            showDetail(row, column, event) {
+                console.log(row)
+                let self = this;
+                let index = self.expandRowKeys.indexOf(row.interfaceId)
+                if (index == -1) {
+                    this.expandRowKeys.push(row.interfaceId)
+                } else {
+                    this.expandRowKeys.splice(index, 1)
+                }
+                // console.log(id)
                 // let self = this;
                 // this.dialogTitle = '修改';
                 // this.form = JSON.parse(JSON.stringify(row))
@@ -270,16 +281,16 @@
                 console.log(self.form)
                 let datas = []
                 datas.push(self.form)
-                self.$post("/base/app/merge", datas).then(function (response) {
-                    if (response.status == 0) {
-                        self.getData()
-                        self.editVisible = false;
-                    } else {
-                        self.$message.error(response.msg);
-                    }
-                }).catch(function (err) {
-                    self.$message.error(err);
-                })
+                // self.$post("/base/app/merge", datas).then(function (response) {
+                //     if (response.status == 0) {
+                //         self.getData()
+                //         self.editVisible = false;
+                //     } else {
+                //         self.$message.error(response.msg);
+                //     }
+                // }).catch(function (err) {
+                //     self.$message.error(err);
+                // })
             },
             // 分页导航
             handlePageChange(val) {

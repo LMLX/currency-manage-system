@@ -33,8 +33,8 @@
                 <el-table-column prop="appName" label="应用名称" align="center"></el-table-column>
                 <el-table-column prop="appDesc" label="应用描述" align="center"></el-table-column>
 
-                <el-table-column prop="appDevHost" label="测试端口"></el-table-column>
-                <el-table-column prop="appProHost" label="生产端口"></el-table-column>
+                <el-table-column prop="appDevHost" label="测试地址"></el-table-column>
+                <el-table-column prop="appProHost" label="生产地址"></el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
                         <el-button
@@ -65,7 +65,7 @@
                     @size-change="handleSizeChange"
                     @current-change="handlePageChange"
                     :current-page="query.pageIndex"
-                    :page-sizes="[2, 10, 30]"
+                    :page-sizes="[5, 10, 30]"
                     :page-size="query.pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="pageTotal">
@@ -105,7 +105,7 @@
             return {
                 query: {
                     pageIndex: 1,
-                    pageSize: 2
+                    pageSize: 5
                 },
                 tableData: [],
                 multipleSelection: [],
@@ -147,28 +147,37 @@
             // 删除操作
             handleDelete(index, row) {
                 // 二次确认删除
+                let self = this;
+                let data = [];
+                data.push(row);
+                this.deleteConfirm(data);
+            },
+            deleteConfirm(data) {
+                let self = this;
                 this.$confirm('确定要删除吗？', '提示', {
                     type: 'warning'
-                })
-                    .then(() => {
-                        this.$message.success('删除成功');
-                        // this.tableData.splice(index, 1);
+                }).then(() => {
+                    self.$post("/base/app/delete", data).then(function (response) {
+                        if (response.status == 0) {
+                            self.$message.success('删除成功');
+                            self.getData();
+                        }
                     })
-                    .catch(() => {
-                    });
+                }).catch(() => {
+                });
             },
             // 多选操作
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
             delAllSelection() {
-                const length = this.multipleSelection.length;
-                let str = '';
-                this.delList = this.delList.concat(this.multipleSelection);
-                for (let i = 0; i < length; i++) {
-                    str += this.multipleSelection[i].name + ' ';
+                let self = this;
+                let data = [];
+                for (let i = 0; i < self.multipleSelection.length; i++) {
+                    data.push(self.multipleSelection[i]);
                 }
-                this.$message.error(`删除了${str}`);
+                // this.$message.error(`删除了${str}`);
+                this.deleteConfirm(data);
                 this.multipleSelection = [];
             },
             //展示详情
@@ -180,21 +189,15 @@
                         appId:id
                     }
                 });
-                // let self = this;
-                // this.dialogTitle = '修改';
-                // this.form = JSON.parse(JSON.stringify(row))
-                // this.form.updator = this.common.getLocalStorage("userInfo").userId;
-                // this.editVisible = true;
             },
             // 编辑操作
             handleEdit(id, row) {
                 console.log(id)
-
-                let self = this;
                 this.dialogTitle = '修改';
                 this.form = JSON.parse(JSON.stringify(row))
                 this.form.updator = this.common.getLocalStorage("userInfo").userId;
                 this.editVisible = true;
+                this.getData();
             },
 
             //添加

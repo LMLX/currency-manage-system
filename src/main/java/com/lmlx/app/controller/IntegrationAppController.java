@@ -38,4 +38,10 @@ public class IntegrationAppController {
         integrationAppService.merge(list);
         return AjaxResult.markSuccess();
     }
+
+    @RequestMapping(value = "/delete")
+    public Object delete(@Valid @RequestBody List<IntegrationAppInfoSo> list, HttpServletRequest req) {
+        integrationAppService.delete(list);
+        return AjaxResult.markSuccess();
+    }
 }

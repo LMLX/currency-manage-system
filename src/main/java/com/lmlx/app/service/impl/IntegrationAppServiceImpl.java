@@ -1,5 +1,6 @@
 package com.lmlx.app.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lmlx.app.dao.base.IntegrationAppInfpMapper;
@@ -70,6 +71,12 @@ public class IntegrationAppServiceImpl implements IntegrationAppService {
     @Override
     public Long save(IntegrationAppInfoSo so) {
         return integrationAppInfpMapper.save(so);
+    }
+
+    @Override
+    public void delete(List<IntegrationAppInfoSo> list) {
+        System.out.println(JSONObject.toJSONString(list));
+        integrationAppInfpMapper.delete(list);
     }
 
     private IntegrationAppInfoVo menuPoToVo(IntegrationAppInfoPo po) {
