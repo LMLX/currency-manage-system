@@ -52,21 +52,21 @@ public class CheckLoginOutInterceptor implements HandlerInterceptor {
             if(JwtUtil.isOverdue(token)) {
                 throw new RuntimeException(Constant.ERROR.ERROR_00100003);
             }
-//
 		}
 		return true;
 	}
 
     private boolean needCheck(Object handler){
-        if (handler instanceof HandlerMethod) {
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
-            Method method = handlerMethod.getMethod();
-            CheckLoginOut checkLoginOut = method.getAnnotation(CheckLoginOut.class);
-            if(null != checkLoginOut){
-                return checkLoginOut.value();
-            }
-        }
         return false;
+//        if (handler instanceof HandlerMethod) {
+//            HandlerMethod handlerMethod = (HandlerMethod) handler;
+//            Method method = handlerMethod.getMethod();
+//            CheckLoginOut checkLoginOut = method.getAnnotation(CheckLoginOut.class);
+//            if(null != checkLoginOut){
+//                return checkLoginOut.value();
+//            }
+//        }
+//        return false;
     }
 
 }

@@ -4,6 +4,7 @@ import com.lmlx.app.dao.base.InterfaceDetailInfoMapper;
 import com.lmlx.app.dao.base.InterfaceModelInfoMapper;
 import com.lmlx.app.model.po.InterfaceModelInfoPo;
 import com.lmlx.app.model.so.InterfaceInfoSo;
+import com.lmlx.app.model.so.InterfaceModelInfoSo;
 import com.lmlx.app.model.vo.InterfaceModelInfoVo;
 import com.lmlx.app.model.vo.ManageMenuInfoVo;
 import com.lmlx.app.service.InterfaceModelService;
@@ -25,9 +26,20 @@ public class InterfaceModelServiceImpl implements InterfaceModelService {
     private InterfaceModelInfoMapper interfaceModelInfoMapper;
 
     @Override
-    public List<InterfaceModelInfoVo> qryDetailList(InterfaceInfoSo so) {
+    public List<InterfaceModelInfoVo> qryDetailList(InterfaceModelInfoSo so) {
         List<InterfaceModelInfoPo> list = interfaceModelInfoMapper.qryDetailList(so);
         return modelPoListToVo(list);
+    }
+
+    @Override
+    public Long merge(InterfaceModelInfoSo so) {
+        if (null == so.getModelId()) {
+            interfaceModelInfoMapper.save(so);
+        } else {
+            interfaceModelInfoMapper.update(so);
+
+        }
+        return so.getModelId();
     }
 
     public List<InterfaceModelInfoVo> modelPoListToVo(List<InterfaceModelInfoPo> pos) {
@@ -60,6 +72,12 @@ public class InterfaceModelServiceImpl implements InterfaceModelService {
         if (null != po) {
             vo.setModelId(po.getId());
             vo.setModelName(po.getName());
+            vo.setModelUrl(po.getUrl());
+            vo.setCreator(po.getCreator());
+            vo.setCreateTime(po.getCreateTime());
+            vo.setUpdator(po.getUpdator());
+            vo.setUpdateTime(po.getUpdateTime());
+            vo.setAppId(po.getAppId());
         }
         return vo;
     }

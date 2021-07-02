@@ -5,6 +5,7 @@ import com.lmlx.app.model.Page;
 import com.lmlx.app.model.so.IntegrationAppInfoSo;
 import com.lmlx.app.service.IntegrationAppService;
 import com.lmlx.app.service.ManageUserService;
+import com.lmlx.app.system.CheckLoginOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class IntegrationAppController {
     @Autowired
     private IntegrationAppService integrationAppService;
 
+    @CheckLoginOut
     @RequestMapping(value = "/qryAll")
     public Object qryAll(@Valid @RequestBody IntegrationAppInfoSo so, HttpServletRequest req) {
 
@@ -33,12 +35,28 @@ public class IntegrationAppController {
         return AjaxResult.markSuccess(result);
     }
 
+    @CheckLoginOut
     @RequestMapping(value = "/merge")
     public Object update(@Valid @RequestBody List<IntegrationAppInfoSo> list, HttpServletRequest req) {
         integrationAppService.merge(list);
         return AjaxResult.markSuccess();
     }
 
+    @CheckLoginOut
+    @RequestMapping(value = "/saveBatch")
+    public Object saveBatch(@Valid @RequestBody List<IntegrationAppInfoSo> list, HttpServletRequest req) {
+        integrationAppService.saveBatch(list);
+        return AjaxResult.markSuccess();
+    }
+
+    @CheckLoginOut
+    @RequestMapping(value = "/updateBatch")
+    public Object updateBatch(@Valid @RequestBody List<IntegrationAppInfoSo> list, HttpServletRequest req) {
+        integrationAppService.updateBatch(list);
+        return AjaxResult.markSuccess();
+    }
+
+    @CheckLoginOut
     @RequestMapping(value = "/delete")
     public Object delete(@Valid @RequestBody List<IntegrationAppInfoSo> list, HttpServletRequest req) {
         integrationAppService.delete(list);

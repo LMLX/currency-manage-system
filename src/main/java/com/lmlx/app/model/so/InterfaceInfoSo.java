@@ -9,6 +9,8 @@ import lombok.Data;
  */
 @Data
 public class InterfaceInfoSo extends Page {
+
+
     private Long appId;
     private Long modelId;
     private Long interfaceId;

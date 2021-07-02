@@ -54,8 +54,8 @@ public class IntegrationAppServiceImpl implements IntegrationAppService {
     }
 
     @Override
-    public void update(List<IntegrationAppInfoSo> list) {
-        list.forEach(e -> integrationAppInfpMapper.update(e));
+    public void updateBatch(List<IntegrationAppInfoSo> list) {
+        integrationAppInfpMapper.updateBatch(list);
     }
 
     @Override
@@ -64,8 +64,8 @@ public class IntegrationAppServiceImpl implements IntegrationAppService {
     }
 
     @Override
-    public void save(List<IntegrationAppInfoSo> list) {
-        list.forEach(e -> integrationAppInfpMapper.save(e));
+    public void saveBatch(List<IntegrationAppInfoSo> list) {
+        integrationAppInfpMapper.saveBatch(list);
     }
 
     @Override

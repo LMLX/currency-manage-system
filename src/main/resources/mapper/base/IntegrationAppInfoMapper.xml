@@ -52,12 +52,38 @@
             <if test="null != appProHost and '' != appProHost">
                 APP_PRO_HOST = #{appProHost},
             </if>
-            <if test="null != appName">
+            <if test="null != updator and '' != updator">
                 UPDATOR = #{updator},
             </if>
         </set>
-
         WHERE APP_ID = #{appId}
+    </update>
+
+    <update id="updateBatch" parameterType="com.lmlx.app.model.so.IntegrationAppInfoSo">
+        <foreach collection="list" item="item">
+            UPDATE INTEGRATION_APP_INFO
+            <set>
+                <if test="null != item.appName and '' != item.appName">
+                    APP_NAME = #{item.appName},
+                </if>
+                <if test="null != item.appDesc and '' != item.appDesc">
+                    APP_DESC = #{item.appDesc},
+                </if>
+                <if test="null != item.appDevHost and '' != item.appDevHost">
+                    APP_DEV_HOST = #{item.appDevHost},
+                </if>
+                <if test="null != item.appProHost and '' != item.appProHost">
+                    APP_PRO_HOST = #{item.appProHost},
+                </if>
+                <if test="null != item.updator and '' != item.updator">
+                    UPDATOR = #{item.updator},
+                </if>
+            </set>
+
+            WHERE APP_ID = #{item.appId};
+        </foreach>
+
+
     </update>
 
     <insert id="save" parameterType="com.lmlx.app.model.so.IntegrationAppInfoSo" useGeneratedKeys="true" keyProperty="appId">
@@ -65,9 +91,17 @@
         (#{appName}, #{appDesc}, #{appDevHost}, #{appProHost}, #{creator})
     </insert>
 
+    <insert id="saveBatch" parameterType="com.lmlx.app.model.so.IntegrationAppInfoSo" useGeneratedKeys="true" keyProperty="appId">
+        insert INTEGRATION_APP_INFO (APP_NAME, APP_DESC, APP_DEV_HOST, APP_PRO_HOST, CREATOR) VALUES
+        <foreach collection="list" item="item" separator=",">
+
+            (#{item.appName}, #{item.appDesc}, #{item.appDevHost}, #{item.appProHost}, #{item.creator})
+        </foreach>
+    </insert>
+
     <delete id="delete" parameterType="com.lmlx.app.model.so.IntegrationAppInfoSo">
-        DELETE FROM INTEGRATION_APP_INFO WHERE 
-        APP_ID IN 
+        DELETE FROM INTEGRATION_APP_INFO WHERE
+        APP_ID IN
         <foreach collection="list" item="item" open="(" separator="," close=")">
             #{item.appId}
         </foreach>
