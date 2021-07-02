@@ -193,7 +193,34 @@ a {
     min-height: 500px;
 }
 
-.el-form-item--mini.el-form-item, .el-form-item--small.el-form-item {
-    width: 250px;
-    display: inline-block;
+/*.el-form-item--mini.el-form-item, .el-form-item--small.el-form-item {*/
+/*    width: 260px;*/
+/*    display: inline-block;*/
+/*}*/
+.red {
+    color: #f56c6c;
 }
+.yellow {
+    color: #E6A23C;
+}
+.green {
+    color: #67c23a;
+}
+.el-button+.el-button {
+    margin-left: 0px;
+}
+.custom-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding-right: 8px;
+}
+.demo-cascader .el-cascader {
+    /*width: 222px;*/
+}
+/*.el-form-item--mini.el-form-item, .el-form-item--small.el-form-item {*/
+/*    width: 280px;*/
+/*    margin-bottom: 18px;*/
+/*}*/
