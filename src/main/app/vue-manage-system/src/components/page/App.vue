@@ -1,12 +1,12 @@
 <template>
     <div>
-<!--        <div class="crumbs">-->
-<!--            <el-breadcrumb separator="/">-->
-<!--                <el-breadcrumb-item>-->
-<!--                    <i class="el-icon-lx-cascades"></i> 基础表格-->
-<!--                </el-breadcrumb-item>-->
-<!--            </el-breadcrumb>-->
-<!--        </div>-->
+        <!--        <div class="crumbs">-->
+        <!--            <el-breadcrumb separator="/">-->
+        <!--                <el-breadcrumb-item>-->
+        <!--                    <i class="el-icon-lx-cascades"></i> 基础表格-->
+        <!--                </el-breadcrumb-item>-->
+        <!--            </el-breadcrumb>-->
+        <!--        </div>-->
         <div class="container">
             <div class="handle-box">
 
@@ -118,178 +118,178 @@
 </template>
 
 <script>
-    export default {
-        name: 'app',
-        data() {
-            return {
-                tableData: [],
-                multipleSelection: [],
-                delList: [],
-                editVisible: false,
-                dialogTitle:'',
-                pageTotal: 0,
-                mergeAppForm: {},
-                searchAppForm:{
-                    pageNum: 1,
-                    pageSize: 5,
-                },
-                data: {
-                },
-            };
+export default {
+    name: 'app',
+    data() {
+        return {
+            tableData: [],
+            multipleSelection: [],
+            delList: [],
+            editVisible: false,
+            dialogTitle:'',
+            pageTotal: 0,
+            mergeAppForm: {},
+            searchAppForm:{
+                pageNum: 1,
+                pageSize: 5,
+            },
+            data: {
+            },
+        };
+    },
+    created() {
+        this.getData();
+    },
+    methods: {
+        // 获取 easy-mock 的模拟数据
+        getData() {
+            let self = this
+            let data = self.searchAppForm
+            self.$post("/base/app/qryAll", data).then(function (response) {
+                if (response.status == 0) {
+                    self.tableData = response.obj.list;
+                    self.pageTotal = response.obj.total;
+                } else {
+                    self.$message.error(response.msg);
+                }
+            }).catch(function (err) {
+            })
+
         },
-        created() {
+        // 触发搜索按钮
+        handleSearch() {
+            this.$set(this.searchAppForm, 'pageNum', 1);
             this.getData();
         },
-        methods: {
-            // 获取 easy-mock 的模拟数据
-            getData() {
-                let self = this
-                let data = self.searchAppForm
-                self.$post("/base/app/qryAll", data).then(function (response) {
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+            this.getData();
+        },
+        // 删除操作
+        handleDelete(index, row) {
+            // 二次确认删除
+            let self = this;
+            let data = [];
+            data.push(row);
+            this.deleteConfirm(data);
+        },
+        deleteConfirm(data) {
+            let self = this;
+            this.$confirm('确定要删除吗？', '提示', {
+                type: 'warning'
+            }).then(() => {
+                self.$post("/base/app/delete", data).then(function (response) {
                     if (response.status == 0) {
-                        self.tableData = response.obj.list;
-                        self.pageTotal = response.obj.total;
-                    } else {
-                        self.$message.error(response.msg);
+                        self.$message.success('删除成功');
+                        self.getData();
                     }
-                }).catch(function (err) {
                 })
-
-            },
-            // 触发搜索按钮
-            handleSearch() {
-                this.$set(this.searchAppForm, 'pageNum', 1);
-                this.getData();
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-                this.getData();
-            },
-            // 删除操作
-            handleDelete(index, row) {
-                // 二次确认删除
-                let self = this;
-                let data = [];
-                data.push(row);
-                this.deleteConfirm(data);
-            },
-            deleteConfirm(data) {
-                let self = this;
-                this.$confirm('确定要删除吗？', '提示', {
-                    type: 'warning'
-                }).then(() => {
-                    self.$post("/base/app/delete", data).then(function (response) {
-                        if (response.status == 0) {
-                            self.$message.success('删除成功');
-                            self.getData();
-                        }
-                    })
-                }).catch(() => {
-                });
-            },
-            // 多选操作
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
-            delAllSelection() {
-                let self = this;
-                let data = [];
-                for (let i = 0; i < self.multipleSelection.length; i++) {
-                    data.push(self.multipleSelection[i]);
+            }).catch(() => {
+            });
+        },
+        // 多选操作
+        handleSelectionChange(val) {
+            this.multipleSelection = val;
+        },
+        delAllSelection() {
+            let self = this;
+            let data = [];
+            for (let i = 0; i < self.multipleSelection.length; i++) {
+                data.push(self.multipleSelection[i]);
+            }
+            // this.$message.error(`删除了${str}`);
+            this.deleteConfirm(data);
+            this.multipleSelection = [];
+        },
+        //展示详情
+        showDetail(id, row) {
+            console.log(id)
+            this.$router.push({
+                name: 'interfaceDetail',
+                params: {
+                    appId:id
                 }
-                // this.$message.error(`删除了${str}`);
-                this.deleteConfirm(data);
-                this.multipleSelection = [];
-            },
-            //展示详情
-            showDetail(id, row) {
-                console.log(id)
-                this.$router.push({
-                    name: 'interfaceDetail',
-                    params: {
-                        appId:id
-                    }
-                });
-            },
-            // 编辑操作
-            handleEdit(id, row) {
-                console.log(id)
-                this.dialogTitle = '修改';
-                this.mergeAppForm = JSON.parse(JSON.stringify(row))
-                this.mergeAppForm.updator = this.common.getLocalStorage("userInfo").userId;
-                this.editVisible = true;
-                this.getData();
-            },
+            });
+        },
+        // 编辑操作
+        handleEdit(id, row) {
+            console.log(id)
+            this.dialogTitle = '修改';
+            this.mergeAppForm = JSON.parse(JSON.stringify(row))
+            this.mergeAppForm.updator = this.common.getLocalStorage("userInfo").userId;
+            this.editVisible = true;
+            this.getData();
+        },
 
-            //添加
-            handleAdd() {
-                this.dialogTitle = '添加';
-                this.mergeAppForm.creator = this.common.getLocalStorage("userInfo").userId;
-                this.editVisible = true;
-            },
-            // 保存编辑
-            saveEdit() {
-                let self = this;
-                console.log(self.mergeAppForm)
-                let datas = []
-                datas.push(self.mergeAppForm)
-                self.$post("/base/app/merge", datas).then(function (response) {
-                    if (response.status == 0) {
-                        self.getData()
-                        self.editVisible = false;
-                        self.mergeAppForm = {}
-                    } else {
-                        self.$message.error(response.msg);
-                    }
-                }).catch(function (err) {
-                    self.$message.error(err);
-                })
-            },
-            // 分页导航
-            handlePageChange(val) {
-                this.$set(this.searchAppForm, 'pageNum', val);
-                this.getData();
-            },
-            handleSizeChange(val) {
-                this.searchAppForm.pageSize = val
-                this.getData()
-            },
-        }
-    };
+        //添加
+        handleAdd() {
+            this.dialogTitle = '添加';
+            this.mergeAppForm.creator = this.common.getLocalStorage("userInfo").userId;
+            this.editVisible = true;
+        },
+        // 保存编辑
+        saveEdit() {
+            let self = this;
+            console.log(self.mergeAppForm)
+            let datas = []
+            datas.push(self.mergeAppForm)
+            self.$post("/base/app/merge", datas).then(function (response) {
+                if (response.status == 0) {
+                    self.getData()
+                    self.editVisible = false;
+                    self.mergeAppForm = {}
+                } else {
+                    self.$message.error(response.msg);
+                }
+            }).catch(function (err) {
+                self.$message.error(err);
+            })
+        },
+        // 分页导航
+        handlePageChange(val) {
+            this.$set(this.searchAppForm, 'pageNum', val);
+            this.getData();
+        },
+        handleSizeChange(val) {
+            this.searchAppForm.pageSize = val
+            this.getData()
+        },
+    }
+};
 </script>
 
 <style scoped>
-    .handle-box {
-        margin-bottom: 20px;
-    }
+.handle-box {
+    margin-bottom: 20px;
+}
 
-    .handle-select {
-        width: 120px;
-    }
+.handle-select {
+    width: 120px;
+}
 
-    .handle-input {
-        width: 300px;
-        display: inline-block;
-    }
+.handle-input {
+    width: 300px;
+    display: inline-block;
+}
 
-    .table {
-        width: 100%;
-        font-size: 14px;
-    }
+.table {
+    width: 100%;
+    font-size: 14px;
+}
 
 
 
-    .mr10 {
-        margin-right: 10px;
-    }
+.mr10 {
+    margin-right: 10px;
+}
 
-    .table-td-thumb {
-        display: block;
-        margin: auto;
-        width: 40px;
-        height: 40px;
-    }
-    .search-app-form {
+.table-td-thumb {
+    display: block;
+    margin: auto;
+    width: 40px;
+    height: 40px;
+}
+.search-app-form {
 
-    }
+}
 </style>

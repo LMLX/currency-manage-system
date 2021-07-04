@@ -206,6 +206,9 @@ a {
 .green {
     color: #67c23a;
 }
+.blue {
+    color: #409eff;
+}
 .el-button+.el-button {
     margin-left: 0px;
 }

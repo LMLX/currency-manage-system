@@ -14,14 +14,19 @@
                 <el-aside width="350px">
                     <el-header style="height: 50px;">
                         <el-row>
-                            <el-col :span="14"><div class="grid-content bg-purple">模板分类</div></el-col>
+                            <el-col :span="18"><div class="grid-content bg-purple">模板分类</div></el-col>
+                            <el-col :span="6">
+                                <span>
+                                    <el-button size="mini"  type="primary" icon="el-icon-circle-plus-outline" v-bind:disabled="!selectForm.appId" @click=appendModel({appId:selectForm.appId})></el-button>
+                                </span>
+                            </el-col>
 
                         </el-row>
 
                     </el-header>
                     <el-main>
                         <div class="custom-tree-container">
-                            <div class="block">
+                            <div class="block" >
                                 <el-tree
                                     :data="modelData"
                                     node-key="modelId"
@@ -37,7 +42,7 @@
                     <div class="handle-box">
                         <el-form :inline="true" ref="selectForm" :model="selectForm" label-width="80px">
                             <el-form-item label="应用名称">
-                                <el-select filterable clearable v-model="selectAppId" placeholder="请选择" @change="changeAppId">
+                                <el-select filterable clearable v-model="selectForm.appId" placeholder="请选择" @change="changeAppId">
                                     <el-option
 
                                         v-for="item in appSelect"
@@ -49,21 +54,33 @@
                             </el-form-item>
                             <el-form-item label="模板名称">
                                 <el-cascader
-                                    filterable clearable v-bind:disabled="!selectAppId"
-                                    v-model="selectModelId"
+                                    ref="modelCascader" filterable clearable v-bind:disabled="!selectForm.appId"
+                                    v-model="selectForm.modelIds"
                                     :options="modelSelect"
                                     :props="modelCascadesProps"
                                     :show-all-levels="false"
-                                    collapse-tags></el-cascader>
+                                    :key="cascaderKey"
+                                    collapse-tags
+                                    @change="change"></el-cascader>
                             </el-form-item>
                             <el-form-item label="接口名称">
                                 <el-input v-model="selectForm.name"></el-input>
                             </el-form-item>
                             <el-form-item label="接口描述">
-                                <el-input v-model="selectForm.name"></el-input>
+                                <el-input v-model="selectForm.desc"></el-input>
                             </el-form-item>
                             <el-form-item label="接口类型">
-                                <el-input v-model="selectForm.name"></el-input>
+                                <el-input v-model="selectForm.type"></el-input>
+                            </el-form-item>
+                            <el-form-item style="float: right">
+
+
+                                <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+                                <el-button type="info" @click="resetForm('selectForm')">重置</el-button>
+                                <el-button type="danger"
+                                           icon="el-icon-delete"
+                                           @click="delAllSelection">批量删除</el-button>
+                                <el-button  type="warning" icon="el-icon-search" @click="handleAdd">添加</el-button>
                             </el-form-item>
                         </el-form>
                         <!--                <el-button-->
@@ -115,9 +132,9 @@
                             background
                             @size-change="handleSizeChange"
                             @current-change="handlePageChange"
-                            :current-page="query.pageIndex"
+                            :current-page="selectForm.pageNum"
                             :page-sizes="[2, 10, 30]"
-                            :page-size="query.pageSize"
+                            :page-size="selectForm.pageSize"
                             layout="total, sizes, prev, pager, next, jumper"
                             :total="pageTotal">
                         </el-pagination>
@@ -125,32 +142,6 @@
                 </el-main>
             </el-container>
         </div>
-
-        <!-- 编辑弹出框 -->
-<!--        <el-dialog :title="dialogTitle" :visible.sync="editVisible" width="30%">-->
-<!--            <el-form ref="form" :model="form" label-width="70px">-->
-<!--                <el-form-item label="模板名称">-->
-<!--                    <el-input v-model="form.modelId"></el-input>-->
-<!--                </el-form-item>-->
-<!--                <el-form-item label="接口名称">-->
-<!--                    <el-input v-model="form.interfaceName"></el-input>-->
-<!--                </el-form-item>-->
-<!--                <el-form-item label="接口路径">-->
-<!--                    <el-input v-model="form.interfaceUrl"></el-input>-->
-<!--                </el-form-item>-->
-<!--                <el-form-item label="接口描述">-->
-<!--                    <el-input v-model="form.interfaceDesc"></el-input>-->
-<!--                </el-form-item>-->
-<!--                <el-form-item label="接口类型">-->
-<!--                    <el-input v-model="form.type"></el-input>-->
-<!--                </el-form-item>-->
-<!--            </el-form>-->
-<!--            <span slot="footer" class="dialog-footer">-->
-<!--                <el-button @click="editVisible = false">取 消</el-button>-->
-<!--                <el-button type="primary" @click="saveEdit">确 定</el-button>-->
-<!--            </span>-->
-<!--        </el-dialog>-->
-
 
 <!--        模板编辑-->
         <el-dialog :title="dialogTitle" :visible.sync="modelEditVisible" width="30%">
@@ -177,13 +168,6 @@ export default {
     name: 'interfaceDetail',
     data() {
         return {
-            query: {
-                appId: '',
-                pageIndex: 1,
-                pageSize: 2
-            },
-            pageIndex: 1,
-            pageSize: 2,
             tableData: [],
             multipleSelection: [],
             delList: [],
@@ -192,28 +176,24 @@ export default {
             pageTotal: 0,
 
             data: {},
-            selectForm: {name: '333'},
+            selectForm: {
+                // appId: this.$route.params.appId,
+                pageNum: 1,
+                pageSize: 2,
+                appId: null,
+                modelIds: [],
+                modelId: null,
+                name: null,
+                desc: null,
+                type: null
+            },
             appSelect: [],
             modelCascadesProps: {
                 checkStrictly: true,
                 value: "modelId",
                 label: "modelName"
             },
-            modelSelect: [{
-                modelId: 1,
-                modelName: '东南',
-                children: [{
-                    modelId: 2,
-                    modelName: '上海',
-                    children: [
-                        { modelId: 3, modelName: '普陀' },
-                        { modelId: 4, modelName: '黄埔' },
-                        { modelId: 5, modelName: '徐汇' }
-                    ]
-                }, ]
-            }],
-            selectAppId: '',
-            selectModelId: '',
+            modelSelect: [],
             modelData:[],
             modelEditform: {},
             rules: {
@@ -221,15 +201,15 @@ export default {
                     { required: true, message: '请输入模板名称', trigger: 'blur' },
                     { min: 1, message: '必填项', trigger: 'blur' }
                 ]
-            }
+            },
+            cascaderKey:0
         };
     },
     created() {
         let appId = this.$route.params.appId
         this.qryAllApp()
         if (null != appId && undefined != appId) {
-            this.query.appId = appId
-            this.selectAppId = appId
+            this.selectForm.appId = appId
             //查询模板
             this.qryModelInfo()
         }
@@ -239,12 +219,7 @@ export default {
         // 获取 easy-mock 的模拟数据
         getData() {
             let self = this;
-            console.log("dd: " + self.query.appId)
-            let data = {
-                appId: this.$route.params.appId,
-                pageNum: self.query.pageIndex,
-                pageSize: self.query.pageSize,
-            }
+            let data = this.selectForm
             self.$post("/base/interface/qryDetailList", data).then(function (response) {
                 if (response.status == 0) {
                     self.tableData = response.obj.list;
@@ -254,6 +229,12 @@ export default {
 
             })
 
+        },
+        change() {
+            let currentNode = this.$refs["modelCascader"].getCheckedNodes()
+            if (null != currentNode && undefined != currentNode && currentNode.length > 0) {
+                this.selectForm.modelId = currentNode[0].data.modelId
+            }
         },
         qryAllApp() {
             let self = this
@@ -272,11 +253,13 @@ export default {
             })
         },
         changeAppId() {
+            this.cascaderKey++;
             this.qryModelInfo()
         },
         qryModelInfo() {
             let self = this
-            self.$post("/base/model/qryDetailList", {appId: self.selectAppId}).then(function (response) {
+            self.modelSelect = []
+            self.$post("/base/model/qryModelTreeByAppId", {appId: self.selectForm.appId}).then(function (response) {
                 if (response.status == 0) {
                     console.log(response)
                     self.modelData = response.obj
@@ -288,6 +271,7 @@ export default {
         },
         // 触发搜索按钮
         handleSearch() {
+            this.$set(this.selectForm, 'pageNum', 1);
             this.getData();
         },
         // 删除操作
@@ -338,6 +322,7 @@ export default {
         // 保存编辑
         modelMerge() {
             let self = this;
+            console.log( self.modelEditform)
             this.$refs["modelEditform"].validate((valid) => {
                 if (valid) {
                     let data = self.modelEditform
@@ -381,18 +366,29 @@ export default {
             let self = this;
             this.dialogTitle = '修改模板';
             this.modelEditform.updator = this.common.getLocalStorage("userInfo").userId;
-            this.modelEditform.modelName = data.modelName
-            this.modelEditform.modelUrl = data.modelUrl
-            this.modelEditform.modelId = data.modelId
+            this.$set(this.modelEditform, 'modelName', data.modelName)
+            this.$set(this.modelEditform, 'modelUrl', data.modelUrl)
+            this.$set(this.modelEditform, 'modelId', data.modelId)
             console.log(self.modelEditform)
             this.modelEditVisible = true;
         },
 
-        removeModel(node, data) {
-            const parent = node.parent;
-            const children = parent.data.children || parent.data;
-            const index = children.findIndex(d => d.id === data.id);
-            children.splice(index, 1);
+        removeModel(data) {
+            let self = this;
+            let modelIdList = []
+            modelIdList.push(data.modelId)
+            console.log(modelIdList)
+            self.$post("/base/model/deleteByIds", modelIdList).then(function (response) {
+                if (response.status == 0) {
+                    self.qryModelInfo()
+                    self.$message.success('删除成功');
+                } else {
+                    self.$message.error(response.msg);
+                }
+            }).catch(function (err) {
+                self.$message.error(err);
+            })
+
         },
         renderContent(h, { node, data, store }) {
             console.log(node.data.modelName)
@@ -400,19 +396,19 @@ export default {
                 <span class="custom-tree-node">
             <span>{node.data.modelName}</span>
             <span>
-                <el-button size="mini" type="text" icon="el-icon-circle-plus-outline" circle on-click={ () => this.appendModel(data) }></el-button>
-                <el-button size="mini" type="text" icon="el-icon-edit" circle on-click={ () => this.updateModel(data) }></el-button>
-                <el-button size="mini" type="text" icon="el-icon-delete" circle on-click={ () => this.removeModel(data) }></el-button>
+                <el-button size="mini" class="blue" type="text" icon="el-icon-circle-plus-outline" circle on-click={ () => this.appendModel(data) }></el-button>
+                <el-button size="mini" class="yellow" type="text" icon="el-icon-edit" circle on-click={ () => this.updateModel(data) }></el-button>
+                <el-button size="mini" class="red" type="text" icon="el-icon-delete" circle on-click={ () => this.removeModel(data) }></el-button>
             </span>
           </span>);
         },
         // 分页导航
         handlePageChange(val) {
-            this.$set(this.query, 'pageIndex', val);
+            this.$set(this.selectForm, 'pageNum', val);
             this.getData();
         },
         handleSizeChange(val) {
-            this.query.pageSize = val
+            this.selectForm.pageSize = val
             this.getData()
         },
     }

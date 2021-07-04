@@ -1,10 +1,12 @@
 package com.lmlx.app.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lmlx.app.dao.base.InterfaceDetailInfoMapper;
 import com.lmlx.app.dao.base.InterfaceModelInfoMapper;
 import com.lmlx.app.model.po.InterfaceModelInfoPo;
 import com.lmlx.app.model.so.InterfaceInfoSo;
 import com.lmlx.app.model.so.InterfaceModelInfoSo;
+import com.lmlx.app.model.so.QryModelTreeByAppIdSo;
 import com.lmlx.app.model.vo.InterfaceModelInfoVo;
 import com.lmlx.app.model.vo.ManageMenuInfoVo;
 import com.lmlx.app.service.InterfaceModelService;
@@ -13,10 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -26,9 +26,9 @@ public class InterfaceModelServiceImpl implements InterfaceModelService {
     private InterfaceModelInfoMapper interfaceModelInfoMapper;
 
     @Override
-    public List<InterfaceModelInfoVo> qryDetailList(InterfaceModelInfoSo so) {
-        List<InterfaceModelInfoPo> list = interfaceModelInfoMapper.qryDetailList(so);
-        return modelPoListToVo(list);
+    public List<InterfaceModelInfoVo> qryModelTreeByAppId(QryModelTreeByAppIdSo so) {
+        List<InterfaceModelInfoPo> list = interfaceModelInfoMapper.qryModelTreeByAppId(so);
+        return modelPoTreeToVo(list);
     }
 
     @Override
@@ -42,7 +42,24 @@ public class InterfaceModelServiceImpl implements InterfaceModelService {
         return so.getModelId();
     }
 
-    public List<InterfaceModelInfoVo> modelPoListToVo(List<InterfaceModelInfoPo> pos) {
+    @Override
+    public void deleteByIds(List<Long> modelIdList) {
+
+//        Long[] pModelId = ;
+        List<InterfaceModelInfoPo> childModelList = new ArrayList<>();
+        Set<Long> allModelIdSet = new HashSet<>(modelIdList);
+        do {
+            System.out.println(modelIdList);
+            childModelList = interfaceModelInfoMapper.qryChildModelsByPIds(modelIdList);
+            System.out.println(JSONObject.toJSONString(childModelList));
+            modelIdList = childModelList.stream().map(po -> po.getId()).collect(Collectors.toList());
+            allModelIdSet.addAll(modelIdList);
+        } while (modelIdList.size() != 0);
+        System.out.println(allModelIdSet);
+        interfaceModelInfoMapper.deleteByIds(allModelIdSet);
+    }
+
+    public List<InterfaceModelInfoVo> modelPoTreeToVo(List<InterfaceModelInfoPo> pos) {
         List<InterfaceModelInfoVo> headList = new ArrayList<>();
         Map<Long, InterfaceModelInfoVo> indexMap = new HashMap<>();
         if (!CollectionUtils.isEmpty(pos)) {
@@ -56,11 +73,14 @@ public class InterfaceModelServiceImpl implements InterfaceModelService {
                     headList.add(vo);
                 } else {
                     InterfaceModelInfoVo pVo = indexMap.get(pId);
-                    if (CollectionUtils.isEmpty(pVo.getChildren())) {
-                        pVo.setChildren(new ArrayList<>());
+                    if (null != pVo) {
+                        if (CollectionUtils.isEmpty(pVo.getChildren())) {
+                            pVo.setChildren(new ArrayList<>());
+                        }
+                        List<InterfaceModelInfoVo>  subs = pVo.getChildren();
+                        subs.add(vo);
                     }
-                    List<InterfaceModelInfoVo>  subs = pVo.getChildren();
-                    subs.add(vo);
+
                 }
             });
         }
@@ -71,7 +91,7 @@ public class InterfaceModelServiceImpl implements InterfaceModelService {
         InterfaceModelInfoVo vo = new InterfaceModelInfoVo();
         if (null != po) {
             vo.setModelId(po.getId());
-            vo.setModelName(po.getName());
+            vo.setModelName(po.getName() + "(" + po.getId() + ")");
             vo.setModelUrl(po.getUrl());
             vo.setCreator(po.getCreator());
             vo.setCreateTime(po.getCreateTime());

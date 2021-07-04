@@ -18,21 +18,24 @@
         ID, P_ID, NAME, URL, CREATOR, CREATE_TIME, UPDATOR, UPDATE_TIME, APP_ID
     </sql>
 
-    <select id="qryDetailList" parameterType="com.lmlx.app.model.so.InterfaceInfoSo" resultType="com.lmlx.app.model.po.InterfaceModelInfoPo">
+    <select id="qryModelTreeByAppId" parameterType="com.lmlx.app.model.so.QryModelTreeByAppIdSo" resultType="com.lmlx.app.model.po.InterfaceModelInfoPo">
         SELECT
         <include refid="baseSelectStr"></include>
         FROM INTERFACE_MODEL_INFO
-        <where>
-            <if test="null != appId and '' != appId">
-                AND APP_ID = #{appId}
-            </if>
-            <if test="null != modelName and '' != modelName">
-                AND NAME LIKE CONCAT('%', #{modelName}, '%')
-            </if>
-            <if test="null != creator and '' != creator">
-                AND CREATOR LIKE CONCAT('%', #{creator}, '%')
-            </if>
-        </where>
+        WHERE
+            APP_ID = #{appId}
+    </select>
+
+
+    <select id="qryChildModelsByPIds" resultType="com.lmlx.app.model.po.InterfaceModelInfoPo">
+        SELECT
+        <include refid="baseSelectStr"></include>
+        FROM INTERFACE_MODEL_INFO
+        WHERE
+            P_ID IN
+            <foreach collection="modelIdList" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
     </select>
 
     <update id="update" parameterType="com.lmlx.app.model.so.InterfaceModelInfoSo">
@@ -64,13 +67,11 @@
         (#{pModelId}, #{modelName}, #{modelUrl}, #{creator}, #{appId})
     </insert>
 
-
-
-<!--    <delete id="delete" parameterType="com.lmlx.app.model.so.IntegrationAppInfoSo">-->
-<!--        DELETE FROM INTEGRATION_APP_INFO WHERE-->
-<!--        APP_ID IN-->
-<!--        <foreach collection="list" item="item" open="(" separator="," close=")">-->
-<!--            #{item.appId}-->
-<!--        </foreach>-->
-<!--    </delete>-->
+    <delete id="deleteByIds">
+        DELETE FROM INTERFACE_MODEL_INFO WHERE
+        ID IN
+        <foreach collection="modelIdSet" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>
