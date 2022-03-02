@@ -26,6 +26,32 @@ public class Constant {
         };
     }
 
+
+    public interface EDUCATION {
+        public final static Map<Integer, String> INFO = new HashMap() {
+            {
+                put(0, "无教育");
+                put(10, "小学毕业");
+                put(20, "初中毕业");
+                put(30, "高中毕业");
+                put(40, "专科");
+                put(50, "本科");
+                put(60, "硕士");
+                put(70, "博士");
+            }
+        };
+    }
+
+    public interface SEX {
+        public final static Map<Integer, String> INFO = new HashMap() {
+            {
+                put(1, "男");
+                put(2, "女");
+                put(3, "未知");
+            }
+        };
+    }
+
     public interface ERROR {
         public final static String ERROR_00100001 = "无该人员";
         public final static String ERROR_00100002 = "密码错误";

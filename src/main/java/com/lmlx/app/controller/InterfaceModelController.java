@@ -6,7 +6,7 @@ import com.lmlx.app.model.AjaxResult;
 import com.lmlx.app.model.so.IntegrationAppInfoSo;
 import com.lmlx.app.model.so.InterfaceInfoSo;
 import com.lmlx.app.model.so.InterfaceModelInfoSo;
-import com.lmlx.app.model.so.QryModelTreeByAppIdSo;
+//import com.lmlx.app.model.so.QryModelTreeByAppIdSo;
 import com.lmlx.app.service.InterfaceModelService;
 import com.lmlx.app.system.CheckLoginOut;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +25,11 @@ public class InterfaceModelController {
     @Autowired
     private InterfaceModelService interfaceModelService;
 
-    @CheckLoginOut
-    @RequestMapping(value = "/qryModelTreeByAppId")
-    public Object qryModelTreeByAppId(@RequestBody QryModelTreeByAppIdSo so) {
-        return AjaxResult.markSuccess(interfaceModelService.qryModelTreeByAppId(so));
-    }
+//    @CheckLoginOut
+//    @RequestMapping(value = "/qryModelTreeByAppId")
+//    public Object qryModelTreeByAppId(@RequestBody QryModelTreeByAppIdSo so) {
+//        return AjaxResult.markSuccess(interfaceModelService.qryModelTreeByAppId(so));
+//    }
 
     @CheckLoginOut
     @RequestMapping(value = "/merge")

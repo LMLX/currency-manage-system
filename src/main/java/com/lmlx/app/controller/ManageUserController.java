@@ -1,7 +1,10 @@
 package com.lmlx.app.controller;
 
+import cn.hutool.core.codec.Base64;
+import com.alibaba.fastjson.JSONObject;
 import com.lmlx.app.model.AjaxResult;
 import com.lmlx.app.model.Page;
+import com.lmlx.app.model.so.InterfaceModelInfoSo;
 import com.lmlx.app.model.so.ManageUserInfoSo;
 import com.lmlx.app.service.ManageUserService;
 import com.lmlx.app.system.CheckLoginOut;
@@ -9,8 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Encoder;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 /**
  * @author jiahao jin
@@ -41,4 +47,27 @@ public class ManageUserController {
         Object result = manageUserService.qryAll(page);
         return AjaxResult.markSuccess(result);
     }
+
+    @CheckLoginOut
+    @RequestMapping(value = "/edit")
+    public Object update(@RequestBody ManageUserInfoSo so) {
+        System.out.println(JSONObject.toJSONString(so));
+        manageUserService.edit(so);
+        return AjaxResult.markSuccess();
+    }
+
+    @CheckLoginOut
+    @RequestMapping(value = "/upload")
+    public Object update(MultipartFile file) {
+
+        String base64EncoderImg = null;
+        try {
+            base64EncoderImg = "data:img/jpg;base64," + (Base64.encodeStr(file.getBytes(), true, false).replaceAll("\r\n", ""));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return AjaxResult.markSuccess(base64EncoderImg);
+    }
+
 }

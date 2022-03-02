@@ -1,5 +1,9 @@
 package com.lmlx.app.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.convert.ConverterRegistry;
+import cn.hutool.core.date.ChineseDate;
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,24 +75,37 @@ public class ManageUserServiceImpl implements ManageUserService {
         return pageResultInfo;
     }
 
+    @Override
+    public void edit(ManageUserInfoSo so) {
+        ManageUserInfoPo po = BeanUtil.copyProperties(so, ManageUserInfoPo.class);
+        manageUserInfoMapper.updateById(po);
+
+        System.out.println(JSONObject.toJSONString(po));
+
+    }
+
     private ManageUserInfoVo manageUserInfoPoToVo(ManageUserInfoPo po) {
         ManageUserInfoVo vo = new ManageUserInfoVo();
         if(po == null) return vo;
         else {
-            vo.setUserId(po.getUserId());
-            vo.setAccount(po.getAccount());
-            vo.setUserName(po.getUserName());
-            Long roleId = po.getRoleId();
-            vo.setRoleId(roleId);
-            vo.setAddress(po.getAddress());
-            vo.setRole(Constant.USER_ROLE.INFO.get(roleId));
-            vo.setLastLoginPosition(po.getLastLoginPosition());
-            SimpleDateFormat sdf = new SimpleDateFormat(Constant.TIME_FORMAT.DATE);
-            if (null != po.getLastLoginTime()) {
-                vo.setLastLoginTime(sdf.format(po.getLastLoginTime()));
-            } else {
-                vo.setLastLoginTime("未知");
+//            ConverterRegistry converterRegistry = ConverterRegistry.getInstance();
+//            vo = converterRegistry.convert(ManageUserInfoVo.class, po);
+            System.out.println(po.getBirthday());
+            vo = BeanUtil.copyProperties(po, ManageUserInfoVo.class);
+            System.out.println(vo.getBirthday());
+            System.out.println(JSONObject.toJSONString(vo));
+            String educationInfo = Constant.EDUCATION.INFO.getOrDefault(po.getEducation(), "未知");
+            vo.setEducationInfo(educationInfo);
+            if (null != po.getBirthday()) {
+                try {
+                    vo.setAge(DateUtil.ageOfNow(po.getBirthday()));
+                    vo.setZodiac(new ChineseDate(po.getBirthday()).getChineseZodiac());
+
+                } catch (Exception e) {
+
+                }
             }
+
         }
         return vo;
     }

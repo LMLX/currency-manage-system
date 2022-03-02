@@ -14,4 +14,6 @@ public interface ManageUserService {
 
     PageResultInfo qryAll(Page page);
 
+    void edit(ManageUserInfoSo so);
+
 }

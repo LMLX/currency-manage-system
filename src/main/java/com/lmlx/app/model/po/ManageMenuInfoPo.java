@@ -1,6 +1,8 @@
 package com.lmlx.app.model.po;
 
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import com.lmlx.app.system.config.tableInfo.Table;
 import com.lmlx.app.system.config.tableInfo.Column;
@@ -19,7 +21,7 @@ public class ManageMenuInfoPo  implements Serializable {
 	/**
 	 * ID主键
 	 */
-   	@Column(value = "id" )
+   	@TableId(value = "id" )
 	private Long id;
 
 	/**

@@ -15,15 +15,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RequestWrapperFilterConfig {
 
-	@Bean
-	public FilterRegistrationBean httpServletRequestReplacedRegistration() {
-	    FilterRegistrationBean registration = new FilterRegistrationBean();
-	    registration.setFilter(new RequestWrapperFilter());
-	    registration.addUrlPatterns("/*");
-	    registration.addInitParameter("paramName", "paramValue");
-	    registration.setName("requestWrapperFilter");
-	    registration.setOrder(1);
-	    return registration;
-	}
+//	@Bean
+//	public FilterRegistrationBean httpServletRequestReplacedRegistration() {
+//	    FilterRegistrationBean registration = new FilterRegistrationBean();
+//	    registration.setFilter(new RequestWrapperFilter());
+//	    registration.addUrlPatterns("/*");
+//	    registration.addInitParameter("paramName", "paramValue");
+//	    registration.setName("requestWrapperFilter");
+//	    registration.setOrder(1);
+//	    return registration;
+//	}
 
 }

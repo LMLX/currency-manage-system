@@ -2,6 +2,7 @@ package com.lmlx.app.dao.base;
 
 //import com.lmlx.app.model.po.ManageUserInfo;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lmlx.app.model.po.ManageUserInfoPo;
 import com.lmlx.app.model.so.ManageUserInfoSo;
 import org.apache.ibatis.annotations.Mapper;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author jiahao jin
  * @create 2020-11-10 18:31
  */
-public interface ManageUserInfoMapper {
+public interface ManageUserInfoMapper extends BaseMapper<ManageUserInfoPo> {
 
     ManageUserInfoPo qryByAccount(ManageUserInfoSo so);
 

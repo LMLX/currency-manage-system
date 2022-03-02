@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,7 +42,10 @@ public class WebLogAop {
 
         Object[] args = joinPoint.getArgs();
         Stream<?> stream = ArrayUtils.isEmpty(args) ? Stream.empty() : Arrays.asList(args).stream();
-        List<Object> logArgs = stream.filter(arg -> (!(arg instanceof HttpServletRequest) && !(arg instanceof HttpServletResponse))).collect(Collectors.toList());
+        List<Object> logArgs = stream.filter(arg -> (
+                !(arg instanceof HttpServletRequest)
+                && !(arg instanceof HttpServletResponse)
+                && !(arg instanceof MultipartFile))).collect(Collectors.toList());
 
         log.info("调用 path: {} args: {}",servletPath,JSONObject.toJSONString(logArgs));
 

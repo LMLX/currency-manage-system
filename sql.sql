@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.23, for macos10.15 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: currency-manage-system
+-- Host: localhost    Database: currency-manage-system
 -- ------------------------------------------------------
--- Server version	8.0.12
+-- Server version	8.0.26
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -52,14 +52,14 @@ DROP TABLE IF EXISTS `integration_app_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `integration_app_info` (
-                                        `app_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '应该ID',
+                                        `app_id` bigint NOT NULL AUTO_INCREMENT COMMENT '应该ID',
                                         `app_name` varchar(128) NOT NULL COMMENT '应用名称',
                                         `app_desc` varchar(256) DEFAULT NULL COMMENT '应用描述',
                                         `app_dev_host` varchar(256) DEFAULT NULL COMMENT '应用测试端口',
                                         `app_pro_host` varchar(256) DEFAULT NULL COMMENT '应用生产端口',
-                                        `creator` bigint(20) DEFAULT NULL COMMENT '创建人',
+                                        `creator` bigint DEFAULT NULL COMMENT '创建人',
                                         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                                        `updator` bigint(20) DEFAULT NULL COMMENT '修改人',
+                                        `updator` bigint DEFAULT NULL COMMENT '修改人',
                                         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
                                         PRIMARY KEY (`app_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -83,10 +83,10 @@ DROP TABLE IF EXISTS `interface_detail_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `interface_detail_info` (
-                                         `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键接口ID',
+                                         `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键接口ID',
                                          `name` varchar(128) NOT NULL COMMENT '接口名称',
                                          `url` varchar(128) NOT NULL COMMENT '接口地址',
-                                         `model_id` bigint(20) DEFAULT NULL COMMENT '模块ID',
+                                         `model_id` bigint DEFAULT NULL COMMENT '模块ID',
                                          `interface_desc` varchar(128) DEFAULT NULL COMMENT '接口描述',
                                          `type` varchar(1) NOT NULL COMMENT '接口类型    1——GET(G)   2——PSOT(P)',
                                          PRIMARY KEY (`id`)
@@ -111,7 +111,7 @@ DROP TABLE IF EXISTS `interface_header_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `interface_header_info` (
-                                         `interface_id` bigint(20) NOT NULL COMMENT '接口ID',
+                                         `interface_id` bigint NOT NULL COMMENT '接口ID',
                                          `name` varchar(64) DEFAULT NULL COMMENT 'header名称',
                                          `type` varchar(32) DEFAULT NULL COMMENT 'header类型',
                                          `example` varchar(256) DEFAULT NULL COMMENT 'header值',
@@ -136,15 +136,15 @@ DROP TABLE IF EXISTS `interface_model_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `interface_model_info` (
-                                        `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-                                        `p_id` bigint(20) DEFAULT NULL COMMENT '父级ID',
+                                        `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+                                        `p_id` bigint DEFAULT NULL COMMENT '父级ID',
                                         `name` varchar(128) DEFAULT NULL COMMENT '接口模块名称',
                                         `url` varchar(128) DEFAULT NULL COMMENT '路径',
-                                        `creator` bigint(20) DEFAULT NULL COMMENT '创建人',
+                                        `creator` bigint DEFAULT NULL COMMENT '创建人',
                                         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                                        `updator` bigint(20) DEFAULT NULL COMMENT '修改人',
+                                        `updator` bigint DEFAULT NULL COMMENT '修改人',
                                         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-                                        `app_id` bigint(20) NOT NULL COMMENT '对应的appId',
+                                        `app_id` bigint NOT NULL COMMENT '对应的appId',
                                         PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -166,13 +166,13 @@ DROP TABLE IF EXISTS `manage_department_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `manage_department_info` (
-                                          `depart_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID主键',
+                                          `depart_id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID主键',
                                           `depart_name` varchar(48) DEFAULT NULL COMMENT '部门名称',
-                                          `p_depart_id` bigint(20) DEFAULT NULL COMMENT '部门名称',
-                                          `leader` bigint(20) DEFAULT NULL COMMENT '部门负责人ID',
-                                          `creator` bigint(20) DEFAULT NULL COMMENT '创建人',
+                                          `p_depart_id` bigint DEFAULT NULL COMMENT '部门名称',
+                                          `leader` bigint DEFAULT NULL COMMENT '部门负责人ID',
+                                          `creator` bigint DEFAULT NULL COMMENT '创建人',
                                           `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                                          `updator` bigint(20) DEFAULT NULL COMMENT '修改人',
+                                          `updator` bigint DEFAULT NULL COMMENT '修改人',
                                           `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
                                           PRIMARY KEY (`depart_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='部门信息表';
@@ -196,15 +196,15 @@ DROP TABLE IF EXISTS `manage_menu_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `manage_menu_info` (
-                                    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID主键',
+                                    `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID主键',
                                     `icon` varchar(128) DEFAULT NULL COMMENT '图标',
                                     `ident` varchar(128) DEFAULT NULL COMMENT '标识',
                                     `title` varchar(128) DEFAULT NULL COMMENT '标题',
                                     `url` varchar(512) DEFAULT NULL COMMENT '路径',
                                     `component` varchar(128) DEFAULT NULL,
                                     `name` varchar(128) DEFAULT NULL COMMENT 'name',
-                                    `p_id` bigint(20) DEFAULT NULL COMMENT '父级ID',
-                                    `rank_id` bigint(20) DEFAULT NULL COMMENT '排序',
+                                    `p_id` bigint DEFAULT NULL COMMENT '父级ID',
+                                    `rank_id` bigint DEFAULT NULL COMMENT '排序',
                                     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -227,8 +227,8 @@ DROP TABLE IF EXISTS `manage_role_menu_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `manage_role_menu_info` (
-                                         `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
-                                         `menu_id` bigint(20) DEFAULT NULL COMMENT '菜单ID'
+                                         `role_id` bigint DEFAULT NULL COMMENT '角色ID',
+                                         `menu_id` bigint DEFAULT NULL COMMENT '菜单ID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -250,21 +250,51 @@ DROP TABLE IF EXISTS `manage_user_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `manage_user_info` (
-                                    `user_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID主键',
+                                    `user_id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID主键',
                                     `user_name` varchar(48) DEFAULT NULL COMMENT '姓名',
-                                    `account` varchar(16) DEFAULT NULL COMMENT '账号',
-                                    `head_sculpture` text COMMENT '头像',
-                                    `address` varchar(128) DEFAULT NULL COMMENT '地址',
-                                    `password` varchar(48) DEFAULT NULL COMMENT '密码',
+                                    `sex` int DEFAULT NULL,
+                                    `height` int DEFAULT NULL COMMENT '身高',
+                                    `weight` int DEFAULT NULL COMMENT '体重',
+                                    `birthday` date DEFAULT NULL COMMENT '生日',
+                                    `live_province` varchar(45) DEFAULT NULL,
+                                    `live_city` varchar(45) DEFAULT NULL,
+                                    `live_county` varchar(45) DEFAULT NULL,
+                                    `live_address` varchar(128) DEFAULT NULL COMMENT '地址',
+                                    `occupation_type_first` int DEFAULT NULL COMMENT '工作类型',
+                                    `occupation_type_second` int DEFAULT NULL,
+                                    `occupation_mark` varchar(256) DEFAULT NULL COMMENT '工作备注',
+                                    `work_city` varchar(45) DEFAULT NULL,
+                                    `work_province` varchar(45) DEFAULT NULL,
+                                    `work_county` varchar(45) DEFAULT NULL,
+                                    `work_address` varchar(45) DEFAULT NULL,
+                                    `wechat` varchar(45) DEFAULT NULL COMMENT '微信',
+                                    `qq` varchar(45) DEFAULT NULL COMMENT 'qq',
                                     `phone` varchar(11) DEFAULT NULL COMMENT '手机号',
                                     `e_mail` varchar(48) DEFAULT NULL COMMENT '邮箱',
-                                    `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
+                                    `head_sculpture` text COMMENT '头像',
+                                    `salary` decimal(20,10) DEFAULT NULL COMMENT '年薪',
+                                    `is_married` int DEFAULT NULL COMMENT '是否已婚',
+                                    `married_mark` varchar(256) DEFAULT NULL COMMENT '婚姻备注',
+                                    `is_only` int DEFAULT NULL COMMENT '是否独生',
+                                    `only_mark` varchar(256) DEFAULT NULL COMMENT '家里成员备注',
+                                    `education` int DEFAULT NULL COMMENT '教育',
+                                    `education_mark` varchar(256) DEFAULT NULL COMMENT '教育备注',
+                                    `desire` int DEFAULT NULL COMMENT '意愿',
+                                    `has_house` int DEFAULT NULL,
+                                    `house_mark` varchar(256) DEFAULT NULL,
+                                    `has_car` int DEFAULT NULL,
+                                    `car_mark` varchar(256) DEFAULT NULL,
+                                    `role_id` bigint DEFAULT NULL COMMENT '角色ID',
+                                    `account` varchar(16) DEFAULT NULL COMMENT '账号',
+                                    `password` varchar(48) DEFAULT NULL COMMENT '密码',
                                     `last_login_position` varchar(45) DEFAULT '未知' COMMENT '最后登录的地址',
                                     `last_login_time` datetime DEFAULT NULL COMMENT '最后登录的时间',
-                                    `creator` bigint(20) DEFAULT NULL COMMENT '创建人',
+                                    `creator` bigint DEFAULT NULL COMMENT '创建人',
                                     `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-                                    `updator` bigint(20) DEFAULT NULL COMMENT '修改人',
+                                    `updator` bigint DEFAULT NULL COMMENT '修改人',
                                     `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+                                    `live_address_info` varchar(256) DEFAULT NULL,
+                                    `work_address_info` varchar(256) DEFAULT NULL,
                                     PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='管理人员信息表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -275,13 +305,9 @@ CREATE TABLE `manage_user_info` (
 
 LOCK TABLES `manage_user_info` WRITE;
 /*!40000 ALTER TABLE `manage_user_info` DISABLE KEYS */;
-INSERT INTO `manage_user_info` VALUES (1,'LMLX','admin',NULL,'浙江省杭州市西湖区','21232f297a57a5a743894a0e4a801fc3',NULL,NULL,1,'浙江省湖州市','2021-06-27 13:09:52',NULL,NULL,NULL,'2021-06-27 13:09:51'),(2,'ABCD','abcd',NULL,NULL,NULL,NULL,NULL,2,'未知',NULL,NULL,NULL,NULL,NULL),(3,'张三','zs',NULL,NULL,NULL,NULL,NULL,NULL,'未知',NULL,NULL,NULL,NULL,NULL),(4,'李四','ls',NULL,NULL,NULL,NULL,NULL,NULL,'未知',NULL,NULL,NULL,NULL,NULL),(5,'王二','we',NULL,NULL,NULL,NULL,NULL,NULL,'未知',NULL,NULL,NULL,NULL,NULL),(6,'甲丁','jd',NULL,NULL,NULL,NULL,NULL,NULL,'未知',NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `manage_user_info` VALUES (1,'LMLX',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'浙江省杭州市西湖区',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'admin','21232f297a57a5a743894a0e4a801fc3','浙江省杭州市','2022-02-26 22:59:14',NULL,NULL,NULL,'2022-02-26 22:59:14',NULL,NULL),(2,'ABCD',1,165,75,'1996-02-20','330000','330500','330502','星湖半岛',1003,1003001,'软件开发','330100','330000','330112',NULL,'wei869974640','869974640','15715771025','869974640@qq.com',NULL,24.0000000000,1,'现在离异',0,'家有五口人',30,'三本',1,1,'房子三套',0,'车子2辆',2,'abcd',NULL,'未知',NULL,NULL,NULL,NULL,'2022-02-28 19:39:40','星湖半岛','星湖半岛星湖半岛'),(3,'张三',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'zs',NULL,'未知',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(4,'李四',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'ls',NULL,'未知',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(5,'王二',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'we',NULL,'未知',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(6,'甲丁',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'jd',NULL,'未知',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `manage_user_info` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping routines for database 'currency-manage-system'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -292,4 +318,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-29 18:09:33
+-- Dump completed on 2022-03-01 19:31:22

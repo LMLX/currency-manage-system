@@ -1,1 +1,4 @@
 !**/resources/mapper/**
+**/.idea/**
+**/target/**
+**/**.iml

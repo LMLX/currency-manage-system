@@ -184,9 +184,9 @@ a {
     margin-left: 12px;
     line-height: 1;
 }
-.el-table__body-wrapper::-webkit-scrollbar {
+/* .el-table__body-wrapper::-webkit-scrollbar {
     display: none;
-}
+} */
 /*markdown*/
 
 .v-note-wrapper .v-note-panel {
