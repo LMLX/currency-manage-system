@@ -226,6 +226,6 @@ public class ManageUserInfoSo {
 
     private String position;
 
-    private List<HeadSculptureSo> fileList;
+    private List<ManageUserPhotoInfoSo> fileList;
 
 }

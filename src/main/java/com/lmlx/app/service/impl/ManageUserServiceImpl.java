@@ -5,6 +5,9 @@ import cn.hutool.core.convert.ConverterRegistry;
 import cn.hutool.core.date.ChineseDate;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lmlx.app.constant.Constant;
@@ -13,13 +16,15 @@ import com.lmlx.app.model.AjaxResult;
 import com.lmlx.app.model.Page;
 import com.lmlx.app.model.PageResultInfo;
 import com.lmlx.app.model.po.ManageUserInfoPo;
+import com.lmlx.app.model.po.ManageUserPhotoInfoPo;
 import com.lmlx.app.model.so.ManageUserInfoSo;
+import com.lmlx.app.model.so.ManageUserPhotoInfoSo;
 import com.lmlx.app.model.vo.ManageUserInfoVo;
+import com.lmlx.app.service.ManageUserPhotoInfoService;
 import com.lmlx.app.service.ManageUserService;
 import com.lmlx.app.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -31,10 +36,13 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class ManageUserServiceImpl implements ManageUserService {
+public class ManageUserServiceImpl extends ServiceImpl<ManageUserInfoMapper, ManageUserInfoPo> implements ManageUserService   {
 
     @Resource
     private ManageUserInfoMapper manageUserInfoMapper;
+
+    @Resource
+    private ManageUserPhotoInfoService manageUserPhotoInfoService;
 
     @Override
     public AjaxResult checkLogin(ManageUserInfoSo so) {
@@ -67,11 +75,15 @@ public class ManageUserServiceImpl implements ManageUserService {
         PageInfo pageInfo = new PageInfo(poList);
         if (!CollectionUtils.isEmpty(poList)) {
             poList.forEach(po -> {
-                list.add(manageUserInfoPoToVo(po));
+                ManageUserInfoVo vo = manageUserInfoPoToVo(po);
+                List<ManageUserPhotoInfoSo> photoInfoSoList = manageUserPhotoInfoService.getByRelationId(vo.getUserId());
+                vo.setFileList(photoInfoSoList);
+                list.add(vo);
             });
         }
         pageResultInfo.setList(list);
         pageResultInfo.setTotal(pageInfo.getTotal());
+
         return pageResultInfo;
     }
 
@@ -79,9 +91,21 @@ public class ManageUserServiceImpl implements ManageUserService {
     public void edit(ManageUserInfoSo so) {
         ManageUserInfoPo po = BeanUtil.copyProperties(so, ManageUserInfoPo.class);
         manageUserInfoMapper.updateById(po);
+        //删除 并添加
 
+        if (CollectionUtils.isNotEmpty(so.getFileList())) {
+            addPhoto(so.getUserId(), so.getFileList());
+        }
         System.out.println(JSONObject.toJSONString(po));
 
+    }
+
+    private void addPhoto(Long userId, List<ManageUserPhotoInfoSo> soList) {
+        List<ManageUserPhotoInfoPo> list = BeanUtil.copyToList(soList, ManageUserPhotoInfoPo.class);
+        list.forEach(e -> {
+            e.setRelationId(userId);
+        });
+        manageUserPhotoInfoService.addByRelationId(userId, list);
     }
 
     private ManageUserInfoVo manageUserInfoPoToVo(ManageUserInfoPo po) {

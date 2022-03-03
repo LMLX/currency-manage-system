@@ -292,7 +292,7 @@
                             action="http://localhost:8081/base/user/upload"
                             :on-preview="handlePreview"
                             :on-remove="handleRemove"
-                            :file-list="fileList"
+                            :file-list="form.fileList"
                             :on-success="uploadSuccess"
                             list-type="picture">
                             <el-button size="small" type="primary">点击上传</el-button>
@@ -325,7 +325,6 @@
                 allOnly:[{value: false,label: '是'}, {value: true,label: '否'}],
                 allHouse:[{value: false,label: '无'}, {value: true,label: '有'}],
                 allCar:[{value: false,label: '无'}, {value: true,label: '有'}],
-                fileList:[],
                 query: {
                     address: '',
                     name: '',
@@ -443,12 +442,19 @@
 
                 // this.$message.success(`修改第 ${this.idx + 1} 行成功`);
                 let editFileList = [];
-                self.fileList.forEach((item, index) => {
+                self.form.fileList.forEach((item, index) => {
                     if (item.status == "success") {
-                        editFileList.push({
-                            type: 1,
-                            url: item.response.obj
-                        })
+                        if (null != item.response) {
+                            editFileList.push({
+                                type: 1,
+                                url: item.response.obj
+                            })
+                        } else {
+                            editFileList.push({
+                                type: 1,
+                                url: item.url
+                            })
+                        }
                     }
                 });
                 let editForm = {
@@ -527,7 +533,7 @@
             },
             handleRemove(file, fileList) {
                 console.log(file, fileList);
-                this.fileList = fileList
+                this.form.fileList = fileList
             },
             handlePreview(file) {
                 console.log(file);
@@ -535,7 +541,7 @@
             uploadSuccess(response, file, fileList) {
                 console.log(file)
                 console.log(fileList)
-                this.fileList = fileList
+                this.form.fileList = fileList
             }
 
         }

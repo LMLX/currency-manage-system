@@ -1,10 +1,12 @@
 package com.lmlx.app.model.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lmlx.app.model.so.ManageUserPhotoInfoSo;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author jiahao jin
@@ -237,4 +239,7 @@ public class ManageUserInfoVo {
     private String workAddressInfo;
 
     private String zodiac;
+
+
+    private List<ManageUserPhotoInfoSo> fileList;
 }
