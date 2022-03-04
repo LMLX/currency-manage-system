@@ -9,16 +9,10 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button
-                    type="primary"
-                    icon="el-icon-delete"
-                    class="handle-del mr10"
-                    @click="delAllSelection"
-                >批量删除
-                </el-button>
-                <el-cascader :options="query.liveAddress" v-model="query.selectedLiveAddress" @change="changeLiveAddress">
-                </el-cascader>
+<!--                <el-cascader :options="query.liveAddress" v-model="query.selectedLiveAddress" @change="changeLiveAddress">-->
+<!--                </el-cascader>-->
                 <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
+                <el-button type="primary" icon="el-icon-search" @click="handleAdd">添加</el-button>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             </div>
             <el-table
@@ -29,8 +23,6 @@
                 header-cell-class-name="table-header"
                 @selection-change="handleSelectionChange"
             >
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <!-- <el-table-column prop="userId" label="ID" width="55" align="center"></el-table-column> -->
                 <el-table-column fixed prop="userName" label="姓名"></el-table-column>
                 <el-table-column prop="sex" label="性别">
                     <template slot-scope="scope">
@@ -114,7 +106,7 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="700px">
+        <el-dialog :title=mergeVisibleMsg :visible.sync="mergeVisible" width="700px">
             <el-form ref="form" :model="form" label-width="90px" :inline="true">
                 <el-row>
 
@@ -303,7 +295,7 @@
 
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="editVisible = false">取 消</el-button>
+                <el-button @click="mergeVisible = false">取 消</el-button>
                 <el-button type="primary" @click="saveEdit">确 定</el-button>
             </span>
         </el-dialog>
@@ -329,14 +321,15 @@
                     address: '',
                     name: '',
                     pageIndex: 1,
-                    pageSize: 2,
+                    pageSize: 10,
                     liveAddress: regionData,
                     selectedLiveAddress:[]
                 },
                 tableData: [],
                 multipleSelection: [],
                 delList: [],
-                editVisible: false,
+                mergeVisible: false,
+                mergeVisibleMsg: "",
                 pageTotal: 0,
                 form: {},
                 idx: -1,
@@ -381,30 +374,33 @@
             // 删除操作
             handleDelete(index, row) {
                 // 二次确认删除
+                let self = this;
                 this.$confirm('确定要删除吗？', '提示', {
                     type: 'warning'
-                })
-                    .then(() => {
-                        this.$message.success('删除成功');
-                        this.tableData.splice(index, 1);
+                }).then(() => {
+                        // this.$message.success('删除成功');
+                        // console.log(row.userId)
+                    self.$post("/base/user/delete", {
+                        userId: row.userId
+                    }).then(function (response) {
+                        if (response.status == 0) {
+                            self.getData();
+                            self.$message.success(`删除成功`);
+                        } else {
+                            self.$message.error(response.msg);
+                        }
+                    }).catch(function (err) {
+                        self.$message.error(err);
                     })
-                    .catch(() => {
-                    });
+                }).catch((err) => {
+                    self.$message.error(err);
+                });
             },
             // 多选操作
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
-            delAllSelection() {
-                const length = this.multipleSelection.length;
-                let str = '';
-                this.delList = this.delList.concat(this.multipleSelection);
-                for (let i = 0; i < length; i++) {
-                    str += this.multipleSelection[i].name + ' ';
-                }
-                this.$message.error(`删除了${str}`);
-                this.multipleSelection = [];
-            },
+
             // 编辑操作
             handleEdit(index, row) {
                 this.idx = index;
@@ -434,7 +430,12 @@
                 if (row.workCounty != null && row.workCounty != '') {
                     this.form.selectedWorkAddress.push(row.workCounty);
                 }
-                this.editVisible = true;
+                this.mergeVisible = true;
+                this.mergeVisibleMsg = "编辑";
+            },
+            handleAdd() {
+                this.mergeVisible = true;
+                this.mergeVisibleMsg = "保存";
             },
             // 保存编辑
             saveEdit() {
@@ -468,6 +469,7 @@
                     liveCity: self.form.selectedLiveAddress[1] == null ? "" : self.form.selectedLiveAddress[1],
                     liveCounty: self.form.selectedLiveAddress[2] == null ? "" : self.form.selectedLiveAddress[2],
                     liveAddress: self.form.liveAddress,
+                    liveAddressInfo: self.getCodeToText(self.form.selectedLiveAddress[0], self.form.selectedLiveAddress[1], self.form.selectedLiveAddress[2], self.form.liveAddress),
                     occupationTypeFirst: self.form.occupationType[0],
                     occupationTypeSecond: self.form.occupationType[1],
                     occupationMark: self.form.occupationMark,
@@ -475,6 +477,7 @@
                     workCity: self.form.selectedWorkAddress[1] == null ? "" : self.form.selectedWorkAddress[1],
                     workCounty: self.form.selectedWorkAddress[2] == null ? "" : self.form.selectedWorkAddress[2],
                     workAddress: self.form.workAddress,
+                    workAddressInfo: self.getCodeToText(self.form.selectedWorkAddress[0], self.form.selectedWorkAddress[1], self.form.selectedWorkAddress[2], self.form.workAddress),
                     wechat: self.form.wechat,
                     qq: self.form.qq,
                     phone: self.form.phone,
@@ -496,10 +499,10 @@
                     fileList: editFileList
                 }
 
-                self.$post("/base/user/edit", editForm).then(function (response) {
+                self.$post("/base/user/merge", editForm).then(function (response) {
                     if (response.status == 0) {
                         self.form = {};
-                        self.editVisible = false;
+                        self.mergeVisible = false;
                         self.getData();
                         self.$message.success(`修改成功`);
                     } else {
@@ -508,6 +511,22 @@
                 }).catch(function (err) {
                     self.$message.error(err);
                 })
+            },
+            getCodeToText(province, city, county, address) {
+                let area = "";
+                if (null != province && undefined != province) {
+                    area += CodeToText[province] + "/";
+                }
+                if (null != province ) {
+                    area += CodeToText[city] + "/";
+                }
+                if (null != province ) {
+                    area += CodeToText[county] + "/";
+                }
+                if (null != address) {
+                    area += address;
+                }
+                return area;
             },
             // 分页导航
             handlePageChange(val) {

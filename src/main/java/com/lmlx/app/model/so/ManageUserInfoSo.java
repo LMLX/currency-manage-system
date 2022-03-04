@@ -228,4 +228,8 @@ public class ManageUserInfoSo {
 
     private List<ManageUserPhotoInfoSo> fileList;
 
+
+    private String liveAddressInfo;
+    private String workAddressInfo;
+
 }

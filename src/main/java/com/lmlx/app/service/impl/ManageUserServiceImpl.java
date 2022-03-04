@@ -25,6 +25,7 @@ import com.lmlx.app.service.ManageUserService;
 import com.lmlx.app.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -88,16 +89,30 @@ public class ManageUserServiceImpl extends ServiceImpl<ManageUserInfoMapper, Man
     }
 
     @Override
-    public void edit(ManageUserInfoSo so) {
+    @Transactional
+    public void merge(ManageUserInfoSo so) {
         ManageUserInfoPo po = BeanUtil.copyProperties(so, ManageUserInfoPo.class);
-        manageUserInfoMapper.updateById(po);
-        //删除 并添加
-
-        if (CollectionUtils.isNotEmpty(so.getFileList())) {
-            addPhoto(so.getUserId(), so.getFileList());
+        if (null != so.getUserId()) {
+            manageUserInfoMapper.updateById(po);
+            if (CollectionUtils.isNotEmpty(so.getFileList())) {
+                addPhoto(so.getUserId(), so.getFileList());
+            }
+        } else {
+            manageUserInfoMapper.insert(po);
+            if (CollectionUtils.isNotEmpty(so.getFileList())) {
+                addPhoto(po.getUserId(), so.getFileList());
+            }
         }
-        System.out.println(JSONObject.toJSONString(po));
 
+    }
+
+    @Override
+    @Transactional
+    public void delete(ManageUserInfoSo so) {
+        //删人
+        manageUserInfoMapper.deleteById(so.getUserId());
+        //删图
+        manageUserPhotoInfoService.deleteByRelationId(so.getUserId());
     }
 
     private void addPhoto(Long userId, List<ManageUserPhotoInfoSo> soList) {

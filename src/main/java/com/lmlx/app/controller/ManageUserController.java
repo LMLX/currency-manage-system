@@ -49,10 +49,18 @@ public class ManageUserController {
     }
 
     @CheckLoginOut
-    @RequestMapping(value = "/edit")
-    public Object update(@RequestBody ManageUserInfoSo so) {
+    @RequestMapping(value = "/merge")
+    public Object merge(@RequestBody ManageUserInfoSo so) {
         System.out.println(JSONObject.toJSONString(so));
-        manageUserService.edit(so);
+        manageUserService.merge(so);
+        return AjaxResult.markSuccess();
+    }
+
+    @CheckLoginOut
+    @RequestMapping(value = "/delete")
+    public Object delete(@RequestBody ManageUserInfoSo so) {
+        System.out.println(JSONObject.toJSONString(so));
+        manageUserService.delete(so);
         return AjaxResult.markSuccess();
     }
 
