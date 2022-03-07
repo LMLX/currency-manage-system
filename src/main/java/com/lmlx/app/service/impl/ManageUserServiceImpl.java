@@ -19,6 +19,7 @@ import com.lmlx.app.model.po.ManageUserInfoPo;
 import com.lmlx.app.model.po.ManageUserPhotoInfoPo;
 import com.lmlx.app.model.so.ManageUserInfoSo;
 import com.lmlx.app.model.so.ManageUserPhotoInfoSo;
+import com.lmlx.app.model.so.ManageUserQuery;
 import com.lmlx.app.model.vo.ManageUserInfoVo;
 import com.lmlx.app.service.ManageUserPhotoInfoService;
 import com.lmlx.app.service.ManageUserService;
@@ -68,11 +69,11 @@ public class ManageUserServiceImpl extends ServiceImpl<ManageUserInfoMapper, Man
     }
 
     @Override
-    public PageResultInfo qryAll(Page page) {
+    public PageResultInfo qryAll(ManageUserQuery query) {
         PageResultInfo pageResultInfo = new PageResultInfo();
         List<ManageUserInfoVo> list = new ArrayList<>();
-        PageHelper.startPage(page.getPageNum(), page.getPageSize());
-        List<ManageUserInfoPo> poList = manageUserInfoMapper.qryAll();
+        PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        List<ManageUserInfoPo> poList = manageUserInfoMapper.qryAll(query);
         PageInfo pageInfo = new PageInfo(poList);
         if (!CollectionUtils.isEmpty(poList)) {
             poList.forEach(po -> {

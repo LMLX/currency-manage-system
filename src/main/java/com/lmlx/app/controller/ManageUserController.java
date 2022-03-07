@@ -6,6 +6,7 @@ import com.lmlx.app.model.AjaxResult;
 import com.lmlx.app.model.Page;
 import com.lmlx.app.model.so.InterfaceModelInfoSo;
 import com.lmlx.app.model.so.ManageUserInfoSo;
+import com.lmlx.app.model.so.ManageUserQuery;
 import com.lmlx.app.service.ManageUserService;
 import com.lmlx.app.system.CheckLoginOut;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class ManageUserController {
 
     @CheckLoginOut
     @RequestMapping(value = "/qryAll")
-    public Object qryAll(@Valid @RequestBody Page page) {
+    public Object qryAll(@Valid @RequestBody ManageUserQuery page) {
         Object result = manageUserService.qryAll(page);
         return AjaxResult.markSuccess(result);
     }

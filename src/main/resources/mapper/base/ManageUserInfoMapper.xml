@@ -14,8 +14,60 @@
         WHERE ACCOUNT = #{account}
     </select>
 
-    <select id="qryAll" resultType="com.lmlx.app.model.po.ManageUserInfoPo">
+    <select id="qryAll" parameterType="com.lmlx.app.model.so.ManageUserQuery" resultType="com.lmlx.app.model.po.ManageUserInfoPo">
         SELECT <include refid="baseSelectStr"/>
         FROM MANAGE_USER_INFO ORDER BY USER_ID, ROLE_ID
+        <where>
+            <if test="null != userName and '' != userName">
+                AND USER_NAME LIKE concat('%', #{userName},'%')
+            </if>
+            <if test="null != sex">
+                AND sex = #{sex}
+            </if>
+
+            <if test="null != heightLow">
+                AND height >= #{heightLow}
+            </if>
+            <if test="null != heightHigh">
+                AND height &lt;= #{heightHigh}
+            </if>
+
+            <if test="null != weightLow">
+                AND weight >= #{weightLow}
+            </if>
+            <if test="null != weightHigh">
+                AND weight &lt;= #{weightHigh}
+            </if>
+
+            <if test="null != birthdayLow">
+                AND birthday >= #{birthdayLow}
+            </if>
+            <if test="null != birthdayHigh">
+                AND birthday &lt;= #{birthdayHigh}
+            </if>
+
+            <if test="null != salaryLow">
+                AND salary >= #{salaryLow}
+            </if>
+            <if test="null != salaryHigh">
+                AND salary &lt;= #{salaryHigh}
+            </if>
+
+            <if test="null != isMarried">
+                AND is_married = #{isMarried}
+            </if>
+
+            <if test="null != education">
+                AND education = #{education}
+            </if>
+
+            <if test="null != hasHouse">
+                AND has_house = #{hasHouse}
+            </if>
+
+            <if test="null != hasCar">
+                AND has_car = #{hasCar}
+            </if>
+        </where>
     </select>
 </mapper>

@@ -5,6 +5,7 @@ package com.lmlx.app.dao.base;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lmlx.app.model.po.ManageUserInfoPo;
 import com.lmlx.app.model.so.ManageUserInfoSo;
+import com.lmlx.app.model.so.ManageUserQuery;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
@@ -22,5 +23,5 @@ public interface ManageUserInfoMapper extends BaseMapper<ManageUserInfoPo> {
     @Update("UPDATE MANAGE_USER_INFO SET LAST_LOGIN_POSITION = #{lastLoginPosition}, LAST_LOGIN_TIME = SYSDATE() WHERE USER_ID=#{userId}")
     void updatePosi(ManageUserInfoPo po);
 
-    List<ManageUserInfoPo> qryAll();
+    List<ManageUserInfoPo> qryAll(ManageUserQuery query);
 }

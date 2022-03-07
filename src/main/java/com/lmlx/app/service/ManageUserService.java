@@ -3,6 +3,7 @@ package com.lmlx.app.service;
 import com.lmlx.app.model.Page;
 import com.lmlx.app.model.PageResultInfo;
 import com.lmlx.app.model.so.ManageUserInfoSo;
+import com.lmlx.app.model.so.ManageUserQuery;
 
 /**
  * @author jiahao jin
@@ -12,7 +13,7 @@ public interface ManageUserService {
 
     Object checkLogin(ManageUserInfoSo so);
 
-    PageResultInfo qryAll(Page page);
+    PageResultInfo qryAll(ManageUserQuery query);
 
     void merge(ManageUserInfoSo so);
 
