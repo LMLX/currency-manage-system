@@ -44,7 +44,7 @@ public class ManageUserController {
 
     @CheckLoginOut
     @RequestMapping(value = "/qryAll")
-    public Object qryAll(@Valid @RequestBody ManageUserQuery page) {
+    public Object qryAll(@RequestBody ManageUserQuery page) {
         Object result = manageUserService.qryAll(page);
         return AjaxResult.markSuccess(result);
     }

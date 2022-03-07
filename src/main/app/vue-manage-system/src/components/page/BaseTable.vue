@@ -11,9 +11,46 @@
             <div class="handle-box">
 <!--                <el-cascader :options="query.liveAddress" v-model="query.selectedLiveAddress" @change="changeLiveAddress">-->
 <!--                </el-cascader>-->
-                <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
-                <el-button type="primary" icon="el-icon-search" @click="handleAdd">添加</el-button>
-                <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+                <el-form ref="form" :model="form" label-width="40px" :inline="true">
+                    <el-row>
+
+                        <el-form-item label="姓名">
+                            <el-input style="width:100px" v-model="query.userName" placeholder="用户名" class="handle-input mr10"></el-input>
+                        </el-form-item>
+                        <el-form-item label="性别">
+                            <el-select style="width:80px" v-model="query.sex">
+                                <el-option
+                                v-for="item in allSex"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="身高">
+                            <el-input-number v-model="query.heightLow" :min="140" :max="200"></el-input-number>
+                            至
+                            <el-input-number v-model="query.heightHigh" :min="140" :max="200"></el-input-number>
+                        </el-form-item>
+
+                        <el-form-item label="体重">
+                            <el-input-number v-model="query.weightLow" :min="140" :max="200"></el-input-number>
+                            至
+                            <el-input-number v-model="query.weightHigh" :min="140" :max="200"></el-input-number>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-date-picker
+                            v-model="query.birthday"
+                            type="monthrange"
+                            range-separator="至"
+                            start-placeholder="开始月份"
+                            end-placeholder="结束月份">
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-button type="primary" icon="el-icon-search" @click="handleAdd">添加</el-button>
+                        <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+                    </el-row>
+                </el-form>
             </div>
             <el-table
                 :data="tableData"

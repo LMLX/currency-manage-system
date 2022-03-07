@@ -1,10 +1,12 @@
 package com.lmlx.app.model.so;
 
 import com.lmlx.app.model.Page;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Data
 public class ManageUserQuery extends Page {
     /**
      * 姓名
