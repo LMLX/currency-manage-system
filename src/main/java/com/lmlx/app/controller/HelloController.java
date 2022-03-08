@@ -28,7 +28,7 @@ public class HelloController {
 
     @RequestMapping(value = "/hello")
     public Object hello(){
-        testAService.saveA();
+//        testAService.saveA();
 //        return JSONObject.toJSON(manageUserInfoMapper.qryById(1L));
 //        System.out.println(1/0);
 //        String[] index = new String[]{"aaa", "bbb", "ccc"};
@@ -44,6 +44,19 @@ public class HelloController {
 //        }).start();
 //        RestTemplate restTemplate = new RestTemplate();
 //        String s= restTemplate.getForObject("http://localhost:8101/park/model/camera-info/qryLRUCameraInfoTop", String.class);
+        Node n1 = new Node();
+        Node n2 = new Node();
+        n1.next = n2;
+        Node n3 = new Node();
+        n2.next = n3;
+        n3.next = n1;
+        Node current = n1;
+        while (null != current) {
+            current = current.next;
+        }
         return AjaxResult.markSuccess();
+    }
+    private static class Node {
+        public Node next;
     }
 }

@@ -16,7 +16,7 @@
 
     <select id="qryAll" parameterType="com.lmlx.app.model.so.ManageUserQuery" resultType="com.lmlx.app.model.po.ManageUserInfoPo">
         SELECT <include refid="baseSelectStr"/>
-        FROM MANAGE_USER_INFO ORDER BY USER_ID, ROLE_ID
+        FROM MANAGE_USER_INFO
         <where>
             <if test="null != userName and '' != userName">
                 AND USER_NAME LIKE concat('%', #{userName},'%')
@@ -69,5 +69,6 @@
                 AND has_car = #{hasCar}
             </if>
         </where>
+        ORDER BY USER_ID, ROLE_ID
     </select>
 </mapper>

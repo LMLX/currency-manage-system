@@ -95,14 +95,14 @@ public class ManageUserServiceImpl extends ServiceImpl<ManageUserInfoMapper, Man
         ManageUserInfoPo po = BeanUtil.copyProperties(so, ManageUserInfoPo.class);
         if (null != so.getUserId()) {
             manageUserInfoMapper.updateById(po);
-            if (CollectionUtils.isNotEmpty(so.getFileList())) {
+//            if (CollectionUtils.isNotEmpty(so.getFileList())) {
                 addPhoto(so.getUserId(), so.getFileList());
-            }
+//            }
         } else {
             manageUserInfoMapper.insert(po);
-            if (CollectionUtils.isNotEmpty(so.getFileList())) {
+//            if (CollectionUtils.isNotEmpty(so.getFileList())) {
                 addPhoto(po.getUserId(), so.getFileList());
-            }
+//            }
         }
 
     }
