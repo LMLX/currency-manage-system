@@ -44,16 +44,17 @@ public class HelloController {
 //        }).start();
 //        RestTemplate restTemplate = new RestTemplate();
 //        String s= restTemplate.getForObject("http://localhost:8101/park/model/camera-info/qryLRUCameraInfoTop", String.class);
-        Node n1 = new Node();
-        Node n2 = new Node();
-        n1.next = n2;
-        Node n3 = new Node();
-        n2.next = n3;
-        n3.next = n1;
-        Node current = n1;
-        while (null != current) {
-            current = current.next;
-        }
+//        Node n1 = new Node();
+//        Node n2 = new Node();
+//        n1.next = n2;
+//        Node n3 = new Node();
+//        n2.next = n3;
+//        n3.next = n1;
+//        Node current = n1;
+//        while (null != current) {
+//            current = current.next;
+//        }
+//        System.out.println(1/0);
         return AjaxResult.markSuccess();
     }
     private static class Node {
