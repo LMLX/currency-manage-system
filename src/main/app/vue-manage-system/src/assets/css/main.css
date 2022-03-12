@@ -227,3 +227,7 @@ a {
 /*    width: 280px;*/
 /*    margin-bottom: 18px;*/
 /*}*/
+
+.el-table .cell {
+    white-space: nowrap
+}

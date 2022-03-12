@@ -14,23 +14,23 @@
                 <el-form ref="form" :model="form" label-width="70px" :inline="true">
                     <el-row :gutter="20">
 
-                        <el-form-item label="姓名" style="margin-right: 40px;">
-                            <el-input style="width:120px" v-model="query.userName" placeholder="用户名"></el-input>
+                        <el-form-item label="姓名" >
+                            <el-input style="width:120px" v-model="query.userName" placeholder="用户名" clearable></el-input>
                         </el-form-item>
 
-                        <el-form-item label="身高" style="margin-right: 40px;">
-                            <el-input-number v-model="query.heightLow" :min="140" :max="200"></el-input-number>
+                        <el-form-item label="身高">
+                            <el-input-number v-model="query.heightLow"  controls-position="right"></el-input-number>
                             至
-                            <el-input-number v-model="query.heightHigh" :min="140" :max="200"></el-input-number>
+                            <el-input-number v-model="query.heightHigh" controls-position="right"></el-input-number>
                         </el-form-item>
 
-                        <el-form-item label="居住地址">
+                        <el-form-item label="居住地址"  style="margin-left: 35px;">
                             <!-- <el-input v-model="form.height"></el-input> -->
-                            <el-cascader style="width:120px" :options="queryAllAddressInfo" v-model="query.selectedLiveAddress" @change="changeLiveAddress">
+                            <el-cascader clearable style="width:120px" :options="queryAllAddressInfo" v-model="query.selectedLiveAddress" @change="changeLiveAddress">
                             </el-cascader>
                         </el-form-item>
-                        <el-form-item label="出生" style="margin-right: 40px;">
-                            <el-date-picker
+                        <el-form-item label="出生" >
+                            <el-date-picker clearable
                                 v-model="query.birthday"
                                 type="monthrange"
                                 range-separator="至"
@@ -41,8 +41,8 @@
 
                     </el-row>
                     <el-row :gutter="20">
-                        <el-form-item label="性别" style="margin-right: 40px;">
-                            <el-select style="width:120px" v-model="query.sex">
+                        <el-form-item label="性别" >
+                            <el-select clearable style="width:120px" v-model="query.sex">
                                 <el-option
                                     v-for="item in allSex"
                                     :key="item.value"
@@ -52,22 +52,22 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="体重" style="margin-right: 40px;">
-                            <el-input-number v-model="query.weightLow" :min="140" :max="200"></el-input-number>
+                        <el-form-item label="体重">
+                            <el-input-number v-model="query.weightLow"  controls-position="right"></el-input-number>
                             至
-                            <el-input-number v-model="query.weightHigh" :min="140" :max="200"></el-input-number>
+                            <el-input-number v-model="query.weightHigh"  controls-position="right"></el-input-number>
                         </el-form-item>
 
 
 
-                        <el-form-item label="工作地址">
+                        <el-form-item clearable label="工作地址" style="margin-left: 35px;">
                             <el-cascader style="width:120px" :options="queryAllAddressInfo" v-model="query.selectedWorkAddress" @change="changeLiveAddress">
                             </el-cascader>
                         </el-form-item>
-                        <el-form-item label="年薪" style="margin-right: 40px;">
-                            <el-input-number v-model="query.salaryLow" :min="140" :max="200"></el-input-number>
+                        <el-form-item label="年薪" >
+                            <el-input-number v-model="query.salaryLow"  controls-position="right"></el-input-number>
                             至
-                            <el-input-number v-model="query.salaryHigh" :min="140" :max="200"></el-input-number>
+                            <el-input-number v-model="query.salaryHigh"  controls-position="right"></el-input-number>
                         </el-form-item>
 
 
@@ -79,7 +79,7 @@
 
                         <el-form-item label="婚姻">
                             <!-- <el-input v-model="form.isMarried"></el-input> -->
-                            <el-select style="width:180px" v-model="query.isMarried" placeholder="请选择">
+                            <el-select clearable style="width:120px" v-model="query.isMarried" placeholder="请选择">
                                 <el-option
                                     v-for="item in allMarried"
                                     :key="item.value"
@@ -89,8 +89,8 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item label="房" style="margin-right: 40px;">
-                            <el-select style="width:120px" v-model="query.hasHouse" placeholder="请选择">
+                        <el-form-item label="房" >
+                            <el-select clearable style="width:120px" v-model="query.hasHouse" placeholder="请选择">
                                 <el-option
                                     v-for="item in allHouse"
                                     :key="item.value"
@@ -100,7 +100,7 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item label="车" >
-                            <el-select style="width:120px" v-model="query.hasCar" placeholder="请选择">
+                            <el-select clearable style="width:120px" v-model="query.hasCar" placeholder="请选择">
                                 <el-option
                                     v-for="item in allCar"
                                     :key="item.value"
@@ -124,10 +124,10 @@
                 class="table"
                 ref="multipleTable"
                 header-cell-class-name="table-header"
-                @selection-change="handleSelectionChange"
+                @selection-change="handleSelectionChange" style="width: 100%"
             >
-                <el-table-column fixed prop="userName" label="姓名"></el-table-column>
-                <el-table-column prop="sex" label="性别">
+                <el-table-column width="80" fixed prop="userName" label="姓名"></el-table-column>
+                <el-table-column width="50" prop="sex" label="性别">
                     <template slot-scope="scope">
                         {{scope.row.sex == 1 ? "男" : scope.row.sex == 2 ? "女" : "未知"}}
                     </template>
@@ -141,13 +141,20 @@
                         ></el-image>
                     </template>
                 </el-table-column>
-                <el-table-column prop="height" label="身高(cm)"></el-table-column>
-                <el-table-column prop="weight" label="体重(斤)"></el-table-column>
-                <el-table-column prop="age" label="年龄(周岁)"></el-table-column>
-                <el-table-column prop="birthday" label="生日"></el-table-column>
-                <el-table-column prop="liveAddressInfo" label="居住地址">
+                <el-table-column width="50" prop="height" label="身高(cm)"></el-table-column>
+                <el-table-column width="50" prop="weight" label="体重(斤)"></el-table-column>
+                <el-table-column width="40" prop="age" label="年龄(周岁)"></el-table-column>
+                <el-table-column width="100" prop="birthday" label="生日"></el-table-column>
+                <el-table-column width="200" prop="liveAddressInfo" label="居住地址" >
+                        <template slot-scope="scope">
+                            <el-tooltip class="item" effect="dark"  placement="left">
+                                <span>{{scope.row.liveAddressInfo}}</span>
+                                <span slot="content">{{scope.row.liveAddressInfo}}</span>
+                            </el-tooltip>
+                        
+                    </template>
                 </el-table-column>
-                <el-table-column prop="workAddressInfo" label="工作地址"></el-table-column>
+                <el-table-column width="200" prop="workAddressInfo" label="工作地址"></el-table-column>
                 <el-table-column prop="educationInfo" label="学历"></el-table-column>
                 <el-table-column prop="salary" label="年薪(万)"></el-table-column>
                 <el-table-column prop="hasHouse" label="房情况">
@@ -396,25 +403,23 @@
                                     :src="file.url" alt=""
                                 >
                                 <span class="el-upload-list__item-actions">
-        <span
-            class="el-upload-list__item-preview"
-            @click="handlePictureCardPreview(file)"
-        >
-          <i class="el-icon-zoom-in"></i>
-        </span>
-        <span
-            v-if="!dialogDisabled"
-            class="el-upload-list__item-delete"
-            @click="handleRemove(file)"
-        >
-          <i class="el-icon-delete"></i>
-        </span>
-      </span>
+                                <span
+                                    class="el-upload-list__item-preview"
+                                    @click="handlePictureCardPreview(file)"
+                                >
+                                <i class="el-icon-zoom-in"></i>
+                                </span>
+                                <span
+                                    v-if="!dialogDisabled"
+                                    class="el-upload-list__item-delete"
+                                    @click="handleRemove(file)"
+                                >
+                                <i class="el-icon-delete"></i>
+                                </span>
+                            </span>
                             </div>
                         </el-upload>
-                        <el-dialog :visible.sync="dialogVisible">
-                            <img width="100%" :src="dialogImageUrl" alt="">
-                        </el-dialog>
+                        
                     </el-form-item>
                 </el-row>
 
@@ -424,6 +429,9 @@
                 <el-button type="primary" @click="saveEdit">确 定</el-button>
             </span>
         </el-dialog>
+        <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false">
+                            <img width="100%" :src="dialogImageUrl" alt="">
+                        </el-dialog>
     </div>
 </template>
 
@@ -770,4 +778,5 @@
         width: 40px;
         height: 40px;
     }
+
 </style>
