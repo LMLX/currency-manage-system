@@ -110,8 +110,8 @@
                             </el-select>
                         </el-form-item>
 
-                        <el-button type="primary" icon="el-icon-search" @click="handleAdd">添加</el-button>
                         <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
+                        <el-button type="primary" icon="el-icon-search" @click="handleAdd">添加</el-button>
 
                     </el-row>
 
@@ -132,7 +132,7 @@
                         {{scope.row.sex == 1 ? "男" : scope.row.sex == 2 ? "女" : "未知"}}
                     </template>
                 </el-table-column>
-                <el-table-column label="头像(查看大图)" align="center">
+                <el-table-column width="100" label="头像" align="center">
                     <template slot-scope="scope">
                         <el-image
                             class="table-td-thumb"
@@ -141,13 +141,13 @@
                         ></el-image>
                     </template>
                 </el-table-column>
-                <el-table-column width="50" prop="height" label="身高(cm)"></el-table-column>
-                <el-table-column width="50" prop="weight" label="体重(斤)"></el-table-column>
-                <el-table-column width="40" prop="age" label="年龄(周岁)"></el-table-column>
+                <el-table-column width="80" prop="height" label="身高(cm)"></el-table-column>
+                <el-table-column width="80" prop="weight" label="体重(斤)"></el-table-column>
+                <el-table-column width="110" prop="age" label="年龄(周岁)"></el-table-column>
                 <el-table-column width="100" prop="birthday" label="生日"></el-table-column>
                 <el-table-column width="200" prop="liveAddressInfo" label="居住地址" >
                         <template slot-scope="scope">
-                            <el-tooltip class="item" effect="dark"  placement="left">
+                            <el-tooltip class="item" effect="dark"  placement="left-">
                                 <span>{{scope.row.liveAddressInfo}}</span>
                                 <span slot="content">{{scope.row.liveAddressInfo}}</span>
                             </el-tooltip>
@@ -169,7 +169,7 @@
                 </el-table-column>
                 <el-table-column prop="is_only" label="独生子女">
                     <template slot-scope="scope">
-                        {{scope.row.is_only ? "是":"否"}}
+                        {{scope.row.isOnly ? "是":"否"}}
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
@@ -451,7 +451,7 @@
                 allSex:[{value: 1,label: '男'}, {value: 2,label: '女'}, {value: 3,label: '未知'}],
                 allEducation:[{value: 0,label: '无教育'},{value: 10,label: '小学毕业'},{value: 20,label: '初中毕业'},{value: 30,label: '高中毕业'},{value: 40,label: '专科'},{value: 50,label: '本科'},{value: 60,label: '硕士'},{value: 70,label: '博士'}],
                 allMarried:[{value: false,label: '未婚'}, {value: true,label: '离异'}],
-                allOnly:[{value: false,label: '是'}, {value: true,label: '否'}],
+                allOnly:[{value: false,label: '否'}, {value: true,label: '是'}],
                 allHouse:[{value: false,label: '无'}, {value: true,label: '有'}],
                 allCar:[{value: false,label: '无'}, {value: true,label: '有'}],
                 query: {
@@ -509,7 +509,14 @@
             handleSearch() {
                 this.$set(this.query, 'pageIndex', 1);
                 let self = this;
-                console.log(self.query)
+                if (null != self.query.birthday && undefined != self.query.birthday && self.query.birthday.length >= 2) {
+                    self.query.birthdayLow = self.query.birthday[0]
+                    self.query.birthdayHigh = self.query.birthday[1]
+                } else {
+                    self.query.birthdayLow = null;
+                    self.query.birthdayHigh = null;
+                }
+                
                 this.getData(self.query);
             },
             // 删除操作
