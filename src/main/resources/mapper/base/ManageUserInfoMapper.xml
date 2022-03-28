@@ -68,6 +68,30 @@
             <if test="null != hasCar">
                 AND has_car = #{hasCar}
             </if>
+
+            <if test="null != liveProvince">
+                AND live_province = #{liveProvince}
+            </if>
+
+            <if test="null != liveCity">
+                AND live_city = #{liveCity}
+            </if>
+
+            <if test="null != liveCounty">
+                AND live_county = #{liveCounty}
+            </if>
+
+            <if test="null != workProvince">
+                AND work_province = #{workProvince}
+            </if>
+
+            <if test="null != workCity">
+                AND work_city = #{workCity}
+            </if>
+
+            <if test="null != workCounty">
+                AND work_county = #{workCounty}
+            </if>
         </where>
         ORDER BY USER_ID, ROLE_ID
     </select>

@@ -1,6 +1,7 @@
 package com.lmlx.app.model.so;
 
 import com.lmlx.app.model.Page;
+import com.lmlx.app.system.config.tableInfo.Column;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -55,4 +56,18 @@ public class ManageUserQuery extends Page {
     private Boolean hasHouse;
 
     private Boolean hasCar;
+
+    private String workProvince;
+
+    private String workCity;
+
+    private String workCounty;
+
+    private String liveProvince;
+
+    private String liveCity;
+
+    private String liveCounty;
+
+
 }
