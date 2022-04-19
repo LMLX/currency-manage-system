@@ -231,5 +231,7 @@ public class ManageUserInfoSo {
 
     private String liveAddressInfo;
     private String workAddressInfo;
+    private String mark;
+    private String chooseMsg;
 
 }

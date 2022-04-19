@@ -281,6 +281,8 @@ public class ManageUserInfoPo  implements Serializable {
    	@Column(value = "update_time" )
 	private Date updateTime;
 
-	   private String liveAddressInfo;
-	   private String workAddressInfo;
+	private String liveAddressInfo;
+	private String workAddressInfo;
+	private String mark;
+	private String chooseMsg;
 }

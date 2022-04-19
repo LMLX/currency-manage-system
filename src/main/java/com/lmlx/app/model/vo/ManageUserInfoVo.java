@@ -240,6 +240,9 @@ public class ManageUserInfoVo {
 
     private String zodiac;
 
+    private String mark;
+
+    private String chooseMsg;
 
     private List<ManageUserPhotoInfoSo> fileList;
 }

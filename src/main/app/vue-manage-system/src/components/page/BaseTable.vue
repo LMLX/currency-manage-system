@@ -126,21 +126,22 @@
                 header-cell-class-name="table-header"
                 @selection-change="handleSelectionChange" style="width: 100%"
             >
+                <el-table-column width="80" fixed prop="account" label="编号"></el-table-column>
                 <el-table-column width="80" fixed prop="userName" label="姓名"></el-table-column>
                 <el-table-column width="50" prop="sex" label="性别">
                     <template slot-scope="scope">
                         {{scope.row.sex == 1 ? "男" : scope.row.sex == 2 ? "女" : "未知"}}
                     </template>
                 </el-table-column>
-                <el-table-column width="100" label="头像" align="center">
-                    <template slot-scope="scope">
-                        <el-image
-                            class="table-td-thumb"
-                            :src="scope.row.fileList.length === 0 ? '' : scope.row.fileList[0].url"
-                            :preview-src-list="scope.row.fileList"
-                        ></el-image>
-                    </template>
-                </el-table-column>
+<!--                <el-table-column width="100" label="头像" align="center">-->
+<!--                    <template slot-scope="scope">-->
+<!--                        <el-image-->
+<!--                            class="table-td-thumb"-->
+<!--                            :src="scope.row.fileList.length === 0 ? '' : scope.row.fileList[0].url"-->
+<!--                            :preview-src-list="scope.row.fileList"-->
+<!--                        ></el-image>-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
                 <el-table-column width="80" prop="height" label="身高(cm)"></el-table-column>
                 <el-table-column width="80" prop="weight" label="体重(斤)"></el-table-column>
                 <el-table-column width="110" prop="age" label="年龄(周岁)"></el-table-column>
@@ -151,7 +152,7 @@
                                 <span>{{scope.row.liveAddressInfo}}</span>
                                 <span slot="content">{{scope.row.liveAddressInfo}}</span>
                             </el-tooltip>
-                        
+
                     </template>
                 </el-table-column>
                 <el-table-column width="200" prop="workAddressInfo" label="工作地址"></el-table-column>
@@ -171,6 +172,10 @@
                     <template slot-scope="scope">
                         {{scope.row.isOnly ? "是":"否"}}
                     </template>
+                </el-table-column>
+                <el-table-column prop="mark" label="本人备注">
+                </el-table-column>
+                <el-table-column prop="chooseMsg" label="择偶标准">
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
@@ -268,7 +273,7 @@
                 <el-row>
                     <el-form-item label="居住地址">
                     <!-- <el-input v-model="form.height"></el-input> -->
-                        <el-cascader style="width:180px" :options="allAddressInfo" v-model="form.selectedLiveAddress" @change="changeLiveAddress">
+                        <el-cascader style="width:180px" :options="queryAllAddressInfo" v-model="form.selectedLiveAddress" @change="changeLiveAddress">
                         </el-cascader>
                     </el-form-item>
                     <el-form-item label="详情地址">
@@ -278,7 +283,7 @@
                 </el-row>
                 <el-row>
                     <el-form-item label="工作地址">
-                        <el-cascader style="width:180px" :options="allAddressInfo" v-model="form.selectedWorkAddress" @change="changeLiveAddress">
+                        <el-cascader style="width:180px" :options="queryAllAddressInfo" v-model="form.selectedWorkAddress" @change="changeLiveAddress">
                         </el-cascader>
                     </el-form-item>
                     <el-form-item label="详情地址">
@@ -388,40 +393,52 @@
 
                 </el-row>
                 <el-row>
-                    <el-form-item label="照片">
-                        <el-upload
-                            class="upload-demo"
-                            action="http://localhost:8081/base/user/upload"
-                            :on-preview="handlePreview"
-                            :file-list="form.fileList"
-                            :on-success="uploadSuccess"
-                            list-type="picture-card">
-                            <i slot="default" class="el-icon-plus"></i>
-                            <div slot="file" slot-scope="{file}">
-                                <img
-                                    class="el-upload-list__item-thumbnail"
-                                    :src="file.url" alt=""
-                                >
-                                <span class="el-upload-list__item-actions">
-                                <span
-                                    class="el-upload-list__item-preview"
-                                    @click="handlePictureCardPreview(file)"
-                                >
-                                <i class="el-icon-zoom-in"></i>
-                                </span>
-                                <span
-                                    v-if="!dialogDisabled"
-                                    class="el-upload-list__item-delete"
-                                    @click="handleRemove(file)"
-                                >
-                                <i class="el-icon-delete"></i>
-                                </span>
-                            </span>
-                            </div>
-                        </el-upload>
-                        
+                    <el-form-item label="本人备注">
+                        <el-input type="textarea" style="width:450px" v-model="form.mark"></el-input>
                     </el-form-item>
+
                 </el-row>
+                <el-row>
+                    <el-form-item label="择偶标准">
+                        <el-input type="textarea" style="width:450px" v-model="form.chooseMsg"></el-input>
+                    </el-form-item>
+
+                </el-row>
+<!--                <el-row>-->
+<!--                    <el-form-item label="照片">-->
+<!--                        <el-upload-->
+<!--                            class="upload-demo"-->
+<!--                            action="http://localhost:8081/base/user/upload"-->
+<!--                            :on-preview="handlePreview"-->
+<!--                            :file-list="form.fileList"-->
+<!--                            :on-success="uploadSuccess"-->
+<!--                            list-type="picture-card">-->
+<!--                            <i slot="default" class="el-icon-plus"></i>-->
+<!--                            <div slot="file" slot-scope="{file}">-->
+<!--                                <img-->
+<!--                                    class="el-upload-list__item-thumbnail"-->
+<!--                                    :src="file.url" alt=""-->
+<!--                                >-->
+<!--                                <span class="el-upload-list__item-actions">-->
+<!--                                <span-->
+<!--                                    class="el-upload-list__item-preview"-->
+<!--                                    @click="handlePictureCardPreview(file)"-->
+<!--                                >-->
+<!--                                <i class="el-icon-zoom-in"></i>-->
+<!--                                </span>-->
+<!--                                <span-->
+<!--                                    v-if="!dialogDisabled"-->
+<!--                                    class="el-upload-list__item-delete"-->
+<!--                                    @click="handleRemove(file)"-->
+<!--                                >-->
+<!--                                <i class="el-icon-delete"></i>-->
+<!--                                </span>-->
+<!--                            </span>-->
+<!--                            </div>-->
+<!--                        </el-upload>-->
+
+<!--                    </el-form-item>-->
+<!--                </el-row>-->
 
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -448,7 +465,7 @@
                 allAddressInfo: regionData,
                 queryAllAddressInfo: regionDataPlus,
                 allOccupationType: [{"value":1001,"label":"IT服务","children":[{"value":1001000,"label":"计算机软件/硬件/信息服务"},{"value":1001001,"label":"互联网和相关服务"},{"value":1001002,"label":"其他"}],"icon":""},{"value":1002,"label":"制造业","children":[{"value":1002000,"label":"机械/电子"},{"value":1003000,"label":"服装/纺织"},{"value":1002002,"label":"汽车"},{"value":1002005,"label":"金属制品"},{"value":1003002,"label":"食品/饮料"},{"value":1003003,"label":"家具/家纺"},{"value":1002001,"label":"重工制造"},{"value":1003005,"label":"家电/数码"},{"value":1002004,"label":"橡胶/塑料"},{"value":1003004,"label":"日用品/化妆品"},{"value":1002006,"label":"化学原料制品"},{"value":1003007,"label":"文教/工美/体育/娱乐用品"},{"value":1003006,"label":"烟酒/茶"},{"value":1002007,"label":"非金属矿物"},{"value":1002003,"label":"其他"}],"icon":""},{"value":1003,"label":"批发/零售","children":[{"value":1003008,"label":"批发"},{"value":1003010,"label":"零售"},{"value":1003001,"label":"超市/便利店/百货商场"},{"value":1003011,"label":"进出口"},{"value":1003009,"label":"其他"}],"icon":""},{"value":1004,"label":"生活服务","children":[{"value":1004001,"label":"餐饮"},{"value":1004004,"label":"居民服务"},{"value":1004002,"label":"租赁和商务服务"},{"value":1004000,"label":"酒店/住宿"},{"value":1004003,"label":"其他"}],"icon":""},{"value":1005,"label":"文化/体育/娱乐业","children":[{"value":1005001,"label":"文化/体育"},{"value":1005002,"label":"娱乐/旅游"},{"value":1005000,"label":"新闻传媒"},{"value":1005003,"label":"其他"}],"icon":""},{"value":1006,"label":"建筑/房地产","children":[{"value":1006001,"label":"建筑业"},{"value":1006002,"label":"建材装修"},{"value":1006000,"label":"房地产"},{"value":1006003,"label":"其他"}],"icon":""},{"value":1007,"label":"教育","children":[{"value":1007000,"label":"学前教育","desc":"如：托儿所、幼儿园"},{"value":1007001,"label":"初中等教育","desc":"如：小学、初中、高中、职高"},{"value":1007002,"label":"高等教育","desc":"如：大学、高职、高专"},{"value":1007003,"label":"培训机构"},{"value":1007004,"label":"其他"}],"icon":""},{"value":1008,"label":"运输/物流/仓储","children":[{"value":1008003,"label":"物流/仓储"},{"value":1008000,"label":"道路/铁路运输"},{"value":1008004,"label":"邮政/快递"},{"value":1008001,"label":"航空运输"},{"value":1008002,"label":"水上运输"},{"value":1008005,"label":"其他"}],"icon":""},{"value":1009,"label":"医疗","children":[{"value":1009000,"label":"医院/医疗机构"},{"value":1009003,"label":"医疗器械"},{"value":1009001,"label":"医药制造"},{"value":1009002,"label":"医药流通"},{"value":1009004,"label":"其他"}],"icon":""},{"value":1010,"label":"政府","children":[{"value":1010000,"label":"党政机关"},{"value":1010001,"label":"国家权力/行政机构"},{"value":1010002,"label":"检察院/法院/公安"},{"value":1010003,"label":"民政/人社/交通/卫生"},{"value":1010004,"label":"发改委/经信委/商务局/统计局"},{"value":1010005,"label":"国土/规划"},{"value":1010006,"label":"税务/海关/工商/环保/物价/药品"},{"value":1010007,"label":"政协/民主党派"},{"value":1010008,"label":"地方政府"},{"value":1010009,"label":"其他"}],"icon":""},{"value":1011,"label":"金融","children":[{"value":1011000,"label":"保险"},{"value":1011001,"label":"银行"},{"value":1011002,"label":"证券/投资/基金"},{"value":1011003,"label":"其他"}],"icon":""},{"value":1012,"label":"能源/采矿","children":[{"value":1014003,"label":"电力/热力/燃气/水供应业"},{"value":1012003,"label":"石油/天然气"},{"value":1012002,"label":"煤炭"},{"value":1012001,"label":"有色金属"},{"value":1012000,"label":"钢铁"},{"value":1012004,"label":"其他"}],"icon":""},{"value":1013,"label":"农林渔牧","children":[{"value":1013000,"label":"农林渔牧"}],"icon":""},{"value":1014,"label":"其他行业","children":[{"value":1014000,"label":"科学研究和技术服务业"},{"value":1014002,"label":"社会组织"},{"value":1014001,"label":"水利和环境管理"},{"value":1014004,"label":"国际组织"},{"value":1014005,"label":"其他"}],"icon":""}],
-                allSex:[{value: 1,label: '男'}, {value: 2,label: '女'}, {value: 3,label: '未知'}],
+                allSex:[{value: 1,label: '男'}, {value: 2,label: '女'}, {value: 0,label: '未知'}],
                 allEducation:[{value: 0,label: '无教育'},{value: 10,label: '小学毕业'},{value: 20,label: '初中毕业'},{value: 30,label: '高中毕业'},{value: 40,label: '专科'},{value: 50,label: '本科'},{value: 60,label: '硕士'},{value: 70,label: '博士'}],
                 allMarried:[{value: false,label: '未婚'}, {value: true,label: '离异'}],
                 allOnly:[{value: false,label: '否'}, {value: true,label: '是'}],
@@ -516,7 +533,7 @@
                     self.query.birthdayLow = null;
                     self.query.birthdayHigh = null;
                 }
-                
+
                 this.getData(self.query);
             },
             // 删除操作
@@ -582,7 +599,9 @@
                 this.mergeVisibleMsg = "编辑";
             },
             handleAdd() {
-                this.form = {};
+                this.form = {
+                    selectedLiveAddress: ["330000", "330500", "330502"]
+                };
                 this.mergeVisible = true;
                 this.mergeVisibleMsg = "保存";
             },
@@ -624,7 +643,7 @@
                 let workCity = null;
                 let workCounty = null;
                 if (undefined != self.form.selectedWorkAddress) {
-                    liveProvince = self.form.selectedWorkAddress[0] == null ? "" : self.form.selectedWorkAddress[0];
+                    workProvince = self.form.selectedWorkAddress[0] == null ? "" : self.form.selectedWorkAddress[0];
                     workCity = self.form.selectedWorkAddress[1] == null ? "" : self.form.selectedWorkAddress[1];
                     workCounty = self.form.selectedWorkAddress[2] == null ? "" : self.form.selectedWorkAddress[2];
                 }
@@ -672,6 +691,8 @@
                     hasCar: self.form.hasCar,
                     carMark: self.form.carMark,
                     account: self.form.account,
+                    mark: self.form.mark,
+                    chooseMsg: self.form.chooseMsg,
                     email: self.form.email,
                     fileList: editFileList
                 }
