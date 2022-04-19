@@ -69,5 +69,7 @@ public class ManageUserQuery extends Page {
 
     private String liveCounty;
 
+    private Long roleId;
+
 
 }

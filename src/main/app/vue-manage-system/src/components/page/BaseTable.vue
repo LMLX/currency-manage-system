@@ -512,6 +512,7 @@
                 let self = this;
                 data.pageNum = self.query.pageIndex;
                 data.pageSize = self.query.pageSize;
+                data.roleId = 2;
                 self.$post("/base/user/qryAll", data).then(function (response) {
                     if (response.status == 0) {
                         self.tableData = response.obj.list;

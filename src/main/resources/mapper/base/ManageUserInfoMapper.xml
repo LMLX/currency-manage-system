@@ -18,6 +18,9 @@
         SELECT <include refid="baseSelectStr"/>
         FROM MANAGE_USER_INFO
         <where>
+            <if test="null != roleId">
+                AND role_id = #{roleId}
+            </if>
             <if test="null != userName and '' != userName">
                 AND USER_NAME LIKE concat('%', #{userName},'%')
             </if>
@@ -93,6 +96,6 @@
                 AND work_county = #{workCounty}
             </if>
         </where>
-        ORDER BY USER_ID, ROLE_ID
+        ORDER BY USER_ID, ROLE_ID desc;
     </select>
 </mapper>
