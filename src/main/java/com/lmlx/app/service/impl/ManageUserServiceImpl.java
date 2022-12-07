@@ -29,7 +29,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -128,18 +130,14 @@ public class ManageUserServiceImpl extends ServiceImpl<ManageUserInfoMapper, Man
         ManageUserInfoVo vo = new ManageUserInfoVo();
         if(po == null) return vo;
         else {
-//            ConverterRegistry converterRegistry = ConverterRegistry.getInstance();
-//            vo = converterRegistry.convert(ManageUserInfoVo.class, po);
-            System.out.println(po.getBirthday());
             vo = BeanUtil.copyProperties(po, ManageUserInfoVo.class);
-            System.out.println(vo.getBirthday());
-            System.out.println(JSONObject.toJSONString(vo));
             String educationInfo = Constant.EDUCATION.INFO.getOrDefault(po.getEducation(), "未知");
             vo.setEducationInfo(educationInfo);
             if (null != po.getBirthday()) {
                 try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
                     vo.setAge(DateUtil.ageOfNow(po.getBirthday()));
-                    vo.setZodiac(new ChineseDate(po.getBirthday()).getChineseZodiac());
+                    vo.setZodiac(new ChineseDate(sdf.parse(po.getBirthday())).getChineseZodiac());
 
                 } catch (Exception e) {
 

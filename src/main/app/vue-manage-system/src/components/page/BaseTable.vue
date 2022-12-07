@@ -29,14 +29,18 @@
                             <el-cascader clearable style="width:120px" :options="queryAllAddressInfo" v-model="query.selectedLiveAddress" @change="changeLiveAddress">
                             </el-cascader>
                         </el-form-item>
-                        <el-form-item label="出生" >
-                            <el-date-picker clearable
-                                v-model="query.birthday"
-                                type="monthrange"
-                                range-separator="至"
-                                start-placeholder="开始月份"
-                                end-placeholder="结束月份">
-                            </el-date-picker>
+                        <el-form-item label="出生年份" >
+<!--                            <el-date-picker clearable-->
+<!--                                v-model="query.birthday"-->
+<!--                                type="monthrange"-->
+<!--                                range-separator="至"-->
+<!--                                start-placeholder="开始月份"-->
+<!--                                end-placeholder="结束月份">-->
+<!--                            </el-date-picker>-->
+                            <el-input-number v-model="query.birthdayLow" controls-position="right" ></el-input-number>
+                            至
+<!--                            <el-input  v-model="query.birthdayHigh" controls-position="right"></el-input-number>-->
+                                <el-input-number v-model="query.birthdayHigh" controls-position="right" ></el-input-number>
                         </el-form-item>
 
                     </el-row>
@@ -210,7 +214,7 @@
                     background
                     @size-change="handleSizeChange"
                     @current-change="handlePageChange"
-                    :current-page="query.pageIndex"
+                    :current-page="query.pageNum"
                     :page-sizes="[2, 10, 30]"
                     :page-size="query.pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
@@ -257,13 +261,13 @@
                     </el-form-item>
                 </el-row>
                 <el-row>
-                    <el-form-item label="出生日期">
+                    <el-form-item label="出生年份">
                         <!-- <el-input v-model="form.birthday"></el-input> -->
                         <el-date-picker style="width:180px"
                         v-model="form.birthday"
-                        type="date"
-                        value-format="yyyy-MM-dd"
-                        placeholder="选择日期">
+                        type="year"
+                        value-format="yyyy"
+                        placeholder="选择年份">
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="年龄">
@@ -472,7 +476,7 @@
                 allHouse:[{value: false,label: '无'}, {value: true,label: '有'}],
                 allCar:[{value: false,label: '无'}, {value: true,label: '有'}],
                 query: {
-                    pageIndex: 1,
+                    pageNum: 1,
                     pageSize: 10,
                 },
                 tableData: [],
@@ -510,7 +514,7 @@
                 //     this.pageTotal = res.pageTotal || 50;
                 // });
                 let self = this;
-                data.pageNum = self.query.pageIndex;
+                data.pageNum = self.query.pageNum;
                 data.pageSize = self.query.pageSize;
                 data.roleId = 2;
                 self.$post("/base/user/qryAll", data).then(function (response) {
@@ -519,21 +523,13 @@
                         self.pageTotal = response.obj.total;
                     }
                 }).catch(function (err) {
-                    console.log(err)
+                    self.$message.error(err.msg);
                 })
 
             },
             // 触发搜索按钮
             handleSearch() {
-                this.$set(this.query, 'pageIndex', 1);
                 let self = this;
-                if (null != self.query.birthday && undefined != self.query.birthday && self.query.birthday.length >= 2) {
-                    self.query.birthdayLow = self.query.birthday[0]
-                    self.query.birthdayHigh = self.query.birthday[1]
-                } else {
-                    self.query.birthdayLow = null;
-                    self.query.birthdayHigh = null;
-                }
 
                 this.getData(self.query);
             },
@@ -601,7 +597,8 @@
             },
             handleAdd() {
                 this.form = {
-                    selectedLiveAddress: ["330000", "330500", "330502"]
+                    selectedLiveAddress: ["330000", "330500", "330502"],
+                    selectedWorkAddress: ["330000", "330500", "330502"]
                 };
                 this.mergeVisible = true;
                 this.mergeVisibleMsg = "保存";
@@ -729,16 +726,19 @@
             },
             // 分页导航
             handlePageChange(val) {
-                this.$set(this.query, 'pageIndex', val);
-                this.getData(self.query);
+                // console.log(111111)
+                // this.$set(this.query, 'pageIndex', val);
+                // this.getData(self.query);
+                let self = this;
+                self.query.pageNum = val
+                this.getData(self.query)
             },
             handleSizeChange(val) {
+                let self = this;
                 this.query.pageSize = val
                 this.getData(self.query)
             },
             changeLiveAddress(value)  {
-                console.log(value)
-                console.log(regionData)
             },
             getDateStr(date) {
                  var year = date.getFullYear();

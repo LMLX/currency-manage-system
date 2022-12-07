@@ -34,8 +34,8 @@ public class ManageUserQuery extends Page {
     /**
      * 生日
      */
-    private Date birthdayLow;
-    private Date birthdayHigh;
+    private String birthdayLow;
+    private String birthdayHigh;
 
     /**
      * 年薪

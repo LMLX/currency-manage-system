@@ -47,8 +47,7 @@ public class ManageUserInfoVo {
     /**
      * 生日
      */
-    @JsonFormat(pattern="yyyy-MM-dd", timezone = "GMT+8")
-    private Date birthday;
+    private String birthday;
 
     /**
      * 居住省

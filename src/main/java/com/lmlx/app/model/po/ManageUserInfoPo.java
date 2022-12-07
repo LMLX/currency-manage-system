@@ -58,7 +58,7 @@ public class ManageUserInfoPo  implements Serializable {
 	 * 生日
 	 */
 	@Column(value = "birthday" )
-	private Date birthday;
+	private String birthday;
 
 	/**
 	 * 居住省

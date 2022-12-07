@@ -41,7 +41,7 @@ public class ManageUserInfoSo {
     /**
      * 生日
      */
-    private Date birthday;
+    private String birthday;
 
     /**
      * 居住省

@@ -12,23 +12,23 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             '/base': {
-                target: "http://47.111.188.250:8082",
+                target: "http://localhost:8082",
                 changeOrigin: true,
                 pathRewrite: {
                     '^/base': ''
                 }
             },
-            '/baidu': {
-                target: "http://api.map.baidu.com",
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/baidu': ''
-                }
-            }
+            // '/baidu': {
+            //     target: "http://api.map.baidu.com",
+            //     changeOrigin: true,
+            //     pathRewrite: {
+            //         '^/baidu': ''
+            //     }
+            // }
         },
 
         // Various Dev Server settings
-        host: '47.111.188.250', // can be overwritten by process.env.HOST
+        host: 'localhost', // can be overwritten by process.env.HOST
         port: 8081, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
         autoOpenBrowser: false,
         errorOverlay: true,

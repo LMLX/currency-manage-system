@@ -96,6 +96,6 @@
                 AND work_county = #{workCounty}
             </if>
         </where>
-        ORDER BY USER_ID, ROLE_ID desc
+        ORDER BY CREATE_TIME DESC, USER_ID DESC, ROLE_ID desc
     </select>
 </mapper>
