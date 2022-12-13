@@ -136,11 +136,12 @@ public class ManageUserServiceImpl extends ServiceImpl<ManageUserInfoMapper, Man
             if (null != po.getBirthday()) {
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-                    vo.setAge(DateUtil.ageOfNow(po.getBirthday()));
+                    vo.setAge(DateUtil.ageOfNow(sdf.parse(po.getBirthday())));
                     vo.setZodiac(new ChineseDate(sdf.parse(po.getBirthday())).getChineseZodiac());
 
                 } catch (Exception e) {
-
+                    e.printStackTrace();
+                    System.out.println(e);
                 }
             }
 

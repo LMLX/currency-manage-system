@@ -177,9 +177,9 @@
                         {{scope.row.isOnly ? "是":"否"}}
                     </template>
                 </el-table-column>
-                <el-table-column prop="mark" label="本人备注">
+                <el-table-column prop="mark" label="本人备注" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="chooseMsg" label="择偶标准">
+                <el-table-column width="400" prop="chooseMsg" label="择偶标准" show-overflow-tooltip>
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
@@ -530,7 +530,7 @@
             // 触发搜索按钮
             handleSearch() {
                 let self = this;
-
+                self.query.pageNum = 1
                 this.getData(self.query);
             },
             // 删除操作
