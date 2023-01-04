@@ -72,27 +72,27 @@
                 AND has_car = #{hasCar}
             </if>
 
-            <if test="null != liveProvince">
+            <if test="null != liveProvince and '' != liveProvince">
                 AND live_province = #{liveProvince}
             </if>
 
-            <if test="null != liveCity">
+            <if test="null != liveCity and '' != liveCity">
                 AND live_city = #{liveCity}
             </if>
 
-            <if test="null != liveCounty">
+            <if test="null != liveCounty and '' != liveCounty">
                 AND live_county = #{liveCounty}
             </if>
 
-            <if test="null != workProvince">
+            <if test="null != workProvince and '' != workProvince">
                 AND work_province = #{workProvince}
             </if>
 
-            <if test="null != workCity">
+            <if test="null != workCity and '' != workCity">
                 AND work_city = #{workCity}
             </if>
 
-            <if test="null != workCounty">
+            <if test="null != workCounty and '' != workCounty">
                 AND work_county = #{workCounty}
             </if>
         </where>

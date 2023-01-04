@@ -514,9 +514,24 @@
                 //     this.pageTotal = res.pageTotal || 50;
                 // });
                 let self = this;
+                if (undefined != data.selectedLiveAddress) {
+                    console.log("ooo")
+                    data.liveProvince = data.selectedLiveAddress[0] == null ? "" : data.selectedLiveAddress[0];
+                    data.liveCity = data.selectedLiveAddress[1] == null ? "" : data.selectedLiveAddress[1];
+                    data.liveCounty = data.selectedLiveAddress[2] == null ? "" : data.selectedLiveAddress[2];
+                }
+
+                if (undefined != data.selectedWorkAddress) {
+                    data.workProvince = data.selectedWorkAddress[0] == null ? "" : data.selectedWorkAddress[0];
+                    data.workCity = data.selectedWorkAddress[1] == null ? "" : data.selectedWorkAddress[1];
+                    data.workCounty = data.selectedWorkAddress[2] == null ? "" : data.selectedWorkAddress[2];
+                }
+
                 data.pageNum = self.query.pageNum;
                 data.pageSize = self.query.pageSize;
                 data.roleId = 2;
+
+                console.log(data)
                 self.$post("/base/user/qryAll", data).then(function (response) {
                     if (response.status == 0) {
                         self.tableData = response.obj.list;
