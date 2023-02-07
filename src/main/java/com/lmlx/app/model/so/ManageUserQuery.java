@@ -3,6 +3,7 @@ package com.lmlx.app.model.so;
 import com.lmlx.app.model.Page;
 import com.lmlx.app.system.config.tableInfo.Column;
 import lombok.Data;
+import org.springframework.data.relational.core.sql.In;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -46,7 +47,7 @@ public class ManageUserQuery extends Page {
     /**
      * 是否已婚
      */
-    private Boolean isMarried;
+    private Integer isMarried;
 
     /**
      * 教育

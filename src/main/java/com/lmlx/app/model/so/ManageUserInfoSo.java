@@ -127,7 +127,7 @@ public class ManageUserInfoSo {
     /**
      * 是否已婚
      */
-    private Boolean isMarried;
+    private Integer isMarried;
 
     /**
      * 婚姻备注

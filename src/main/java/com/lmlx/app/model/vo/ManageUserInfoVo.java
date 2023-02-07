@@ -3,6 +3,7 @@ package com.lmlx.app.model.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lmlx.app.model.so.ManageUserPhotoInfoSo;
 import lombok.Data;
+import org.springframework.data.relational.core.sql.In;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -133,7 +134,7 @@ public class ManageUserInfoVo {
     /**
      * 是否已婚
      */
-    private Boolean isMarried;
+    private Integer isMarried;
 
     /**
      * 婚姻备注

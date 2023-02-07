@@ -165,7 +165,7 @@ public class ManageUserInfoPo  implements Serializable {
 	 * 是否已婚
 	 */
 	@Column(value = "is_married" )
-	private Boolean isMarried;
+	private Integer isMarried;
 
 	/**
 	 * 婚姻备注
