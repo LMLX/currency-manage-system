@@ -38,6 +38,7 @@ public class Constant {
                 put(50, "本科");
                 put(60, "硕士");
                 put(70, "博士");
+                put(80, "在编");
             }
         };
     }

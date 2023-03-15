@@ -22,7 +22,7 @@ router.beforeEach(async (to, from, next) => {
                 await init()
                 isOnce = false
             }
-            next('/dashboard')
+            next('/table')
         } else {
             if (userName) { // !login userName     next();
                 if(isOnce) {

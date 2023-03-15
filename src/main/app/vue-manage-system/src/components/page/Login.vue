@@ -75,7 +75,7 @@
                                     }
                                 });
 
-                                self.$router.push('/');
+                                self.$router.push('/table');
                             } else {
                                 self.$message({
                                     type: 'error',

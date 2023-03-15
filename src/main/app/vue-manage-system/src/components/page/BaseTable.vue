@@ -195,7 +195,8 @@
                 </el-table-column>
                 <el-table-column width="400" prop="chooseMsg" label="择偶标准" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column label="操作" width="180" align="center">
+
+                <el-table-column v-if="vShow" label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
                             type="text"
@@ -477,6 +478,7 @@
         name: 'baseTable',
         data() {
             return {
+                vShow: false,
                 dialogImageUrl: '',
                 dialogVisible: false,
                 dialogDisabled: false,
@@ -509,11 +511,15 @@
             };
         },
         created() {
+            let self = this;
             let data = {
                 pageNum: this.query.pageNum,
                 pageSize: this.query.pageSize
             }
             this.getData(data);
+
+            self.vShow = self.common.getLocalStorage("userInfo").roleId == 1
+            console.log(self.vShow)
         },
         methods: {
             handlePictureCardPreview(file) {

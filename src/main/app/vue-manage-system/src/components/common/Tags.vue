@@ -42,11 +42,15 @@
                 if (item) {
                     delItem.path === this.$route.fullPath && this.$router.push(item.path);
                 }else{
-                    this.$router.push('/').catch(err => {
+                    this.$router.push('/table').catch(err => {
                         this.tagsList.push({
-                            title: '系统首页',
-                            path: '/dashboard',
-                            name: 'dashboard'
+                            // title: '系统首页',
+                            // path: '/dashboard',
+                            // name: 'dashboard'
+
+                            title: '基础表格',
+                            path: '/table',
+                            name: 'table'
                         })
                     });
                 }
@@ -54,11 +58,14 @@
             // 关闭全部标签
             closeAll(){
                 this.tagsList = [];
-                this.$router.push('/').catch(err => {
+                this.$router.push('/table').catch(err => {
                     this.tagsList.push({
-                        title: '系统首页',
-                        path: '/dashboard',
-                        name: 'dashboard'
+                        // title: '系统首页',
+                        // path: '/dashboard',
+                        // name: 'dashboard'
+                        title: '基础表格',
+                        path: '/table',
+                        name: 'table'
                     })
                 });;
             },
